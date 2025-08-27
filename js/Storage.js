@@ -44,6 +44,16 @@ class Storage {
     }
   }
 
+  async deleteAll() {
+    try {
+      await this.delete(today.date);
+      await this.delete("tracked_time_history");
+      return true;
+    } catch (e) {
+      return this.error(e);
+    }
+  }
+
   error(error) {
     console.error(error);
     console.trace();

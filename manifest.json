@@ -3,13 +3,19 @@
   "name": "Time Tracker",
   "version": "1",
   "description": "Tracks time spent on sites",
-  "permissions": ["storage"],
+  "permissions": ["tabs", "storage"],
   "icons": {
     "48": "img/icon-48.png",
     "64": "img/icon.png"
   },
   "background": {
-    "scripts": ["js/Storage.js", "js/functions.js", "js/bootstrap.js", "js/background.js"],
+    "scripts": [
+      "js/Storage.js",
+      "js/TabManager.js",
+      "js/functions.js",
+      "js/background.js",
+      "js/bootstrap.js"
+    ],
     "persistent": false
   }
 }
