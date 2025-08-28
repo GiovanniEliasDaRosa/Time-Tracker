@@ -4,8 +4,7 @@ const tabManager = new TabManager();
 let today = getDateInfo(new Date());
 
 let tracked_time_history = {
-  dates: [],
-  tracked: [],
+  trackedDates: [],
   lastTrack: today.date,
   totalDays: 0,
 };
@@ -21,6 +20,7 @@ async function bootstrap() {
   // Update the current and last tab values
   tabManager.updatedTab(false);
 
+  console.log("new run");
   await storage.deleteAll();
 
   tracked_time_history = await storage.getOrAdd("tracked_time_history", tracked_time_history);
@@ -33,10 +33,26 @@ async function bootstrap() {
     // Push a new domain on the today's data
     tabManager.handeDomainChange();
 
+    // Last tracked day isn't today
+    if (tracked_time_history.lastTrack != today.date) {
+      let last_day = tracked_time_history.lastTrack;
+      let last_day_data = await storage.get(last_day);
+      last_day_data.trackingFinished = true;
+
+      let tracked_time_day_position = tracked_time_history.trackedDates.findIndex(
+        (date) => !date.trackingFinished
+      );
+
+      // Put the data in the tracked day correct position
+      tracked_time_history.trackedDates[tracked_time_day_position] = last_day_data;
+
+      await storage.delete(last_day);
+    }
+
     // Updathe the Tracked Time History, so that it knows a new day has begun
-    tracked_time_history.dates.push({
+    tracked_time_history.trackedDates.push({
       date: today.date,
-      finishedTracking: false,
+      trackingFinished: false,
     });
     tracked_time_history.lastTrack = today.date;
     tracked_time_history.totalDays += 1;
