@@ -11,3 +11,16 @@ async function trackTime() {
 
   await tabManager.updateTodaysData();
 }
+
+browser.windows.onFocusChanged.addListener((windowId) => {
+  // Window lost focus
+  if (windowId == -1) {
+    clearInterval(timer_interval);
+  } else {
+    // Window regained focus
+    clearInterval(timer_interval);
+
+    // Start tracking time
+    timer_interval = setInterval(trackTime, 2000);
+  }
+});

@@ -11,7 +11,9 @@ class TabManager {
     };
 
     // On change tabs update tab_control:
-    browser.tabs.onActivated.addListener(this.updatedTab);
+    browser.tabs.onActivated.addListener(() => {
+      this.updatedTab(true);
+    });
   }
 
   async getCurrent() {
@@ -25,7 +27,7 @@ class TabManager {
     }
   }
 
-  async updatedTab(update = true) {
+  async updatedTab(update_domain) {
     let current = await this.getCurrent();
 
     this.last = this.current;
@@ -34,17 +36,20 @@ class TabManager {
       url: current.url,
     };
 
-    if (update) {
+    console.error(update_domain);
+
+    if (update_domain) {
       await this.handeDomainChange();
     }
   }
 
   async handeDomainChange() {
     this.domainIndex = tracking_time.domains.findIndex((value) => value.url == this.current.url);
+    console.error(this.domainIndex);
 
     // Domain yet not added
     if (this.domainIndex == -1) {
-      console.warn("Adding domain");
+      console.warn("Adding domain", this.current.url);
       tracking_time.domains.push({
         url: this.current.url,
         time: 0,

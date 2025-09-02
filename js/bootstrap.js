@@ -15,6 +15,8 @@ let tracking_time = {
   totalTime: 0,
 };
 
+let timer_interval = null;
+
 // start everything
 async function bootstrap() {
   // Update the current and last tab values
@@ -60,7 +62,7 @@ async function bootstrap() {
   }
 
   // Start tracking time
-  setInterval(trackTime, 2000);
+  timer_interval = setInterval(trackTime, 2000);
 }
 
 bootstrap();
