@@ -22,7 +22,7 @@ async function bootstrap() {
   // Update the current and last tab values
   tabManager.updatedTab(false);
 
-  console.log("new run");
+  console.warn("------\nNEW RUN\n------");
   await storage.deleteAll();
 
   tracked_time_history = await storage.getOrAdd("tracked_time_history", tracked_time_history);

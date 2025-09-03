@@ -19,7 +19,15 @@ class TabManager {
   async getCurrent() {
     try {
       const tabs = await browser.tabs.query({ active: true, currentWindow: true });
-      if (tabs.length > 0) return tabs[0];
+      if (tabs.length > 0) {
+        let cur_tab = tabs[0];
+        let cur_url = new URL(cur_tab.url);
+
+        return {
+          id: cur_tab.id,
+          url: cur_url.host,
+        };
+      }
       return null;
     } catch (error) {
       console.error(`Error retrieving current tab: ${error}`);
@@ -36,8 +44,6 @@ class TabManager {
       url: current.url,
     };
 
-    console.error(update_domain);
-
     if (update_domain) {
       await this.handeDomainChange();
     }
@@ -45,7 +51,6 @@ class TabManager {
 
   async handeDomainChange() {
     this.domainIndex = tracking_time.domains.findIndex((value) => value.url == this.current.url);
-    console.error(this.domainIndex);
 
     // Domain yet not added
     if (this.domainIndex == -1) {

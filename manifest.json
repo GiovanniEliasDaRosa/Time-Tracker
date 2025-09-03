@@ -3,7 +3,7 @@
   "name": "Time Tracker",
   "version": "1",
   "description": "Tracks time spent on sites",
-  "permissions": ["tabs", "storage"],
+  "permissions": ["<all_urls>", "tabs", "storage"],
   "icons": {
     "48": "img/icon-48.png",
     "64": "img/icon.png"
@@ -16,6 +16,6 @@
       "js/background.js",
       "js/bootstrap.js"
     ],
-    "persistent": false
+    "persistent": true
   }
 }
