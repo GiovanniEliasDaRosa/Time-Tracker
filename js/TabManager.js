@@ -14,6 +14,13 @@ class TabManager {
     browser.tabs.onActivated.addListener(() => {
       this.updatedTab(true);
     });
+
+    browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
+      // Fully loaded the page
+      if (tabInfo.status == "complete") {
+        this.updatedTab(true);
+      }
+    });
   }
 
   async getCurrent() {
@@ -22,6 +29,11 @@ class TabManager {
       if (tabs.length > 0) {
         let cur_tab = tabs[0];
         let cur_url = new URL(cur_tab.url);
+
+        // Not a site
+        if (/http/.test(cur_url.protocol) == false) {
+          cur_url.host = "";
+        }
 
         return {
           id: cur_tab.id,
@@ -38,6 +50,18 @@ class TabManager {
   async updatedTab(update_domain) {
     let current = await this.getCurrent();
 
+    if (current.url == "") {
+      this.current = {
+        id: null,
+        url: null,
+      };
+      this.last = {
+        id: null,
+        url: null,
+      };
+      return;
+    }
+
     this.last = this.current;
     this.current = {
       id: current.id,
@@ -50,6 +74,8 @@ class TabManager {
   }
 
   async handeDomainChange() {
+    if (this.current.url == null) return;
+
     this.domainIndex = tracking_time.domains.findIndex((value) => value.url == this.current.url);
 
     // Domain yet not added

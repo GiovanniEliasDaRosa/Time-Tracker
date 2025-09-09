@@ -1,6 +1,9 @@
 async function trackTime() {
   console.log("trackTime()");
 
+  if (tabManager.current.url == null) {
+    return;
+  }
   tracking_time.domains[tabManager.domainIndex].time += 2;
   tracking_time.totalTime += 2;
 
