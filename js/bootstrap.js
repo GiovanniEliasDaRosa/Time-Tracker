@@ -5,12 +5,12 @@ let today = getDateInfo(new Date());
 
 let tracked_time_history = {
   trackedDates: [],
-  lastTrack: today.date,
+  lastTrack: today.isoDate,
   totalDays: 0,
 };
 
 let tracking_time = {
-  date: today.date,
+  date: today.isoDate,
   domains: [],
   totalTime: 0,
 };
@@ -28,7 +28,7 @@ async function bootstrap() {
   tracked_time_history = await storage.getOrAdd("tracked_time_history", tracked_time_history);
 
   // Get today's date
-  tracking_time = await storage.getOrAdd(today.date, tracking_time);
+  tracking_time = await storage.getOrAdd(today.isoDate, tracking_time);
 
   // First access to the browser this day
   if (tracking_time.domains.length == 0) {
@@ -36,7 +36,7 @@ async function bootstrap() {
     tabManager.handeDomainChange();
 
     // Last tracked day isn't today
-    if (tracked_time_history.lastTrack != today.date) {
+    if (tracked_time_history.lastTrack != today.isoDate) {
       let last_day = tracked_time_history.lastTrack;
       let last_day_data = await storage.get(last_day);
       last_day_data.trackingFinished = true;
@@ -53,10 +53,10 @@ async function bootstrap() {
 
     // Updathe the Tracked Time History, so that it knows a new day has begun
     tracked_time_history.trackedDates.push({
-      date: today.date,
+      isoDate: today.isoDate,
       trackingFinished: false,
     });
-    tracked_time_history.lastTrack = today.date;
+    tracked_time_history.lastTrack = today.isoDate;
     tracked_time_history.totalDays += 1;
     tracked_time_history = await storage.set("tracked_time_history", tracked_time_history);
   }

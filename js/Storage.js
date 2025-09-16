@@ -46,7 +46,7 @@ class Storage {
 
   async deleteAll() {
     try {
-      await this.delete(today.date);
+      await this.delete(today.isoDate);
       await this.delete("tracked_time_history");
       return true;
     } catch (e) {

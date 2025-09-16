@@ -1,7 +1,7 @@
 function getDateInfo(date) {
   // If passed a string as a date get the DATE prototype
   if (typeof date == "string") {
-    date = new Date(date);
+    date = new Date(`${date}T00:00`);
   }
 
   [month, day, year] = date.format().split("/").map(Number);
@@ -21,6 +21,7 @@ function getDateInfo(date) {
 
   return {
     date: `${month.pad()}/${day.pad()}/${year}`,
+    isoDate: `${year}-${month.pad()}-${day.pad()}`,
     weekday: weekday,
     day: day,
     month: month,
