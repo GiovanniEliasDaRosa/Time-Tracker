@@ -15,13 +15,14 @@ let tracking_time = {
   totalTime: 0,
 };
 
-let timer_interval = null;
+let timer_timeout = null;
 
 // start everything
 async function bootstrap() {
   // Update the current and last tab values
   tabManager.updatedTab(false);
 
+  console.clear();
   console.warn("------\nNEW RUN\n------");
   await storage.deleteAll();
 
@@ -34,10 +35,9 @@ async function bootstrap() {
   if (tracking_time.domains.length == 0) {
     // Push a new domain on the today's data
     tabManager.handeDomainChange();
-
+    let last_day = tracked_time_history.lastTrack;
     // Last tracked day isn't today
-    if (tracked_time_history.lastTrack != today.isoDate) {
-      let last_day = tracked_time_history.lastTrack;
+    if (last_day != today.isoDate) {
       let last_day_data = await storage.get(last_day);
       last_day_data.trackingFinished = true;
 
@@ -59,10 +59,22 @@ async function bootstrap() {
     tracked_time_history.lastTrack = today.isoDate;
     tracked_time_history.totalDays += 1;
     tracked_time_history = await storage.set("tracked_time_history", tracked_time_history);
+  } else {
+    // Access on the same day
+    let goto_sessions_domains = [];
+    tracking_time.domains.forEach((tracked_domain) => {
+      goto_sessions_domains.push({
+        url: tracked_domain.url,
+        startTime: null,
+        ellapsedTime: 0,
+      });
+    });
+
+    tabManager.sessionDomains = goto_sessions_domains;
   }
 
   // Start tracking time
-  timer_interval = setInterval(trackTime, 2000);
+  timer_timeout = setTimeout(saveTrackedTime, 4000);
 }
 
 bootstrap();

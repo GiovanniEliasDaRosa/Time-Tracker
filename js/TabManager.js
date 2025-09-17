@@ -1,6 +1,8 @@
 class TabManager {
   constructor() {
-    this.domainIndex = 0;
+    this.sessionDomains = [];
+    this.lastDomainIndex = null;
+    this.domainIndex = null;
     this.current = {
       id: null,
       url: null,
@@ -51,15 +53,10 @@ class TabManager {
     let current = await this.getCurrent();
 
     if (current.url == "") {
-      this.current = {
+      current = {
         id: null,
         url: null,
       };
-      this.last = {
-        id: null,
-        url: null,
-      };
-      return;
     }
 
     this.last = this.current;
@@ -73,21 +70,70 @@ class TabManager {
     }
   }
 
-  async handeDomainChange() {
-    if (this.current.url == null) return;
+  stopTraker() {
+    // Set current tab as a not trackable
+    this.last = this.current;
+    this.current = {
+      id: null,
+      url: null,
+    };
 
+    // Stop tracker
+    this.handeDomainChange();
+  }
+
+  startTraker() {
+    // Get the current tab and start tracker
+    this.updatedTab(true);
+  }
+
+  async handeDomainChange() {
+    this.lastDomainIndex = this.domainIndex;
     this.domainIndex = tracking_time.domains.findIndex((value) => value.url == this.current.url);
+
+    // This url is not a valid site
+    if (this.current.url == null) {
+      let session_tab = this.sessionDomains[this.lastDomainIndex];
+
+      // Last url is a valid site, and we have in the array
+      if (this.last.url != null && session_tab != null) {
+        session_tab.ellapsedTime += Date.now() - session_tab.startTime;
+        session_tab.startTime = null;
+      }
+
+      return;
+    }
 
     // Domain yet not added
     if (this.domainIndex == -1) {
-      console.warn("Adding domain", this.current.url);
       tracking_time.domains.push({
         url: this.current.url,
         time: 0,
       });
       this.domainIndex = tracking_time.domains.length - 1;
 
-      await this.updateTodaysData();
+      // Last url is a valid site
+      if (this.last.url != null) {
+        let session_tab = this.sessionDomains[this.lastDomainIndex];
+        session_tab.ellapsedTime += Date.now() - session_tab.startTime;
+        session_tab.startTime = null;
+      }
+
+      this.sessionDomains[this.domainIndex] = {
+        url: this.current.url,
+        startTime: Date.now(),
+        ellapsedTime: 0,
+      };
+    } else if (this.lastDomainIndex != this.domainIndex) {
+      // Domain is added, but changed tab with different domains
+      // Last url is a valid site
+      if (this.last.url != null) {
+        let session_tab = this.sessionDomains[this.lastDomainIndex];
+        session_tab.ellapsedTime += Date.now() - session_tab.startTime;
+        session_tab.startTime = null;
+      }
+
+      this.sessionDomains[this.domainIndex].startTime = Date.now();
     }
   }
 
