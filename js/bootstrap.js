@@ -74,7 +74,7 @@ async function bootstrap() {
   }
 
   // Start tracking time
-  timer_timeout = setTimeout(saveTrackedTime, 4000);
+  timer_timeout = setTimeout(saveTrackedTime, 60000);
 }
 
 bootstrap();

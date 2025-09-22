@@ -1,25 +1,27 @@
 async function saveTrackedTime() {
   console.log("saveTrackedTime()");
-  let date_save = Date.now();
-  let session_domains = tabManager.sessionDomains;
   let total_increase = 0;
 
-  tracking_time.domains.forEach((tracked_domain) => {
-    session_domains.forEach((session_domain) => {
-      if (tracked_domain.url == session_domain.url) {
-        // If it's current tab that's tracking, make a fake stop to count ellapsedTime
-        if (session_domain.startTime != null) {
-          session_domain.ellapsedTime += date_save - session_domain.startTime;
-          session_domain.startTime = date_save;
-        }
-      }
-      let temp_calc = session_domain.ellapsedTime / 1000;
-      // The saved time in storage, plus the needed to save
-      total_increase += temp_calc;
-      tracked_domain.time += temp_calc;
-      session_domain.ellapsedTime = 0;
-    });
-  });
+  for (let i = 0; i < tracking_time.domains.length; i++) {
+    const tracked_domain = tracking_time.domains[i];
+    const session_domain = tabManager.sessionDomains[i];
+
+    // The currently open tab didn't finish tracking,
+    // so we fake it like they just stop, and count the ellapsed time
+    if (session_domain.startTime != null) {
+      let date_save = Date.now();
+      session_domain.ellapsedTime += date_save - session_domain.startTime;
+      session_domain.startTime = date_save;
+    }
+
+    // Set the value in seconds, and reset the ellapsedTtime
+    let temp_calc = session_domain.ellapsedTime / 1000;
+    session_domain.ellapsedTime = 0;
+
+    // The saved time in storage, plus the needed to save
+    total_increase += temp_calc;
+    tracked_domain.time += temp_calc;
+  }
 
   tracking_time.totalTime += total_increase;
 
@@ -30,7 +32,7 @@ async function saveTrackedTime() {
 
   await tabManager.updateTodaysData();
 
-  timer_timeout = setTimeout(saveTrackedTime, 4000);
+  timer_timeout = setTimeout(saveTrackedTime, 60000);
 }
 
 browser.windows.onFocusChanged.addListener(onFocusChanged);
