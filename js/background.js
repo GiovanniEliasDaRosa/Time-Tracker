@@ -47,3 +47,12 @@ async function onFocusChanged(windowId) {
     tabManager.stopTraker();
   }
 }
+
+// On closing current window, save data
+browser.windows.onRemoved.addListener((windowId) => {
+  // Remove the timer, to prevent running multiple times function that saves the tracked time
+  clearTimeout(timer_timeout);
+  // Save the data
+  saveTrackedTime();
+});
+
