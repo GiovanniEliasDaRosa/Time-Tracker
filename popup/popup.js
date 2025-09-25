@@ -17,7 +17,7 @@ function get_timer() {
   let percent = 0;
 
   // If the curent tab is a valid URL
-  if (current_tab != null) {
+  if (current_tab.url != null) {
     let current_tab_index = saved.domains.findIndex((domain) => domain.url == current_tab.url);
     current_tab_time = saved.domains[current_tab_index].time;
   }
