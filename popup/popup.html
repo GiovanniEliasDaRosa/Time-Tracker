@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Tracker</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/icons.css" />
+    <link rel="stylesheet" href="popup.css" />
+
+    <script src="../js/functions.js" defer="true"></script>
+    <script src="../js/Storage.js" defer="true"></script>
+    <script src="popup.js" defer="true"></script>
+  </head>
+  <body>
+    <button class="no_button_style" id="timer_button">
+      <div class="timer_div">
+        <span class="timer_value timer_current_value">HH:MM</span>
+        <hr class="timer_separator" />
+        <span class="timer_value timer_total_value">HH:MM</span>
+      </div>
+
+      <div class="timer_div timer_progress">
+        <p class="timer_progress_text">50%</p>
+        <div class="timer_progress_bar">
+          <div class="timer_progress_bar_fill"></div>
+        </div>
+      </div>
+
+      <span class="timer_text">Open summary page</span>
+    </button>
+
+    <footer>
+      <img src="../img/icon.png" alt="Time Tracker Icon" />
+      <p>Time Tracker</p>
+    </footer>
+  </body>
+</html>

@@ -31,6 +31,33 @@ function getDateInfo(date) {
   };
 }
 
+function formatTime(time_in_seconds, options = {}) {
+  let hours, minutes, seconds, time_string;
+  hours = Math.floor(time_in_seconds / 3600);
+
+  time_in_seconds -= hours * 3600;
+  minutes = Math.floor(time_in_seconds / 60);
+
+  hours = hours.pad();
+  minutes = minutes.pad();
+
+  if (options.seconds) {
+    time_in_seconds -= minutes * 60;
+    seconds = Math.floor(time_in_seconds);
+    seconds = seconds.pad();
+    time_string = `${hours}:${minutes}:${seconds}`;
+  } else {
+    time_string = `${hours}:${minutes}`;
+  }
+
+  return {
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+    timeString: time_string,
+  };
+}
+
 Date.prototype.format = function (options, locale = "en-US") {
   return this.toLocaleDateString(locale, options);
 };

@@ -1,5 +1,17 @@
-async function saveTrackedTime() {
+async function saveTrackedTime(new_timeout = true) {
   console.log("saveTrackedTime()");
+
+  updateTrackedTime();
+
+  await tabManager.updateTodaysData();
+
+  if (new_timeout) {
+    timer_timeout = setTimeout(saveTrackedTime, 60000);
+  }
+}
+
+function updateTrackedTime() {
+  console.log("updateTrackedTime()");
   let total_increase = 0;
 
   for (let i = 0; i < tracking_time.domains.length; i++) {
@@ -24,15 +36,6 @@ async function saveTrackedTime() {
   }
 
   tracking_time.totalTime += total_increase;
-
-  console.log("____________");
-  console.log(tracking_time);
-  console.log(tracked_time_history);
-  console.log("____________");
-
-  await tabManager.updateTodaysData();
-
-  timer_timeout = setTimeout(saveTrackedTime, 60000);
 }
 
 browser.windows.onFocusChanged.addListener(onFocusChanged);
@@ -53,6 +56,32 @@ browser.windows.onRemoved.addListener((windowId) => {
   // Remove the timer, to prevent running multiple times function that saves the tracked time
   clearTimeout(timer_timeout);
   // Save the data
-  saveTrackedTime();
+  saveTrackedTime(false);
 });
 
+async function handleMessage(request, sender) {
+  updateTrackedTime();
+
+  if (request.type == "calculate_time") {
+    let response = {
+      isOk: true,
+      tracking_time: tracking_time,
+    };
+
+    if (request.with == "current_tab") {
+      response.current_tab = tabManager.current;
+    }
+
+    return response;
+  } else {
+    return {
+      isOk: false,
+      error: `No type message type defined for ${request.type}`,
+    };
+  }
+}
+
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  handleMessage(request, sender).then(sendResponse);
+  return true;
+});
