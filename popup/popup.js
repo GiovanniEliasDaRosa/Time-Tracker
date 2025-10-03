@@ -39,8 +39,8 @@ function handleResponse(message) {
     console.error("Message is not ok", message);
     return;
   }
-  tracking_time_local = message.tracking_time;
-  current_tab = message.current_tab;
+  tracking_time_local = message.trackingTime;
+  current_tab = message.currentTab;
 
   get_timer();
 }

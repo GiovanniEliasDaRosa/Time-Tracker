@@ -65,11 +65,11 @@ async function handleMessage(request, sender) {
   if (request.type == "calculate_time") {
     let response = {
       isOk: true,
-      tracking_time: tracking_time,
+      trackingTime: tracking_time,
     };
 
     if (request.with == "current_tab") {
-      response.current_tab = tabManager.current;
+      response.currentTab = tabManager.current;
     }
 
     return response;
