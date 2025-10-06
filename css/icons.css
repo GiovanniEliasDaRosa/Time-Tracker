@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "FontAwesome900";
+  src: url("../fonts/icons/fa-solid-900.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FontAwesome400";
+  src: url("../fonts/icons/fa-regular-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.icons::before {
+  display: inline-block;
+  font-family: "FontAwesome900";
+  font-weight: 900;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 0.5rem;
+}
+
+.icons.nomargin::before {
+  margin-right: 0;
+}
