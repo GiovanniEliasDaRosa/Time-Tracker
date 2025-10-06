@@ -68,8 +68,13 @@ async function handleMessage(request, sender) {
       trackingTime: tracking_time,
     };
 
-    if (request.with == "current_tab") {
-      response.currentTab = tabManager.current;
+    switch (request.with) {
+      case "current_tab":
+        response.currentTab = tabManager.current;
+      case "all_data":
+        response.allData = tracked_time_history;
+      default:
+        break;
     }
 
     return response;

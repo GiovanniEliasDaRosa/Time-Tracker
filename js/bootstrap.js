@@ -24,7 +24,6 @@ async function bootstrap() {
 
   console.clear();
   console.warn("------\nNEW RUN\n------");
-  await storage.deleteAll();
 
   tracked_time_history = await storage.getOrAdd("tracked_time_history", tracked_time_history);
 

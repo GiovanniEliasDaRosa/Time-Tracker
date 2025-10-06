@@ -1,0 +1,342 @@
+/* MARK: General
+*/
+.timer {
+  display: grid;
+  gap: 1em;
+  padding: 1em;
+  box-shadow: 0 0.25em 0.5em -0.125em hsla(0, 0%, 0%, 0.2);
+  border-radius: 0.5em;
+  container-type: inline-size;
+  container-name: timer;
+  height: max-content;
+}
+
+.timer_body,
+.timer_body_more {
+  display: grid;
+}
+
+.timer_body {
+  counter-reset: timer_rows;
+}
+
+.timer_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.timer_header_date {
+  grid-area: time;
+  display: grid;
+  gap: 0.5em;
+}
+
+/* MARK: Item Data
+*/
+.timer_item_data {
+  display: grid;
+  grid-template-columns: 4ch 30ch 1fr 5ch 4ch;
+  grid-template-areas: "postion name progress time percentage";
+  align-items: center;
+  gap: 0.5em;
+  position: relative;
+  padding: 0.5em;
+}
+
+.timer_item_informate {
+  padding: 1em;
+  border: solid 0.25em transparent;
+  border-radius: 1em;
+  position: relative;
+  display: flex;
+  align-items: center;
+  white-space: pre;
+
+  border: dashed 0.2em transparent;
+}
+
+.timer_item_informate::before {
+  font-size: 2rem;
+  width: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer_item_no_data {
+  background-color: hsl(195, 60%, 85%);
+  border-color: hsl(196, 89%, 22%);
+}
+
+.timer_item_invalid {
+  background-color: hsl(16, 100%, 91%);
+  border-color: hsl(0, 94%, 21%);
+}
+
+.timer_item_data::before {
+  grid-area: postion;
+  counter-increment: timer_rows;
+  content: counter(timer_rows) ".";
+  align-self: start;
+}
+
+.timer_item_data::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.0625em;
+  background-color: hsl(189, 44%, 61%);
+}
+
+@container timer (width < 50rem) {
+  .timer_item_data {
+    display: grid;
+    grid-template-columns: 4ch 1fr 5ch;
+    grid-template-rows: auto auto;
+    grid-template-areas: "postion name time percentage" "postion progress progress progress";
+  }
+}
+
+/* In the TOTAL row doesn't need a number, so re can reset it */
+.timer_item_total {
+  background-color: hsl(190, 51%, 90%);
+}
+
+.timer_item_total::before {
+  counter-reset: timer_rows;
+  content: "";
+}
+
+.timer_item_total .timer_item_data_name {
+  font-weight: 900;
+}
+
+.timer_item_data_name {
+  grid-area: name;
+  font-weight: 500;
+  font-size: 1.125rem;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  text-wrap: nowrap;
+}
+
+.timer_item_data_progress {
+  grid-area: progress;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5em, 1fr));
+  gap: 0.25em 0;
+}
+
+.timer_item_data_progress_fill {
+  --hours: 1;
+
+  height: 1.25em;
+  width: calc(var(--hours) * 100%);
+  background-color: hsl(189, 74%, 31%);
+  border-left: 0.125em solid #0c5a68;
+  border-bottom: 0.125em solid #0c5a68;
+}
+
+/* MARK: Show more
+*/
+.button_show_more {
+  justify-self: center;
+}
+
+.button_show_more::before {
+  transition: rotate 1s cubic-bezier(0.4, -0.4, 0.4, 1.4);
+}
+
+.button_show_more.rotate_arrow_up::before {
+  rotate: 180deg;
+}
+
+.button_show_more_span {
+  position: relative;
+  height: 1em;
+  /* overflow: clip; */
+  display: inline grid;
+  transition: 1s all;
+  perspective: 3em;
+}
+
+.button_show_more_span_more,
+.button_show_more_span_less {
+  perspective-origin: 50% 50%;
+  transition: 1s all cubic-bezier(0.5, -0.5, 0.5, 1.5), opacity 0.4s ease-out 0.4s;
+}
+
+.button_show_more_span_more {
+  transform-origin: 50% 100%;
+}
+.button_show_more_span_less {
+  transform-origin: 50% 0%;
+}
+
+.button_show_more_span_less {
+  transform: rotateX(-90deg);
+}
+
+.button_show_more .button_show_more_span > * {
+  opacity: 0;
+}
+
+.button_show_more.show_less .button_show_more_span > * {
+  translate: 0 -100%;
+}
+
+.button_show_more:not(.show_less) .button_show_more_span_more {
+  opacity: 1;
+}
+
+.button_show_more.show_less .button_show_more_span_more {
+  transform: rotateX(90deg);
+  opacity: 0;
+}
+
+.button_show_more.show_less .button_show_more_span_less {
+  transform: rotateX(0deg);
+  opacity: 1;
+}
+
+.timer_item_data_percentage {
+  grid-area: percentage;
+}
+
+/* MARK: Body animation
+*/
+.timer_body_more {
+  overflow: clip;
+  position: relative;
+  isolation: isolate;
+}
+
+.timer_body_more::after,
+.timer_body_more::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  bottom: unset;
+
+  height: 1em;
+  background-color: #ffffff;
+  opacity: 0;
+}
+
+.timer_body_more::before {
+  background-color: #ffffff;
+}
+
+.timer_body_more::after {
+  top: calc(100% - 1em);
+  background-color: hsl(189, 58%, 55%);
+
+  scale: 0 1;
+  transition: scale 0.25s;
+}
+
+/* This is added to transition from 0 to 1em OR from 1em to 0 */
+.animate_height {
+  transition: height 0.25s;
+}
+
+/* Set the background to white, so we can't see contet behind it */
+.animate_height::before {
+  opacity: 1;
+  transition: none;
+}
+
+/* Animate bar in */
+.animate_in::before {
+  opacity: 0;
+  transition: opacity 0.125s;
+}
+
+/* Animate bar in */
+.will_animate_in::after {
+  scale: 1 1;
+  opacity: 1;
+}
+
+/* Start the transition from 0 to 1em */
+.will_animate_in {
+  height: 1em;
+  transition: height 0.25s;
+}
+
+/* Tranision the loader do dissapear */
+.animate_in::after {
+  scale: 1 1;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+/* Start the transition from 1em to the heigh of the content */
+.animate_in {
+  transition: height 1s;
+  background-color: hsl(189, 58%, 55%);
+  animation: timer_body_more_show 1s forwards;
+}
+
+@property --start {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* Animate the loader out */
+.will_animate_out::after {
+  scale: 1 1;
+  opacity: 1;
+  transition: none;
+
+  animation: 0.25s test_anim forwards;
+  /* animation: 3s test_anim infinite; */
+  mask-image: linear-gradient(
+    90deg,
+    #000 calc(50% - var(--start)),
+    transparent calc(50% - var(--start)),
+    transparent 50%,
+    transparent calc(50% +var(--start)),
+    #000 calc(50% +var(--start))
+  );
+}
+
+@keyframes test_anim {
+  0% {
+    --start: 50%;
+  }
+  100% {
+    --start: -1%;
+  }
+}
+
+/* Hide the background white */
+.animate_out::before {
+  opacity: 1;
+  transition: opacity 0.25s 0.5s;
+}
+
+/* Tranision the loader do dissapear */
+.animate_out::after {
+  scale: 0 1;
+  opacity: 1;
+  transition: scale 0.25s 1s;
+}
+
+/* Start the transition from the heigh of the content to 1em*/
+.animate_out {
+  transition: height 1s;
+  background-color: transparent;
+}
+
+@keyframes timer_body_more_show {
+  100% {
+    background-color: transparent;
+  }
+}

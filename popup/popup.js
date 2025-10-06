@@ -52,3 +52,7 @@ function handleError(error) {
 browser.runtime
   .sendMessage({ type: "calculate_time", with: "current_tab" })
   .then(handleResponse, handleError);
+
+document.querySelector("#timer_button").onclick = (e) => {
+  handleExtensionTab("summary/summary.html", window);
+};

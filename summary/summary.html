@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/icons.css" />
+    <link rel="stylesheet" href="summary.css" />
+    <link rel="stylesheet" href="timer.css" />
+
+    <script src="../js/functions.js" defer="true"></script>
+    <script src="../js/Storage.js" defer="true"></script>
+    <script src="../js/TabManager.js" defer="true"></script>
+    <script src="TimerManager.js" defer="true"></script>
+    <script src="summary.js" defer="true"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Summary Page</h1>
+
+      <div class="timer" data-type="day">
+        <div class="timer_header">
+          <h2 class="timer_header_h2">No date selected</h2>
+          <input class="timer_header_date_input" type="date" />
+        </div>
+        <div class="timer_content">
+          <div class="timer_body">
+            <!-- Added via JS -->
+          </div>
+          <div class="timer_body_more">
+            <!-- Added via JS -->
+          </div>
+        </div>
+        <button class="button_show_more icons arrow_down">
+          Show
+          <span class="button_show_more_span"
+            ><span class="button_show_more_span_more">more</span
+            ><span class="button_show_more_span_less">less</span></span
+          >
+        </button>
+      </div>
+
+      <footer class="full-width">
+        <div class="footer_div">
+          <div class="footer_div_logo">
+            <img src="../img/icon.png" alt="Time Tracker Icon" />
+            <p>Time Tracker</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- All templates -->
+    <div style="display: none" disabled="true" aria-disabled="true">
+      <template id="template_timer_item_date">
+        <div class="timer_item_data">
+          <p class="timer_item_data_name">Domain</p>
+          <div class="timer_item_data_progress">
+            <!-- Added via js -->
+          </div>
+          <p class="timer_item_data_time">00:00</p>
+          <p class="timer_item_data_percentage">0%</p>
+        </div>
+      </template>
+
+      <template id="template_timer_invalid">
+        <p class="timer_item_informate timer_item_invalid icons alert">Invalid</p>
+      </template>
+
+      <template id="template_timer_no_data">
+        <p class="timer_item_informate timer_item_no_data icons exclamation">Inform</p>
+      </template>
+    </div>
+  </body>
+</html>

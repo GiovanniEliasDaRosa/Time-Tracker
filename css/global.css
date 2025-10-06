@@ -11,13 +11,25 @@
   font-family: Inconsolata, sans-serif;
 }
 
-button:not(.no_button_style) {
-  justify-self: center;
-  padding: 0.5em 1em;
+:focus-visible {
+  outline: 0.125em dashed hsl(207, 93%, 21%);
+  outline-offset: 0.125em;
+  box-shadow: 0 0 0 0.375em hsl(210, 10%, 92%);
+}
+
+input,
+button {
   font-size: 1rem;
+}
+
+:is(button, input):not(.no_button_style) {
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+}
+
+button:not(.no_button_style) {
   border: solid 0.1em hsl(208, 56%, 52%);
   background-color: hsl(208, 53%, 86%);
-  border-radius: 0.5em;
   cursor: pointer;
 }
 
@@ -43,4 +55,19 @@ button:not(.no_button_style):is(:hover, :focus-visible) {
 button:not(.no_button_style):active {
   border-color: hsl(208, 54%, 42%);
   background-color: hsl(207, 40%, 55%);
+}
+
+input:not(.no_input_style) {
+  border: solid 0.1em hsl(208, 73%, 69%);
+  background-color: hsl(208, 54%, 93%);
+}
+
+input:not(.no_input_style):is(:hover, :focus-visible) {
+  border-color: hsl(208, 70%, 66%);
+  background-color: hsl(208, 47%, 88%);
+}
+
+input:not(.no_input_style):active {
+  border-color: hsl(208, 62%, 57%);
+  background-color: hsl(207, 48%, 78%);
 }

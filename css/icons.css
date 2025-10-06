@@ -26,3 +26,27 @@
 .icons.nomargin::before {
   margin-right: 0;
 }
+
+.icons.arrow_down::before {
+  content: "\f078";
+}
+
+.icons.arrow_up::before {
+  content: "\f077";
+}
+
+.icons.download_file::before {
+  content: "\f019";
+}
+
+.icons.exclamation::before {
+  content: "\21";
+}
+
+.icons.alert::before {
+  content: "\f071";
+}
+
+.icons.gear::before {
+  content: "\f013";
+}

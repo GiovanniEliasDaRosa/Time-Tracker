@@ -31,6 +31,30 @@ function getDateInfo(date) {
   };
 }
 
+async function handleExtensionTab(path, window_passed = null) {
+  let url = browser.runtime.getURL(path);
+
+  // Get all tabs
+  let tabs = await browser.tabs.query({});
+  // See if a summary tab is open
+  summary_tab = tabs.filter((tab) => tab.url == url);
+
+  // See if a summary tab is open
+  if (summary_tab[0]) {
+    // If it is, move to it
+    await browser.tabs.update(summary_tab[0].id, { active: true });
+    // Update the data
+    await browser.windows.update(summary_tab[0].windowId, { focused: true });
+  } else {
+    // If it isn't, create a new tab
+    browser.tabs.create({ url: url });
+  }
+
+  if (window_passed != null) {
+    window_passed.close();
+  }
+}
+
 function formatTime(time_in_seconds, options = {}) {
   let hours, minutes, seconds, time_string;
   hours = Math.floor(time_in_seconds / 3600);
@@ -69,3 +93,60 @@ String.prototype.pad = function (quantity = 2) {
 Number.prototype.pad = function (quantity = 2) {
   return String(this).padStart(quantity, "0");
 };
+
+Element.prototype.cloneElement = function (selector) {
+  return this.content.querySelector(selector).cloneNode(true);
+};
+
+Element.prototype.enable = function () {
+  this.style.display = "";
+  this.removeAttribute("disabled");
+  this.removeAttribute("aria-disabled");
+};
+
+Element.prototype.disable = function (hide = true) {
+  if (hide) {
+    this.style.display = "none";
+  }
+  this.setAttribute("disabled", "true");
+  this.setAttribute("aria-disabled", "true");
+};
+
+Date.prototype.normalize = function () {
+  return new Date(this.getFullYear(), this.getMonth(), this.getDate());
+};
+
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+const ms_per_day = 24 * 60 * 60 * 1000;
+function compareDates(first, second, check_days_passed = false) {
+  const first_date = new Date(first.isoDate).normalize().getTime();
+  const second_date = new Date(second.isoDate).normalize().getTime();
+  let difference = Math.round((first_date - second_date) / ms_per_day);
+
+  // If the caller just want the difference for any reason
+  if (!check_days_passed) {
+    return { difference: difference };
+  }
+
+  // So the caller wants the diffence of the dates
+  let result = {
+    difference: difference,
+    dayDifference: "",
+  };
+
+  if (difference < -7 || difference > 0) {
+    result.dayDifference = "";
+  } else if (difference == 0) {
+    result.dayDifference = "Today";
+  } else if (difference == -1) {
+    result.dayDifference = "Yesterday";
+  } else {
+    // Between -7 and -2
+    result.dayDifference = `Last ${first.weekday}`;
+  }
+
+  return result;
+}
