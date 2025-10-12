@@ -13,13 +13,11 @@ const timers = {
   // month: new TimerManager(document.querySelector(".timer[data-type='month']")),
 };
 
-function handleResponse(message) {
-  if (!message || !message.isOk) {
-    console.error("Message is not ok", message);
-    return;
-  }
-  tracking_time_local = message.trackingTime;
-  tracked_time_history_local = message.allData;
+async function main() {
+  let response = await MessageManager.send({ type: "calculate_time", with: "all_data" });
+
+  tracking_time_local = response.trackingTime;
+  tracked_time_history_local = response.allData;
 
   for (const key in timers) {
     let timer = timers[key];
@@ -28,10 +26,4 @@ function handleResponse(message) {
   }
 }
 
-function handleError(error) {
-  console.log(`Error: ${error}`);
-}
-
-browser.runtime
-  .sendMessage({ type: "calculate_time", with: "all_data" })
-  .then(handleResponse, handleError);
+main();

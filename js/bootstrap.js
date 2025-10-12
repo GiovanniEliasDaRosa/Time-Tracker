@@ -10,7 +10,7 @@ let tracked_time_history = {
 };
 
 let tracking_time = {
-  date: today.isoDate,
+  isoDate: today.isoDate,
   domains: [],
   totalTime: 0,
 };

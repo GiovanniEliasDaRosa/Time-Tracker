@@ -59,7 +59,7 @@ browser.windows.onRemoved.addListener((windowId) => {
   saveTrackedTime(false);
 });
 
-async function handleMessage(request, sender) {
+async function handleMessageReceived(request, sender) {
   updateTrackedTime();
 
   if (request.type == "calculate_time") {
@@ -86,7 +86,6 @@ async function handleMessage(request, sender) {
   }
 }
 
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  handleMessage(request, sender).then(sendResponse);
-  return true;
-});
+let messageManager = new MessageManager();
+messageManager.handleMessageReceived = handleMessageReceived;
+messageManager.listen();

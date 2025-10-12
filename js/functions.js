@@ -42,8 +42,15 @@ async function handleExtensionTab(path, window_passed = null) {
   // See if a summary tab is open
   if (summary_tab[0]) {
     // If it is, move to it
-    await browser.tabs.update(summary_tab[0].id, { active: true });
+    await browser.tabs.update(summary_tab[0].id, {
+      active: true,
+      highlighted: true,
+    });
+
     // Update the data
+    await browser.tabs.reload(summary_tab[0].id);
+
+    // Focuses the window to the one with the tab summary open
     await browser.windows.update(summary_tab[0].windowId, { focused: true });
   } else {
     // If it isn't, create a new tab

@@ -25,12 +25,17 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: 0.5em;
 }
 
 .timer_header_date {
   grid-area: time;
   display: grid;
   gap: 0.5em;
+}
+
+.timer_header_date_input {
+  margin-left: auto;
 }
 
 /* MARK: Item Data
