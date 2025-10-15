@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Summary | Time Tracker</title>
     <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/full-page.css" />
     <link rel="stylesheet" href="../css/icons.css" />
     <link rel="stylesheet" href="summary.css" />
     <link rel="stylesheet" href="timer.css" />
@@ -16,28 +17,37 @@
   </head>
   <body>
     <main>
-      <h1>Summary Page</h1>
+      <header>
+        <h1>Summary Page</h1>
+        <button
+          class="square icons gear nomargin"
+          id="configurations_button"
+          title="Go to configurations page"
+        ></button>
+      </header>
 
-      <div class="timer" data-type="day">
-        <div class="timer_header">
-          <h2 class="timer_header_h2">No date selected</h2>
-          <input class="timer_header_date_input" type="date" />
-        </div>
-        <div class="timer_content">
-          <div class="timer_body">
-            <!-- Added via JS -->
+      <div id="main_content">
+        <div class="timer" data-type="day">
+          <div class="timer_header">
+            <h2 class="timer_header_h2">No date selected</h2>
+            <input class="timer_header_date_input" type="date" />
           </div>
-          <div class="timer_body_more">
-            <!-- Added via JS -->
+          <div class="timer_content">
+            <div class="timer_body">
+              <!-- Added via JS -->
+            </div>
+            <div class="timer_body_more">
+              <!-- Added via JS -->
+            </div>
           </div>
+          <button class="button_show_more icons arrow_down">
+            Show
+            <span class="button_show_more_span"
+              ><span class="button_show_more_span_more">more</span
+              ><span class="button_show_more_span_less">less</span></span
+            >
+          </button>
         </div>
-        <button class="button_show_more icons arrow_down">
-          Show
-          <span class="button_show_more_span"
-            ><span class="button_show_more_span_more">more</span
-            ><span class="button_show_more_span_less">less</span></span
-          >
-        </button>
       </div>
 
       <footer class="full-width">

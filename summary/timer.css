@@ -142,8 +142,8 @@
   height: 1.25em;
   width: calc(var(--hours) * 100%);
   background-color: hsl(189, 74%, 31%);
-  border-left: 0.125em solid #0c5a68;
-  border-bottom: 0.125em solid #0c5a68;
+  border-left: 0.125em solid hsl(189, 79%, 23%);
+  border-bottom: 0.125em solid hsl(189, 79%, 23%);
 }
 
 /* MARK: Show more
@@ -229,12 +229,12 @@
   bottom: unset;
 
   height: 1em;
-  background-color: #ffffff;
+  background-color: hsl(0, 0%, 100%);
   opacity: 0;
 }
 
 .timer_body_more::before {
-  background-color: #ffffff;
+  background-color: hsl(0, 0%, 100%);
 }
 
 .timer_body_more::after {
@@ -304,11 +304,11 @@
   /* animation: 3s test_anim infinite; */
   mask-image: linear-gradient(
     90deg,
-    #000 calc(50% - var(--start)),
+    hsl(0, 0%, 0%) calc(50% - var(--start)),
     transparent calc(50% - var(--start)),
     transparent 50%,
     transparent calc(50% +var(--start)),
-    #000 calc(50% +var(--start))
+    hsl(0, 0%, 0%) calc(50% +var(--start))
   );
 }
 
