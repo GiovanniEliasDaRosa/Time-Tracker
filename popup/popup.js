@@ -41,3 +41,7 @@ get_timer();
 document.querySelector("#timer_button").onclick = (e) => {
   handleExtensionTab("summary/summary.html", window);
 };
+
+document.querySelector("#configurations_button").onclick = () => {
+  handleExtensionTab("options/options.html", window);
+};

@@ -27,3 +27,7 @@ async function main() {
 }
 
 main();
+
+document.querySelector("#configurations_button").onclick = () => {
+  handleExtensionTab("options/options.html", window);
+};

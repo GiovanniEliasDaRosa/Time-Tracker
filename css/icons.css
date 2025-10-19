@@ -12,7 +12,8 @@
   font-style: normal;
 }
 
-.icons::before {
+.icons::before,
+input[type="checkbox"]::before {
   display: inline-block;
   font-family: "FontAwesome900";
   font-weight: 900;
@@ -35,10 +36,6 @@
   content: "\f077";
 }
 
-.icons.download_file::before {
-  content: "\f019";
-}
-
 .icons.exclamation::before {
   content: "\21";
 }
@@ -49,4 +46,8 @@
 
 .icons.gear::before {
   content: "\f013";
+}
+
+.icons.chart_simple::before {
+  content: "\e473";
 }

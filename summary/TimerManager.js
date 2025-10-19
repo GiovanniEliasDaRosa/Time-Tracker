@@ -41,6 +41,7 @@ class TimerManager {
     this.bodyMore.innerHTML = "";
     this.h2.textContent = "";
 
+    this.bodyMore.disable();
     this.showMore.button.disable();
 
     // No date selected
@@ -67,8 +68,6 @@ class TimerManager {
   }
 
   update() {
-    this.updateShowMore(false);
-
     if (this.isToday) {
       this.data = tracking_time_local;
     } else {
@@ -102,6 +101,8 @@ class TimerManager {
       this.newInformation("no_data", `No data was found`);
       return;
     }
+
+    this.updateShowMore(false);
 
     // Sort from biggest to smallest time spent
     this.data.domains.sort(function (a, b) {
