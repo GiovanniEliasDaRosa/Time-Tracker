@@ -1,6 +1,5 @@
 class Storage {
-  constructor() {}
-  async get(key) {
+  static async get(key) {
     try {
       let result = await browser.storage.local.get(key);
       return result[key];
@@ -9,7 +8,7 @@ class Storage {
     }
   }
 
-  async set(key, value) {
+  static async set(key, value) {
     try {
       await browser.storage.local.set({ [key]: value });
       return value;
@@ -18,7 +17,7 @@ class Storage {
     }
   }
 
-  async delete(key) {
+  static async delete(key) {
     try {
       await browser.storage.local.remove(key);
       return true;
@@ -27,7 +26,7 @@ class Storage {
     }
   }
 
-  async getOrAdd(key, value) {
+  static async getOrAdd(key, value) {
     try {
       let storage_item = await this.get(key);
 
@@ -44,7 +43,7 @@ class Storage {
     }
   }
 
-  async deleteAll() {
+  static async deleteAll() {
     try {
       await this.delete(today.isoDate);
       await this.delete("tracked_time_history");

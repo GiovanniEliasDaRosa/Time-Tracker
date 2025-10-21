@@ -138,7 +138,7 @@ class TabManager {
   }
 
   async updateTodaysData() {
-    tracking_time = await storage.set(today.isoDate, tracking_time);
+    tracking_time = await Storage.set(today.isoDate, tracking_time);
   }
 
   error(error) {
