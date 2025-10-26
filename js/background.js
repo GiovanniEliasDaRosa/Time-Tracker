@@ -52,7 +52,7 @@ async function onFocusChanged(windowId) {
 }
 
 // On closing current window, save data
-browser.windows.onRemoved.addListener((windowId) => {
+browser.windows.onRemoved.addListener(() => {
   // Remove the timer, to prevent running multiple times function that saves the tracked time
   clearTimeout(timer_timeout);
   // Save the data
@@ -60,28 +60,52 @@ browser.windows.onRemoved.addListener((windowId) => {
 });
 
 async function handleMessageReceived(request, sender) {
+  // Update timer values
   updateTrackedTime();
 
-  if (request.type == "calculate_time") {
-    let response = {
-      isOk: true,
-      trackingTime: tracking_time,
+  let type = request.type;
+  let options = request.options || [];
+
+  if (type == "get") {
+    let result = {};
+
+    // Make a selectable list which when calling and setting the function will return the wanted value
+    const OPTIONS_SELECTABLE = {
+      current_tab: () => ({ currentTab: tabManager.current }),
+      tracking_time: () => ({ trackingTime: tracking_time }),
+      tracked_time_history: () => ({ trackedTimeHistory: tracked_time_history }),
     };
 
-    switch (request.with) {
-      case "current_tab":
-        response.currentTab = tabManager.current;
-      case "all_data":
-        response.allData = tracked_time_history;
-      default:
-        break;
+    // Run for each option passed
+    result = options.reduce((accumulator, option) => {
+      // If able to call the function to get the value call, otherwise just get an empty object
+      const option_result = OPTIONS_SELECTABLE[option]?.() ?? {};
+      // Make the object key and value (which was 0, and empty object) be set as the returned result
+      // The new is the key of the result, and the value will follow suit
+      return Object.assign(accumulator, option_result);
+    }, {});
+
+    // If no option was found
+    if (result.isEmpty()) {
+      return {
+        isOk: false,
+        error: "No data got for the specified options",
+        options: options,
+      };
     }
 
-    return response;
+    // Else data was got, return them
+    result.isOk = true;
+    return result;
+  } else if (type == "set") {
+    return {
+      isOk: false,
+      error: "Not defined yet!",
+    };
   } else {
     return {
       isOk: false,
-      error: `No type message type defined for ${request.type}`,
+      error: `No type message type defined for "${type}"`,
     };
   }
 }

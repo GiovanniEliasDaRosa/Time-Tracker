@@ -127,6 +127,16 @@ String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+Object.prototype.isEmpty = function () {
+  for (const key in this) {
+    if (Object.hasOwn(this, key)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const ms_per_day = 24 * 60 * 60 * 1000;
 function compareDates(first, second, check_days_passed = false) {
   const first_date = new Date(first.isoDate).normalize().getTime();

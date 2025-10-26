@@ -8,7 +8,11 @@ let timer_progress_bar_fill_element = timer_progress_element.querySelector(
 );
 
 async function get_timer() {
-  let response = await MessageManager.send({ type: "calculate_time", with: "current_tab" });
+  let response = await MessageManager.send({
+    type: "get",
+    options: ["tracking_time", "current_tab"],
+  });
+  console.log(response);
 
   let tracking_time_local = response.trackingTime;
   let current_tab = response.currentTab;

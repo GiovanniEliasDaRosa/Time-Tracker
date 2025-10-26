@@ -24,9 +24,11 @@ async function bootstrap() {
   console.clear();
   console.warn("------\nNEW RUN\n------");
 
+  // Check for "tracked_time_history" in storage, if has get that, else set to the defaults
   tracked_time_history = await Storage.getOrAdd("tracked_time_history", tracked_time_history);
 
   // Get today's date
+  // Check for "today's date" in storage, if has get that, else set to the defaults
   tracking_time = await Storage.getOrAdd(today.isoDate, tracking_time);
 
   // First access to the browser this day

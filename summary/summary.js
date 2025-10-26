@@ -14,7 +14,10 @@ const timers = {
 };
 
 async function main() {
-  let response = await MessageManager.send({ type: "calculate_time", with: "all_data" });
+  let response = await MessageManager.send({
+    type: "get",
+    options: ["tracking_time", "tracked_time_history"],
+  });
 
   tracking_time_local = response.trackingTime;
   tracked_time_history_local = response.allData;
