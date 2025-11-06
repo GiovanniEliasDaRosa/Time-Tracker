@@ -20,9 +20,11 @@ async function main() {
   });
 
   tracking_time_local = response.trackingTime;
-  tracked_time_history_local = response.allData;
+  tracked_time_history_local = response.trackedTimeHistory;
 
   for (const key in timers) {
+    if (!Object.hasOwn(timers, key)) continue;
+
     let timer = timers[key];
     timer.dateInput.value = today.isoDate;
     timer.validate();
