@@ -71,17 +71,15 @@ class TimerManager {
     if (this.isToday) {
       this.data = tracking_time_local;
     } else {
-      let search = tracked_time_history_local.trackedDates.filter(
-        (day) => day.isoDate == this.date.isoDate
-      );
+      let search = tracked_time_history_local.trackedDates[this.date.isoDate];
 
       // If didn't find data have
-      if (search.length == 0) {
+      if (search == null) {
         this.data = {
           domains: [],
         };
       } else {
-        this.data = search[0];
+        this.data = search;
       }
     }
 

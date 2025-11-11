@@ -3,7 +3,7 @@ const tabManager = new TabManager();
 let today = getDateInfo(new Date());
 
 let tracked_time_history = {
-  trackedDates: [],
+  trackedDates: {},
   lastTrack: today.isoDate,
   totalDays: 0,
 };
@@ -41,21 +41,17 @@ async function bootstrap() {
       let last_day_data = await Storage.get(last_day);
       last_day_data.trackingFinished = true;
 
-      let tracked_time_day_position = tracked_time_history.trackedDates.findIndex(
-        (date) => !date.trackingFinished
-      );
-
       // Put the data in the tracked day correct position
-      tracked_time_history.trackedDates[tracked_time_day_position] = last_day_data;
+      tracked_time_history.trackedDates[last_day] = last_day_data;
 
       await Storage.delete(last_day);
     }
 
     // Updathe the Tracked Time History, so that it knows a new day has begun
-    tracked_time_history.trackedDates.push({
+    tracked_time_history.trackedDates[today.isoDate] = {
       isoDate: today.isoDate,
       trackingFinished: false,
-    });
+    };
     tracked_time_history.lastTrack = today.isoDate;
     tracked_time_history.totalDays += 1;
     tracked_time_history = await Storage.set("tracked_time_history", tracked_time_history);
