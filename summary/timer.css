@@ -1,14 +1,8 @@
 /* MARK: General
 */
 .timer {
-  display: grid;
-  gap: 1em;
-  padding: 1em;
-  box-shadow: 0 0.25em 0.5em -0.125em hsla(0, 0%, 0%, 0.2);
-  border-radius: 0.5em;
   container-type: inline-size;
   container-name: timer;
-  height: max-content;
 }
 
 .timer_body,

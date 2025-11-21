@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="options.css" />
 
     <script src="../js/functions.js" defer="true"></script>
+    <script src="../js/Storage.js"></script>
+    <script src="../js/MessageManager.js"></script>
+    <script src="js/Notifications.js" defer="true"></script>
+
     <script src="options.js" defer="true"></script>
   </head>
   <body>
@@ -23,7 +27,51 @@
         ></button>
       </header>
 
-      <div id="main_content"></div>
+      <div id="main_content">
+        <section class="section_options notifications">
+          <div class="section_options_header">
+            <h2>Notifications</h2>
+            <p>Manage how to sent if send notifications</p>
+          </div>
+
+          <div class="notifications_enable">
+            <input
+              type="checkbox"
+              name="notifications_enable_checkbox"
+              id="notifications_enable_checkbox"
+            />
+            <label for="notifications_enable_checkbox">Enable notifications</label>
+          </div>
+
+          <div class="notifications_more_options">
+            <div class="notifications_config notifications_frequency disabled">
+              <label for="notifications_content_frequency">
+                <span class="notifications_config_span_title">Frequency (in minutes)</span>
+                How often to send the notification
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="1440"
+                value="60"
+                name="notifications_content_frequency"
+                id="notifications_content_frequency"
+              />
+            </div>
+            <div class="notifications_config notifications_content disabled">
+              <label for="notifications_content_checkbox" class="notifications_content_label">
+                <span class="notifications_config_span_title">Show top 3 spent time URLs</span>
+                Include the top three domains/URLs by time in the notification
+              </label>
+              <input
+                type="checkbox"
+                name="notifications_content_checkbox"
+                id="notifications_content_checkbox"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
 
       <footer class="full-width">
         <div class="footer_div">

@@ -5,6 +5,15 @@ async function saveTrackedTime(new_timeout = true) {
 
   await tabManager.updateTodaysData();
 
+  // If notifications are enabled
+  if (configurations.notifications.enabled) {
+    notification_timer.minutesPassed++;
+    if (notification_timer.minutesPassed >= configurations.notifications.timeBetween) {
+      notification_timer.minutesPassed = 0;
+      showNotification();
+    }
+  }
+
   if (new_timeout) {
     timer_timeout = setTimeout(saveTrackedTime, 60000);
   }
@@ -65,6 +74,7 @@ async function handleMessageReceived(request, sender) {
 
   let type = request.type;
   let options = request.options || [];
+  let data = request.data || [];
 
   if (type == "get") {
     let result = {};
@@ -98,9 +108,22 @@ async function handleMessageReceived(request, sender) {
     result.isOk = true;
     return result;
   } else if (type == "set") {
+    let option = options[0];
+    console.log(options, data);
+    if (option == "configurations_notification") {
+      configurations.notifications = {
+        enabled: data.notifications.enabled,
+        timeBetween: data.notifications.timeBetween,
+        showTopThree: data.notifications.showTopThree,
+      };
+
+      return { isOk: true };
+    }
+
     return {
       isOk: false,
-      error: "Not defined yet!",
+      error: "No option defined for that yet",
+      options: options,
     };
   } else {
     return {

@@ -3,7 +3,7 @@
   "name": "Time Tracker",
   "version": "1",
   "description": "Tracks time spent on sites",
-  "permissions": ["tabs", "storage"],
+  "permissions": ["tabs", "storage", "notifications"],
   "icons": {
     "48": "img/icon-48.png",
     "64": "img/icon.png"

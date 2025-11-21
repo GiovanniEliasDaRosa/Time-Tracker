@@ -14,6 +14,18 @@ let tracking_time = {
   totalTime: 0,
 };
 
+let configurations = {
+  notifications: {
+    enabled: false,
+    timeBetween: 30,
+    showTopThree: true,
+  },
+};
+
+let notification_timer = {
+  minutesPassed: 0,
+};
+
 let timer_timeout = null;
 
 // start everything
@@ -26,6 +38,9 @@ async function bootstrap() {
 
   // Check for "tracked_time_history" in storage, if has get that, else set to the defaults
   tracked_time_history = await Storage.getOrAdd("tracked_time_history", tracked_time_history);
+
+  // Check for "configurations" in storage, if has get that, else set to the defaults
+  configurations = await Storage.getOrAdd("configurations", configurations);
 
   // Get today's date
   // Check for "today's date" in storage, if has get that, else set to the defaults

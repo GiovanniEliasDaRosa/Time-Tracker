@@ -167,3 +167,35 @@ function compareDates(first, second, check_days_passed = false) {
 
   return result;
 }
+
+function showNotification() {
+  let message = "";
+
+  let tracking_domains = Array.from(tracking_time.domains);
+
+  tracking_domains.sort((a, b) => {
+    return a.time < b.time;
+  });
+
+  console.log(configurations.notifications.showTopThree);
+  if (configurations.notifications.showTopThree) {
+    for (let i = 0; i < 3; i++) {
+      const domain = tracking_domains[i];
+      if (domain == null) continue;
+      message += `${formatTime(domain.time).timeString} ${domain.url}\n`;
+    }
+  }
+
+  browser.notifications.create({
+    type: "basic",
+    iconUrl: browser.runtime.getURL("img/icon.png"),
+    title: `Time Tracker ${formatTime(tracking_time.totalTime).timeString}`,
+    message: message,
+  });
+}
+
+// Handle notification clicks
+browser.notifications.onClicked.addListener((notificationId) => {
+  console.log(`User clicked on notification ${notificationId}.`);
+  handleExtensionTab("summary/summary.html");
+});

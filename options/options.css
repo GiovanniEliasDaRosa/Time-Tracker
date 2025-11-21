@@ -1,0 +1,77 @@
+main {
+  --content-max-width: 120ch;
+  --breakout-max-width: 130ch;
+}
+
+.section_options {
+  display: grid;
+  gap: 1em;
+  position: relative;
+}
+
+.section_options_header,
+.notifications_more_options {
+  display: grid;
+  gap: 0.5em;
+}
+
+.section_options_header {
+  padding-bottom: 1em;
+  border-bottom: 0.125em solid #a7cde4;
+}
+
+.notifications_more_options {
+  margin-left: 0.75em;
+  padding-left: calc(0.75em + 0.5em);
+  position: relative;
+  padding-bottom: 0.5em;
+  display: grid;
+  gap: 1em;
+}
+
+.notifications_more_options::before {
+  content: "";
+  position: absolute;
+  left: -0.0625em;
+  top: -0.75em;
+  bottom: 0em;
+
+  width: 0.75em;
+
+  border-left: 0.125em solid hsl(0, 0%, 71%);
+  border-bottom: 0.125em solid hsl(0, 0%, 71%);
+  clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
+
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.notifications_enable {
+  display: flex;
+  align-items: center;
+}
+
+.notifications_enable,
+.notifications_config {
+  gap: 0.5em;
+}
+
+.notifications_config {
+  display: grid;
+  padding: 0.5em;
+  border: solid 0.1em #d6e9f5;
+  border-radius: 0.5em;
+}
+
+.notifications_config > label {
+  display: grid;
+  gap: 0.25em;
+}
+
+.notifications_config_span_title {
+  font-weight: 700;
+  display: block;
+}
+
+#notifications_content_frequency {
+  width: calc(1.125em + 4ch);
+}

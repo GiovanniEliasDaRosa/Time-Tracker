@@ -64,6 +64,14 @@ header > button {
   gap: 1em;
 }
 
+#main_content > *:not(.no_default_main) {
+  padding: 1em;
+  box-shadow: 0 0.25em 0.5em -0.125em hsla(0, 0%, 0%, 0.2);
+  border-radius: 0.5em;
+  display: grid;
+  gap: 1em;
+}
+
 /* footer */
 footer {
   background-color: hsl(207, 100%, 84%);
