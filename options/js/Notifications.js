@@ -53,7 +53,7 @@ class Notifications {
 
   handleInputUpdate(e) {
     let char_code = e.code;
-    let any_key = char_code.match("(Key|Digit|F)");
+    let any_key = char_code.match("Key|Digit|F|Arrow");
 
     if (char_code == "Backspace" || char_code == "Tab") {
       this.handleInputValidate();
@@ -70,7 +70,7 @@ class Notifications {
       input_value = 1440;
       e.preventDefault();
     }
-    this.optionsElements.timeBetweenInput.value = input_value;
+    this.optionsElements.timeBetweenInput.value = Number(input_value);
 
     this.handleInputValidate();
 
