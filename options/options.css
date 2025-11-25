@@ -33,7 +33,7 @@ main {
   content: "";
   position: absolute;
   left: -0.0625em;
-  top: -0.75em;
+  top: -0.5em;
   bottom: 0em;
 
   width: 0.75em;
@@ -74,4 +74,30 @@ main {
 
 #notifications_content_frequency {
   width: calc(1.125em + 4ch);
+}
+
+.expandable {
+  overflow: hidden;
+}
+
+.show_in {
+  animation: 0.5s show_in ease-out forwards;
+}
+
+.show_out {
+  animation: 0.5s show_in ease-out reverse forwards;
+}
+
+@keyframes show_in {
+  0% {
+    translate: 0 1em;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    translate: 0 0;
+    opacity: 1;
+  }
 }

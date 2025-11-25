@@ -81,6 +81,17 @@ button:not(.no_button_style):active {
   background-color: hsl(207, 40%, 55%);
 }
 
+input:is([type="checkbox"], [type="radio"]) {
+  appearance: none;
+  border: solid 0.1em hsl(208, 78%, 60%);
+  background-color: hsl(207, 33%, 95%);
+  border-radius: 0.5em;
+  height: 1.5em;
+  width: 1.5em;
+
+  position: relative;
+}
+
 input:not([type="checkbox"], [type="radio"], .no_input_style) {
   border: solid 0.1em hsl(208, 73%, 69%);
   background-color: hsl(208, 54%, 93%);
@@ -96,19 +107,26 @@ input:not([type="checkbox"], [type="radio"], .no_input_style):active {
   background-color: hsl(207, 48%, 78%);
 }
 
-.input_error {
-  border-color: hsl(0, 76%, 56%) !important;
+input[type="checkbox"][data-type="toggle"] {
+  width: 2.8em;
+  height: 1.5em;
+  border-radius: 1em;
 }
 
-input:is([type="checkbox"], [type="radio"]) {
-  appearance: none;
-  border: solid 0.1em hsl(208, 78%, 60%);
-  background-color: hsl(207, 33%, 95%);
-  border-radius: 0.5em;
-  height: 1.5em;
-  width: 1.5em;
+input[type="checkbox"][data-type="toggle"]::before {
+  content: "";
+  width: 1.3em;
+  height: 1.3em;
+  position: absolute;
+  border-radius: 1em;
+  opacity: 1;
+  background-color: hsl(160, 10%, 36%);
+  transition: 0.25s ease-out;
+}
 
-  position: relative;
+input[type="checkbox"][data-type="toggle"]:checked::before {
+  background-color: hsl(162, 87%, 40%);
+  translate: 1.3em;
 }
 
 input[type="radio"] {
@@ -153,13 +171,13 @@ input[type="radio"]::before {
   border-radius: inherit;
 }
 
-input[type="checkbox"]:checked {
+input[type="checkbox"]:not([data-type="toggle"]):checked {
   border-color: hsl(162, 87%, 40%);
   background-color: hsl(162, 77%, 64%);
   transition: 0.25s ease-out;
 }
 
-input[type="checkbox"]:checked::before {
+input[type="checkbox"]:not([data-type="toggle"]):checked::before {
   opacity: 1;
   animation: 0.5s check_in cubic-bezier(0.5, 0.2, 0.3, 0.8);
 }
@@ -181,4 +199,8 @@ input[type="radio"]:checked::before {
   pointer-events: none;
   opacity: 0.5;
   background-color: hsl(0, 0%, 70%);
+}
+
+.input_error {
+  border-color: hsl(0, 76%, 56%) !important;
 }
