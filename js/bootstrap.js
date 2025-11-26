@@ -50,16 +50,35 @@ async function bootstrap() {
   if (tracking_time.domains.length == 0) {
     // Push a new domain on the today's data
     tabManager.handeDomainChange();
-    let last_day = tracked_time_history.lastTrack;
+
+    let last_day = getDateInfo(tracked_time_history.lastTrack);
+
     // Last tracked day isn't today
-    if (last_day != today.isoDate) {
-      let last_day_data = await Storage.get(last_day);
+    if (last_day.isoDate != today.isoDate) {
+      let last_day_data = await Storage.get(last_day.isoDate);
       last_day_data.trackingFinished = true;
 
-      // Put the data in the tracked day correct position
-      tracked_time_history.trackedDates[last_day] = last_day_data;
+      // Get the days betwwen the last tracked and today
+      const ms_per_day = 24 * 60 * 60 * 1000;
+      const first_date = new Date(today.isoDate).normalize().getTime();
+      const second_date = new Date(last_day.isoDate).normalize().getTime();
+      let difference = Math.round((first_date - second_date) / ms_per_day);
 
-      await Storage.delete(last_day);
+      // Add the days betwwen the last tracked and today with zero data
+      for (let day = 0; day < difference; day++) {
+        let day_testing = getDateInfo(new Date(first_date - ms_per_day * day));
+        tracked_time_history.trackedDates[day_testing.isoDate] = {
+          isoDate: day_testing.isoDate,
+          domains: [],
+          totalTime: 0,
+          trackingFinished: true,
+        };
+      }
+
+      // Put the data in the tracked day correct position
+      tracked_time_history.trackedDates[last_day.isoDate] = last_day_data;
+
+      await Storage.delete(last_day.isoDate);
     }
 
     // Updathe the Tracked Time History, so that it knows a new day has begun
