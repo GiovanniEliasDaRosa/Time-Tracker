@@ -12,3 +12,8 @@ main();
 document.querySelector("#summary_button").onclick = () => {
   handleExtensionTab("summary/summary.html", window);
 };
+
+// Tutorial handler
+document.querySelector("#tutorial_start").onclick = () => {
+  handleExtensionTab("summary/summary.html#show_tutorial=true", window);
+};

@@ -13,6 +13,7 @@
     <script src="../js/functions.js" defer="true"></script>
     <script src="../js/MessageManager.js" defer="true"></script>
     <script src="TimerManager.js" defer="true"></script>
+    <script src="Tutorial.js" defer="true"></script>
     <script src="summary.js" defer="true"></script>
   </head>
   <body>
@@ -59,6 +60,35 @@
         </div>
       </footer>
     </main>
+
+    <div id="tutorial" style="display: none" disabled="true" aria-disabled="true">
+      <div class="tutorial_no_poiters"></div>
+      <div class="tutorial_highlighter"></div>
+
+      <div class="tutorial_popup">
+        <div class="tutorial_popup_text">
+          <div class="tutorial_popup_text_header">
+            <span class="tutorial_popup_text_title"></span>
+            <span class="tutorial_popup_text_current_step">1/5</span>
+          </div>
+
+          <div class="tutorial_popup_text_description">
+            <span class="tutorial_popup_text_description_tip"></span>
+          </div>
+        </div>
+
+        <div class="tutorial_popup_buttons">
+          <button class="square icons arrow_left nomargin button_previous"></button>
+
+          <div class="tutorial_popup_buttons_skip_options">
+            <button class="icons xmark button_cancel">Cancel</button>
+            <button class="icons icons_after skip button_skip">Skip tutorial</button>
+          </div>
+
+          <button class="square icons arrow_right nomargin button_next"></button>
+        </div>
+      </div>
+    </div>
 
     <!-- All templates -->
     <div style="display: none" disabled="true" aria-disabled="true">

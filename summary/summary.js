@@ -36,3 +36,18 @@ main();
 document.querySelector("#configurations_button").onclick = () => {
   handleExtensionTab("options/options.html", window);
 };
+
+let hash = window.location.hash.slice(1);
+let test = hash.match("(.*)=(.*)");
+
+let tutorial = {
+  active: false,
+  class: null,
+};
+
+if (test != null) {
+  if (test[2] == "true" && test[1] == "show_tutorial") {
+    tutorial.active = true;
+    tutorial.class = new Tutorial();
+  }
+}

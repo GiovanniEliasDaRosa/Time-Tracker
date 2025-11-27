@@ -136,3 +136,13 @@ async function handleMessageReceived(request, sender) {
 let messageManager = new MessageManager();
 messageManager.handleMessageReceived = handleMessageReceived;
 messageManager.listen();
+
+// On first install or updated the extension run this
+function handleInstalled(details) {
+  // Fist install on this browser
+  if (details.reason == "install") {
+    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+  }
+}
+
+browser.runtime.onInstalled.addListener(handleInstalled);

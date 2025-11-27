@@ -58,12 +58,12 @@ button:not(.no_button_style) {
 }
 
 [class*="square"] {
-  padding: 0;
+  padding: 0.5em !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 2em;
-  height: 2em;
+  width: calc(1em + 1.2em + 0.2em);
+  height: calc(1em + 1.2em + 0.2em);
 }
 
 .square_big {

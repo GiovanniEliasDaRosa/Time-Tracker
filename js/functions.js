@@ -168,6 +168,10 @@ function compareDates(first, second, check_days_passed = false) {
   return result;
 }
 
+async function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function showNotification() {
   let message = "";
 

@@ -1,0 +1,156 @@
+#tutorial {
+  position: relative;
+  z-index: 200;
+}
+
+.tutorial_no_poiters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#tutorial[data-selectable="true"] .tutorial_no_poiters {
+  pointer-events: unset;
+}
+
+.tutorial_highlighter {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: solid 0.25em hsla(0, 0%, 0%, 0.125);
+  box-shadow: 0 0 0 150vmax hsla(0, 0%, 0%, 0.5);
+
+  box-sizing: content-box;
+  translate: -0.25em -0.25em;
+}
+
+.tutorial_popup {
+  position: fixed;
+  bottom: 1em;
+  width: min(100ch, calc(100vw - 2em));
+  left: 1em;
+  right: 1em;
+  padding: 1em;
+  margin-inline: auto;
+  display: grid;
+  gap: 1em;
+
+  background-color: #c6e3f2;
+  border: solid 0.125em #0072b8;
+  border-radius: 0.5em;
+
+  box-shadow: 0 0.25em 0.5em -0.25em hsla(0, 0%, 0%, 0.5);
+}
+
+.tutorial_popup[data-finished="true"] {
+  background-color: #e0f0eb;
+  border-color: #21d8a1;
+}
+
+.popup_animate_in {
+  animation: 2s popup_animate_in cubic-bezier(0.8, 0.5, 0.5, 1.25) forwards;
+}
+
+.popup_animate_out {
+  animation: 2s popup_animate_out cubic-bezier(0.75, -0.5, 0, 1) forwards;
+}
+
+@keyframes popup_animate_in {
+  0% {
+    translate: 0 calc(200% + 2em);
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes popup_animate_out {
+  0% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 calc(200% + 2em);
+  }
+}
+
+.tutorial_popup_text {
+  text-align: justify;
+  display: grid;
+  gap: 0.75em;
+  font-weight: 600;
+}
+
+.tutorial_popup_text_header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1em;
+}
+
+.tutorial_popup_text_title {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.tutorial_popup_text_description {
+  display: grid;
+  gap: 0.5em;
+}
+
+.tutorial_popup_text_description_tip {
+  padding: 0.5em;
+  padding-right: calc(0.5em + 0.25em);
+  border-left: solid 0.25em #8fbbd1;
+  background-color: #b5d8e9;
+}
+
+.tutorial_popup_buttons,
+.tutorial_popup_buttons_skip_options {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.375em;
+}
+
+@media (max-width: 35em) {
+  .tutorial_popup_buttons,
+  .tutorial_popup_buttons_skip_options {
+    flex-direction: column;
+  }
+  .arrow_left,
+  .arrow_right {
+    width: 100%;
+  }
+}
+
+.button_skip {
+  position: relative;
+  overflow: hidden;
+}
+
+.button_skip::before {
+  content: "";
+  inset: 0;
+  left: unset;
+  position: absolute;
+  background-color: hsla(0, 0%, 0%, 1);
+  width: 100%;
+  margin: 0;
+  mix-blend-mode: overlay;
+  opacity: 0;
+}
+
+.button_skip.wait_skip::before {
+  opacity: 1 !important;
+  animation: wait_skip 1s cubic-bezier(0.3, 0, 0.5, 1) forwards;
+}
+
+@keyframes wait_skip {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}

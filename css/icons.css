@@ -13,7 +13,8 @@
 }
 
 .icons::before,
-input[type="checkbox"]::before {
+input[type="checkbox"]::before,
+.icons.icons_after::after {
   display: inline-block;
   font-family: "FontAwesome900";
   font-weight: 900;
@@ -22,6 +23,12 @@ input[type="checkbox"]::before {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   margin-right: 0.5rem;
+  font-size: 1em;
+}
+
+.icons.icons_after::after {
+  margin-left: 0.5rem;
+  margin-right: 0;
 }
 
 .icons.nomargin::before {
@@ -34,6 +41,14 @@ input[type="checkbox"]::before {
 
 .icons.arrow_up::before {
   content: "\f077";
+}
+
+.icons.arrow_left::before {
+  content: "\f053";
+}
+
+.icons.arrow_right::before {
+  content: "\f054";
 }
 
 .icons.exclamation::before {
@@ -50,4 +65,16 @@ input[type="checkbox"]::before {
 
 .icons.chart_simple::before {
   content: "\e473";
+}
+
+.icons.skip::after {
+  content: "\f04e";
+}
+
+.icons.xmark::before {
+  content: "\f00d";
+}
+
+.icons.play::before {
+  content: "\f04b";
 }
