@@ -197,8 +197,13 @@ input[type="radio"]:checked::before {
 
 [disabled="true"] {
   pointer-events: none;
+  color: initial;
+  background-color: initial;
+}
+
+[disabled="true"]:not([data-disabled-effect="true"]) {
   opacity: 0.5;
-  background-color: hsl(0, 0%, 70%);
+  filter: grayscale(75%);
 }
 
 .input_error {

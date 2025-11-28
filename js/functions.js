@@ -109,14 +109,19 @@ Element.prototype.enable = function () {
   this.style.display = "";
   this.removeAttribute("disabled");
   this.removeAttribute("aria-disabled");
+  this.removeAttribute("data-disabled-effect");
 };
 
-Element.prototype.disable = function (hide = true) {
+Element.prototype.disable = function (hide = true, disable_effect = true) {
   if (hide) {
     this.style.display = "none";
   }
   this.setAttribute("disabled", "true");
   this.setAttribute("aria-disabled", "true");
+
+  if (!disable_effect) {
+    this.setAttribute("data-disabled-effect", "true");
+  }
 };
 
 Date.prototype.normalize = function () {
