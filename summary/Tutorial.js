@@ -108,14 +108,14 @@ You can restart the tutorial anytime by going to:
     this.popup.element.classList.add("popup_animate_in");
 
     // Disable clicking or focusing on elements on the main while in the tutorial
-    this.main.disable(false, false);
+    this.main.disable({ hide: false, lookDisabled: false });
     let interactables = Array.from(this.main.querySelectorAll("button, input, a"));
 
     interactables.forEach((interactable) => {
       if (interactable.hasAttribute("disabled")) {
         interactable.setAttribute("data-disabled", "true");
       } else {
-        interactable.disable(false, false);
+        interactable.disable({ hide: false, lookDisabled: false });
       }
     });
 
@@ -148,6 +148,11 @@ You can restart the tutorial anytime by going to:
   }
 
   updateText(title, text) {
+    // If has a last target, remove the previously set z-index
+    if (this.lastHighlight) {
+      this.lastHighlight.style.zIndex = "";
+    }
+
     this.popup.title.innerText = title;
 
     let text_by_line = text.split("\n");
@@ -173,10 +178,10 @@ You can restart the tutorial anytime by going to:
   skipTutorial() {
     // Check if it's the second time pressing the button, like a confirmation that you really want to skip it
     if (this.skipConfirm) {
-      this.popupButtons.previous.disable(false);
-      this.popupButtons.cancel.disable(false);
-      this.popupButtons.next.disable(false);
-      this.popupButtons.skip.disable(false);
+      this.popupButtons.previous.disable({ hide: false });
+      this.popupButtons.cancel.disable({ hide: false });
+      this.popupButtons.next.disable({ hide: false });
+      this.popupButtons.skip.disable({ hide: false });
       this.skipConfirm = false;
       this.tutorialComplete(false);
 
@@ -193,16 +198,16 @@ You can restart the tutorial anytime by going to:
 
     this.highlightTarget(document.querySelector("#configurations_button"));
 
-    this.popupButtons.previous.disable(false);
+    this.popupButtons.previous.disable({ hide: false });
     this.popupButtons.cancel.enable();
-    this.popupButtons.next.disable(false);
+    this.popupButtons.next.disable({ hide: false });
 
     // Visually the button has a 1 second cooldown
     clearTimeout(this.skipTimeout);
     this.popupButtons.skip.classList.remove("wait_skip");
 
     this.popupButtons.skip.classList.add("wait_skip");
-    this.popupButtons.skip.disable(false);
+    this.popupButtons.skip.disable({ hide: false });
 
     this.skipConfirm = true;
 
@@ -216,11 +221,6 @@ You can restart the tutorial anytime by going to:
   }
 
   highlightTarget(target) {
-    // If has a last target, remove the previously set z-index
-    if (this.lastHighlight) {
-      this.lastHighlight.style.zIndex = "";
-    }
-
     target.scrollIntoView({ behavior: "smooth", block: "center" });
 
     let target_bounds = target.getBoundingClientRect();
@@ -267,9 +267,9 @@ You can restart the tutorial anytime by going to:
 
     this.popup.element.classList.remove("popup_animate_in");
 
-    this.popupButtons.previous.disable(false);
-    this.popupButtons.next.disable(false);
-    this.popupButtons.skip.disable(false);
+    this.popupButtons.previous.disable({ hide: false });
+    this.popupButtons.next.disable({ hide: false });
+    this.popupButtons.skip.disable({ hide: false });
 
     this.highlighter.style.opacity = "1";
     this.highlighter.style.transition = "opacity 1.5s linear";

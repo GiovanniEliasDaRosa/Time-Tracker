@@ -1,3 +1,4 @@
+// MARK: Dates
 function getDateInfo(date) {
   // If passed a string as a date get the DATE prototype
   if (typeof date == "string") {
@@ -31,37 +32,6 @@ function getDateInfo(date) {
   };
 }
 
-async function handleExtensionTab(path, window_passed = null) {
-  let url = browser.runtime.getURL(path);
-
-  // Get all tabs
-  let tabs = await browser.tabs.query({});
-  // See if a summary tab is open
-  summary_tab = tabs.filter((tab) => tab.url == url);
-
-  // See if a summary tab is open
-  if (summary_tab[0]) {
-    // If it is, move to it
-    await browser.tabs.update(summary_tab[0].id, {
-      active: true,
-      highlighted: true,
-    });
-
-    // Update the data
-    await browser.tabs.reload(summary_tab[0].id);
-
-    // Focuses the window to the one with the tab summary open
-    await browser.windows.update(summary_tab[0].windowId, { focused: true });
-  } else {
-    // If it isn't, create a new tab
-    browser.tabs.create({ url: url });
-  }
-
-  if (window_passed != null) {
-    window_passed.close();
-  }
-}
-
 function formatTime(time_in_seconds, options = {}) {
   let hours, minutes, seconds, time_string;
   hours = Math.floor(time_in_seconds / 3600);
@@ -88,59 +58,6 @@ function formatTime(time_in_seconds, options = {}) {
     timeString: time_string,
   };
 }
-
-Date.prototype.format = function (options, locale = "en-US") {
-  return this.toLocaleDateString(locale, options);
-};
-
-String.prototype.pad = function (quantity = 2) {
-  return this.padStart(quantity, "0");
-};
-
-Number.prototype.pad = function (quantity = 2) {
-  return String(this).padStart(quantity, "0");
-};
-
-Element.prototype.cloneElement = function (selector) {
-  return this.content.querySelector(selector).cloneNode(true);
-};
-
-Element.prototype.enable = function () {
-  this.style.display = "";
-  this.removeAttribute("disabled");
-  this.removeAttribute("aria-disabled");
-  this.removeAttribute("data-disabled-effect");
-};
-
-Element.prototype.disable = function (hide = true, disable_effect = true) {
-  if (hide) {
-    this.style.display = "none";
-  }
-  this.setAttribute("disabled", "true");
-  this.setAttribute("aria-disabled", "true");
-
-  if (!disable_effect) {
-    this.setAttribute("data-disabled-effect", "true");
-  }
-};
-
-Date.prototype.normalize = function () {
-  return new Date(this.getFullYear(), this.getMonth(), this.getDate());
-};
-
-String.prototype.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-Object.prototype.isEmpty = function () {
-  for (const key in this) {
-    if (Object.hasOwn(this, key)) {
-      return false;
-    }
-  }
-
-  return true;
-};
 
 const ms_per_day = 24 * 60 * 60 * 1000;
 function compareDates(first, second, check_days_passed = false) {
@@ -173,10 +90,43 @@ function compareDates(first, second, check_days_passed = false) {
   return result;
 }
 
-async function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+Date.prototype.format = function (options, locale = "en-US") {
+  return this.toLocaleDateString(locale, options);
+};
+
+// MARK: Helper functions
+async function handleExtensionTab(path, window_passed = null) {
+  let url = browser.runtime.getURL(path);
+
+  // Get all tabs
+  let tabs = await browser.tabs.query({});
+  // See if a summary tab is open
+  summary_tab = tabs.filter((tab) => tab.url == url);
+
+  // See if a summary tab is open
+  if (summary_tab[0]) {
+    // If it is, move to it
+    await browser.tabs.update(summary_tab[0].id, {
+      active: true,
+      highlighted: true,
+    });
+
+    // Update the data
+    await browser.tabs.reload(summary_tab[0].id);
+
+    // Focuses the window to the one with the tab summary open
+    await browser.windows.update(summary_tab[0].windowId, { focused: true });
+  } else {
+    // If it isn't, create a new tab
+    browser.tabs.create({ url: url });
+  }
+
+  if (window_passed != null) {
+    window_passed.close();
+  }
 }
 
+// MARK: Notifications
 function showNotification() {
   let message = "";
 
@@ -203,8 +153,70 @@ function showNotification() {
   });
 }
 
-// Handle notification clicks
+// On notification clicked
 browser.notifications.onClicked.addListener((notificationId) => {
-  console.log(`User clicked on notification ${notificationId}.`);
   handleExtensionTab("summary/summary.html");
 });
+
+async function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// MARK: Prototypes
+String.prototype.pad = function (quantity = 2) {
+  return this.padStart(quantity, "0");
+};
+
+Number.prototype.pad = function (quantity = 2) {
+  return String(this).padStart(quantity, "0");
+};
+
+Element.prototype.cloneElement = function (selector) {
+  return this.content.querySelector(selector).cloneNode(true);
+};
+
+Element.prototype.enable = function () {
+  this.style.display = "";
+  this.removeAttribute("disabled");
+  this.removeAttribute("aria-disabled");
+  this.removeAttribute("data-disabled-effect");
+};
+
+Element.prototype.disable = function (options_passed = {}) {
+  let options = {
+    hide: options_passed.hide ?? true,
+    lookDisabled: options_passed.lookDisabled ?? true,
+  };
+
+  console.log(this, options);
+  // If want to hide the element
+  if (options.hide) {
+    this.style.display = "none";
+  }
+
+  this.setAttribute("disabled", "true");
+  this.setAttribute("aria-disabled", "true");
+
+  // If don't want to show that it's disabled
+  if (!options.lookDisabled) {
+    this.setAttribute("data-disabled-effect", "true");
+  }
+};
+
+Date.prototype.normalize = function () {
+  return new Date(this.getFullYear(), this.getMonth(), this.getDate());
+};
+
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+Object.prototype.isEmpty = function () {
+  for (const key in this) {
+    if (Object.hasOwn(this, key)) {
+      return false;
+    }
+  }
+
+  return true;
+};

@@ -190,8 +190,8 @@ class TimerManager {
     this.bodyMore.classList.remove("animate_in");
     this.bodyMore.classList.remove("animate_out");
 
-    this.showMore.span_more.disable(false);
-    this.showMore.span_less.disable(false);
+    this.showMore.span_more.disable({ hide: false });
+    this.showMore.span_less.disable({ hide: false });
 
     clearTimeout(this.showMore.timeout);
 
