@@ -136,7 +136,6 @@ function showNotification() {
     return a.time < b.time;
   });
 
-  console.log(configurations.notifications.showTopThree);
   if (configurations.notifications.showTopThree) {
     for (let i = 0; i < 3; i++) {
       const domain = tracking_domains[i];
@@ -188,7 +187,6 @@ Element.prototype.disable = function (options_passed = {}) {
     lookDisabled: options_passed.lookDisabled ?? true,
   };
 
-  console.log(this, options);
   // If want to hide the element
   if (options.hide) {
     this.style.display = "none";

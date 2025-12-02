@@ -26,6 +26,11 @@ let notification_timer = {
   minutesPassed: 0,
 };
 
+// let timer = {
+//   active: true,
+//   minutesSinceLast active
+// };
+
 let timer_timeout = null;
 
 // start everything
@@ -103,8 +108,13 @@ async function bootstrap() {
     tabManager.sessionDomains = goto_sessions_domains;
   }
 
+  // Calculate seconds until the next minute
+  let nextMinute = new Date().getSeconds();
+
   // Start tracking time
-  timer_timeout = setTimeout(saveTrackedTime, 60000);
+  timer_timeout = setTimeout(() => {
+    saveTrackedTime({ firstRun: true });
+  }, (60 - nextMinute) * 1000);
 }
 
 bootstrap();

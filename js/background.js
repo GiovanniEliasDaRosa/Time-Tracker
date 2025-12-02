@@ -1,21 +1,32 @@
-async function saveTrackedTime(new_timeout = true) {
+async function saveTrackedTime(options_passed = {}) {
   console.log("saveTrackedTime()");
+
+  let options = {
+    newTimeout: options_passed.newTimeout ?? true,
+    firstRun: options_passed.firstRun ?? false,
+  };
 
   updateTrackedTime();
 
   await tabManager.updateTodaysData();
 
-  // If notifications are enabled
-  if (configurations.notifications.enabled) {
-    notification_timer.minutesPassed++;
-    if (notification_timer.minutesPassed >= configurations.notifications.timeBetween) {
-      notification_timer.minutesPassed = 0;
-      showNotification();
+  // If it is not first save since start of extension
+  if (!options.firstRun) {
+    // If notifications are enabled
+    if (configurations.notifications.enabled) {
+      notification_timer.minutesPassed++;
+      if (notification_timer.minutesPassed >= configurations.notifications.timeBetween) {
+        notification_timer.minutesPassed = 0;
+        showNotification();
+      }
     }
   }
 
-  if (new_timeout) {
-    timer_timeout = setTimeout(saveTrackedTime, 60000);
+  if (options.newTimeout) {
+    // Calculate seconds until the next minute
+    let nextMinute = new Date().getSeconds();
+
+    timer_timeout = setTimeout(saveTrackedTime, (60 - nextMinute) * 1000);
   }
 }
 
@@ -65,7 +76,7 @@ browser.windows.onRemoved.addListener(() => {
   // Remove the timer, to prevent running multiple times function that saves the tracked time
   clearTimeout(timer_timeout);
   // Save the data
-  saveTrackedTime(false);
+  saveTrackedTime({ newTimeout: false });
 });
 
 async function handleMessageReceived(request, sender) {
