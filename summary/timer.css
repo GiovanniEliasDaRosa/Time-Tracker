@@ -294,8 +294,6 @@
   opacity: 1;
   transition: none;
 
-  animation: 0.25s test_anim forwards;
-  /* animation: 3s test_anim infinite; */
   mask-image: linear-gradient(
     90deg,
     hsl(0, 0%, 0%) calc(50% - var(--start)),
@@ -304,21 +302,23 @@
     transparent calc(50% +var(--start)),
     hsl(0, 0%, 0%) calc(50% +var(--start))
   );
+
+  animation: 0.25s animate_gradient_outwards forwards;
 }
 
-@keyframes test_anim {
+@keyframes animate_gradient_outwards {
   0% {
     --start: 50%;
   }
   100% {
-    --start: -1%;
+    --start: 0%;
   }
 }
 
 /* Hide the background white */
 .animate_out::before {
   opacity: 1;
-  transition: opacity 0.25s 0.5s;
+  transition: opacity 0.25s 0.75s;
 }
 
 /* Tranision the loader do dissapear */

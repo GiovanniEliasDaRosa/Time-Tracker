@@ -188,7 +188,6 @@ Element.prototype.disable = function (options_passed = {}) {
     lookDisabled: options_passed.lookDisabled ?? true,
   };
 
-  console.log(this, options);
   // If want to hide the element
   if (options.hide) {
     this.style.display = "none";

@@ -25,6 +25,7 @@ class TimerManager {
       open: false,
       timeout: null,
     };
+
     this.bodyMore.disable();
 
     this.date = null;
@@ -33,6 +34,7 @@ class TimerManager {
 
     this.showMore.button.onclick = this.updateShowMore.bind(this);
     this.dateInput.oninput = this.validate.bind(this);
+
     return this;
   }
 
@@ -205,6 +207,10 @@ class TimerManager {
       this.bodyMore.classList.add("will_animate_out");
 
       // Add the real animation from 1em to the height of the content
+      this.bodyMore.style.height = "";
+      let height = this.bodyMore.getBoundingClientRect().height;
+      this.bodyMore.style.height = `${height}px`;
+
       // On finishing transisioning the height
 
       // Waits the pre-loader to finish
@@ -212,6 +218,7 @@ class TimerManager {
         // Set the height to 1em and transition to it
         this.bodyMore.style.height = "1em";
         this.bodyMore.classList.add("animate_out");
+        this.bodyMore.classList.add("animate_height");
 
         // Wait the transition to finish
         this.showMore.timeout = setTimeout(() => {
@@ -250,10 +257,15 @@ class TimerManager {
       this.bodyMore.style.height = "";
       let height = this.bodyMore.getBoundingClientRect().height;
 
-      // Set height and transition to it
-      this.bodyMore.style.height = "1em";
       // This transitions the height, and show the pre background of the pre-laoder, this is to make the text under don't appear
       this.bodyMore.classList.add("animate_height");
+
+      this.bodyMore.style.height = "0em";
+
+      this.showMore.timeout = setTimeout(() => {
+        // Set height and transition to it
+        this.bodyMore.style.height = "1em";
+      }, 0);
 
       // Waits 0 ms, to make the transition happen
       this.showMore.timeout = setTimeout(() => {
@@ -273,9 +285,10 @@ class TimerManager {
           this.showMore.timeout = setTimeout(() => {
             // Remove unecessary class, to prevent any bugs of possibly happen
             this.bodyMore.classList.remove("animate_in");
+            this.bodyMore.style.height = "";
           }, 1000);
         }, 250);
-      }, 0);
+      }, 250);
     }
   }
 }
