@@ -249,3 +249,30 @@ input[type="radio"]:checked::before {
 .input_error {
   border-color: hsl(0, 76%, 56%) !important;
 }
+
+/* Animator CSS */
+.animator_expandable {
+  overflow: hidden;
+}
+
+.animator_show_in {
+  animation: 0.5s animator_animation ease-out forwards;
+}
+
+.animator_show_out {
+  animation: 0.5s animator_animation ease-out reverse forwards;
+}
+
+@keyframes animator_animation {
+  0% {
+    translate: 0 1em;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
