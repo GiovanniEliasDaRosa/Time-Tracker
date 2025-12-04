@@ -136,7 +136,6 @@ function showNotification() {
     return a.time < b.time;
   });
 
-  console.log(configurations.notifications.showTopThree);
   if (configurations.notifications.showTopThree) {
     for (let i = 0; i < 3; i++) {
       const domain = tracking_domains[i];
@@ -160,6 +159,78 @@ browser.notifications.onClicked.addListener((notificationId) => {
 
 async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// MARK: Animator
+function animatorAnimate(options) {
+  let parent = options.parent;
+  let more = options.more;
+  let enabled = options.enabled;
+  let timeout = options.timeout;
+  let animate = options.animate ?? true;
+
+  console.log(timeout);
+  if (parent == null || more == null || enabled == null || timeout == null) {
+    console.error("Animator has an variable with an empty element associated with it", options);
+    return;
+  }
+
+  clearTimeout(timeout.main);
+  clearTimeout(timeout.nested);
+
+  parent.style.transition = "none";
+  parent.classList.remove("animator_expandable");
+  parent.style.height = "";
+  more.classList.remove("animator_show_in");
+  more.classList.remove("animator_show_out");
+
+  let height_before = parent.getBoundingClientRect().height;
+  let height_after = 0;
+
+  if (enabled) {
+    more.enable();
+
+    if (!animate) {
+      return timeout;
+    }
+
+    height_after = parent.getBoundingClientRect().height;
+    more.classList.add("animator_show_in");
+  } else {
+    more.disable();
+
+    if (!animate) {
+      more.disable();
+      return timeout;
+    }
+    more.classList.add("animator_show_out");
+
+    height_after = parent.getBoundingClientRect().height;
+
+    more.enable();
+  }
+
+  parent.style.height = `${height_before}px`;
+  parent.classList.add("animator_expandable");
+
+  timeout.main = setTimeout(() => {
+    parent.style.height = `${height_after}px`;
+    parent.style.transition = "height 0.5s ease-out";
+
+    timeout.nested = setTimeout(() => {
+      if (!enabled) {
+        more.disable();
+      }
+
+      parent.style.transition = "none";
+      parent.classList.remove("animator_expandable");
+      parent.style.height = "";
+      more.classList.remove("animator_show_in");
+      more.classList.remove("animator_show_out");
+    }, 500);
+  }, 10);
+
+  return timeout;
 }
 
 // MARK: Prototypes

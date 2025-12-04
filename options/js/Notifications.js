@@ -5,7 +5,10 @@ class Notifications {
     this.showTopThree = false;
 
     this.waitSaveTimeout = "";
-    this.waitUpdateTimeout = "";
+    this.waitUpdateTimeouts = {
+      main: undefined,
+      nested: undefined,
+    };
 
     this.element = document.querySelector(".section_options.notifications");
 
@@ -98,56 +101,13 @@ class Notifications {
   }
 
   handleUpdate(animate = true) {
-    clearTimeout(this.waitUpdateTimeout);
-    this.element.style.transition = "none";
-    this.element.classList.remove("expandable");
-    this.element.style.height = "";
-    this.moreOptionsElement.classList.remove("show_in");
-    this.moreOptionsElement.classList.remove("show_out");
-
-    let height_before = this.element.getBoundingClientRect().height;
-    let height_after = 0;
-
-    if (this.enabled) {
-      this.moreOptionsElement.enable();
-
-      if (!animate) return;
-
-      height_after = this.element.getBoundingClientRect().height;
-      this.moreOptionsElement.classList.add("show_in");
-    } else {
-      this.moreOptionsElement.disable();
-
-      if (!animate) {
-        this.moreOptionsElement.disable();
-        return;
-      }
-      this.moreOptionsElement.classList.add("show_out");
-
-      height_after = this.element.getBoundingClientRect().height;
-
-      this.moreOptionsElement.enable();
-    }
-
-    this.element.style.height = `${height_before}px`;
-    this.element.classList.add("expandable");
-
-    this.waitUpdateTimeout = setTimeout(() => {
-      this.element.style.height = `${height_after}px`;
-      this.element.style.transition = "height 0.5s ease-out";
-
-      this.waitUpdateTimeout = setTimeout(() => {
-        if (!this.enabled) {
-          this.moreOptionsElement.disable();
-        }
-
-        this.element.style.transition = "none";
-        this.element.classList.remove("expandable");
-        this.element.style.height = "";
-        this.moreOptionsElement.classList.remove("show_in");
-        this.moreOptionsElement.classList.remove("show_out");
-      }, 500);
-    }, 10);
+    this.waitUpdateTimeouts = animatorAnimate({
+      parent: this.element,
+      more: this.moreOptionsElement,
+      enabled: this.enabled,
+      timeout: this.waitUpdateTimeouts,
+      animate: animate,
+    });
   }
 
   async save() {
