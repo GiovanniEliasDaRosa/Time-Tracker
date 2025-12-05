@@ -2,10 +2,12 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background-color: hsla(0, 0%, 0%, 0.25);
 }
 
 #tutorial[data-selectable="true"] .tutorial_no_poiters {
   pointer-events: unset;
+  opacity: 0;
 }
 
 .tutorial_highlighter {
