@@ -10,12 +10,12 @@
   },
   "background": {
     "scripts": [
-      "js/Storage.js",
-      "js/TabManager.js",
-      "js/MessageManager.js",
-      "js/functions.js",
-      "js/background.js",
-      "js/bootstrap.js"
+      "js/shared/functions.js",
+      "js/shared/Storage.js",
+      "js/shared/MessageManager.js",
+      "js/background/TabManager.js",
+      "js/background/background.js",
+      "js/background/bootstrap.js"
     ],
     "persistent": true
   },

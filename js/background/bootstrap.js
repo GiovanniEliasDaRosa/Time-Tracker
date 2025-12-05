@@ -26,11 +26,6 @@ let notification_timer = {
   minutesPassed: 0,
 };
 
-// let timer = {
-//   active: true,
-//   minutesSinceLast active
-// };
-
 let timer_timeout = null;
 
 // start everything
@@ -109,12 +104,12 @@ async function bootstrap() {
   }
 
   // Calculate seconds until the next minute
-  let nextMinute = new Date().getSeconds();
+  let next_minute = new Date().getSeconds();
 
   // Start tracking time
   timer_timeout = setTimeout(() => {
     saveTrackedTime({ firstRun: true });
-  }, (60 - nextMinute) * 1000);
+  }, (60 - next_minute) * 1000);
 }
 
 bootstrap();

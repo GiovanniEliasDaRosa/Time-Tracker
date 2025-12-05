@@ -24,9 +24,9 @@ async function saveTrackedTime(options_passed = {}) {
 
   if (options.newTimeout) {
     // Calculate seconds until the next minute
-    let nextMinute = new Date().getSeconds();
+    let next_minute = new Date().getSeconds();
 
-    timer_timeout = setTimeout(saveTrackedTime, (60 - nextMinute) * 1000);
+    timer_timeout = setTimeout(saveTrackedTime, (60 - next_minute) * 1000);
   }
 }
 
