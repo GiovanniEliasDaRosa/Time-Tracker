@@ -19,21 +19,6 @@
   box-shadow: 0 0 0 0.375em hsl(210, 10%, 92%);
 }
 
-/* Remove Arrows from number inputs */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
 input,
 button {
   font-size: 1rem;
