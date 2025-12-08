@@ -1,0 +1,218 @@
+/* MARK: Global inputs
+*/
+input,
+button {
+  font-size: 1rem;
+  border-radius: 0.5em;
+}
+
+input:is([type="checkbox"], [type="radio"]),
+button,
+label {
+  cursor: pointer;
+}
+
+/* MARK: Buttons
+*/
+button:not(.no_button_style) {
+  padding: 0.5em 1em;
+}
+
+button:not(.no_button_style) {
+  border: solid 0.1em hsl(208, 56%, 52%);
+  background-color: hsl(208, 53%, 86%);
+}
+
+[class*="square"] {
+  padding: 0.5em !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(1em + 1.2em + 0.2em);
+  height: calc(1em + 1.2em + 0.2em);
+}
+
+.square_big {
+  width: 4em;
+  height: 4em;
+}
+
+button:not(.no_button_style):is(:hover, :focus-visible) {
+  border-color: hsl(208, 67%, 60%);
+  background-color: hsl(207, 57%, 72%);
+}
+
+button:not(.no_button_style):active {
+  border-color: hsl(208, 54%, 42%);
+  background-color: hsl(207, 40%, 55%);
+}
+
+/* MARK: Other inputs
+*/
+input:not([type="checkbox"], [type="radio"], .no_input_style) {
+  border: solid 0.1em hsl(208, 73%, 69%);
+  background-color: hsl(208, 54%, 93%);
+}
+
+input:not([type="checkbox"], [type="radio"], .no_input_style):is(:hover, :focus-visible) {
+  border-color: hsl(208, 70%, 66%);
+  background-color: hsl(208, 47%, 88%);
+}
+
+input:not([type="checkbox"], [type="radio"], .no_input_style):active {
+  border-color: hsl(208, 62%, 57%);
+  background-color: hsl(207, 48%, 78%);
+}
+
+/* MARK: Checkbox & Radio
+*/
+input:is([type="checkbox"], [type="radio"]) {
+  appearance: none;
+  border: solid 0.1em hsl(208, 78%, 60%);
+  background-color: hsl(207, 33%, 95%);
+  border-radius: 0.5em;
+  height: 1.5em;
+  width: 1.5em;
+
+  position: relative;
+}
+
+input:is([type="checkbox"], [type="radio"]):is(:hover, :focus-visible) {
+  border-color: hsl(203, 68%, 50%);
+  background-color: hsl(204, 48%, 86%);
+}
+
+input:is([type="checkbox"], [type="radio"]):active {
+  border-color: hsl(208, 68%, 46%);
+  background-color: hsl(203, 46%, 62%);
+}
+
+/* MARK: Checkbox Normal
+*/
+input[type="checkbox"]::before {
+  content: "\f00c";
+  position: absolute;
+  inset: 0;
+
+  user-select: none;
+  margin-right: 0 !important;
+
+  display: flex !important;
+  justify-content: center;
+  align-content: center;
+
+  opacity: 0;
+}
+
+input[type="checkbox"]:not([data-type="toggle"]):checked {
+  border-color: hsl(162, 87%, 40%);
+  background-color: hsl(162, 77%, 64%);
+  transition: 0.25s ease-out;
+}
+
+input[type="checkbox"]:not([data-type="toggle"]):checked::before {
+  opacity: 1;
+  animation: 0.5s check_in cubic-bezier(0.5, 0.2, 0.3, 0.8);
+}
+
+@keyframes check_in {
+  0% {
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+  }
+  100% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+/* MARK: Checkbox Toggle
+*/
+input[type="checkbox"][data-type="toggle"] {
+  width: 2.8em;
+  height: 1.5em;
+  border-radius: 1em;
+  flex: 0 0 2.8em;
+}
+
+input[type="checkbox"][data-type="toggle"]::before {
+  content: "";
+  width: 1.1em;
+  height: 1.1em;
+  position: absolute;
+  left: 0.1em;
+  top: 0.1em;
+
+  border-radius: 1em;
+  background-color: hsl(160, 10%, 36%);
+  opacity: 1;
+
+  transform-origin: 0% 50%;
+  transition: 0.2s ease-out;
+  animation: toggle_out 0.5s;
+}
+
+input[type="checkbox"][data-type="toggle"]:checked::before {
+  animation: toggle_in 0.5s;
+}
+
+input[type="checkbox"][data-type="toggle"]:active::before {
+  background-color: hsl(159, 10%, 46%);
+}
+
+input[type="checkbox"][data-type="toggle"]:checked:active::before {
+  background-color: hsl(162, 60%, 50%);
+}
+
+input[type="checkbox"][data-type="toggle"]:checked::before {
+  background-color: hsl(162, 87%, 40%);
+  translate: 1.3em;
+  transform-origin: 100% 50%;
+}
+
+@keyframes toggle_out {
+  50% {
+    scale: 1.1 0.9;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+@keyframes toggle_in {
+  50% {
+    scale: 1.1 0.9;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+/* MARK: Radio
+*/
+input[type="radio"] {
+  border-radius: 1em;
+}
+
+input[type="radio"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  user-select: none;
+  background-color: hsl(208, 68%, 46%);
+
+  margin: 0.25em;
+  opacity: 0;
+  border-radius: inherit;
+}
+
+input[type="radio"]:checked::before {
+  opacity: 1;
+}
+
+.input_error {
+  border-color: hsl(0, 76%, 56%) !important;
+}
+
+input:not([type="range"]) {
+  padding: 0.5em;
+}
