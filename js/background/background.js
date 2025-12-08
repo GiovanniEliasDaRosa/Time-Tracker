@@ -120,12 +120,19 @@ async function handleMessageReceived(request, sender) {
     return result;
   } else if (type == "set") {
     let option = options[0];
-    console.log(options, data);
+
     if (option == "configurations_notification") {
       configurations.notifications = {
         enabled: data.notifications.enabled,
         timeBetween: data.notifications.timeBetween,
         showTopThree: data.notifications.showTopThree,
+      };
+
+      return { isOk: true };
+    } else if (option == "configurations_new_day_start") {
+      configurations.newDayStart = {
+        hour: data.newDayStart.hour,
+        side: data.newDayStart.side,
       };
 
       return { isOk: true };

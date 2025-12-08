@@ -1,0 +1,24 @@
+.notifications_config {
+  gap: 0.5em;
+}
+
+.notifications_config {
+  display: grid;
+  padding: 0.5em;
+  border: solid 0.1em #d6e9f5;
+  border-radius: 0.5em;
+}
+
+.notifications_config > label {
+  display: grid;
+  gap: 0.25em;
+}
+
+.notifications_config_span_title {
+  font-weight: 700;
+  display: block;
+}
+
+#notifications_content_frequency {
+  width: calc(1.125em + 4ch + 1.125em + 0.5em);
+}

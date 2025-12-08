@@ -1,19 +1,28 @@
 let configurations = null;
-let notifications = new Notifications();
-
-async function main() {
-  configurations = await Storage.get("configurations");
-  notifications.setup();
-}
-
-main();
 
 // Summary handler
 document.querySelector("#summary_button").onclick = () => {
   handleExtensionTab("summary/summary.html", window);
 };
 
-// Tutorial handler
+// * MARK: Create options
+// Notification
+let notifications = new Notifications();
+
+// Tutorial
 document.querySelector("#tutorial_start").onclick = () => {
   handleExtensionTab("summary/summary.html#show_tutorial=true", window);
 };
+
+// New Day
+let new_day = new NewDay();
+
+// * MARK: Setup options
+async function main() {
+  configurations = await Storage.get("configurations");
+
+  notifications.setup();
+  new_day.setup();
+}
+
+main();

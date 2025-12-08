@@ -7,15 +7,19 @@
     <link rel="stylesheet" href="../css/global.css" />
     <link rel="stylesheet" href="../css/full-page.css" />
     <link rel="stylesheet" href="../css/icons.css" />
-    <link rel="stylesheet" href="options.css" />
+
+    <link rel="stylesheet" href="css/options.css" />
+    <link rel="stylesheet" href="css/notifications.css" />
+    <link rel="stylesheet" href="css/new-day.css" />
 
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/Storage.js" defer="true"></script>
     <script src="../js/shared/MessageManager.js" defer="true"></script>
     <script src="../js/shared/Validator.js" defer="true"></script>
-    <script src="js/Notifications.js" defer="true"></script>
 
-    <script src="options.js" defer="true"></script>
+    <script src="js/Notifications.js" defer="true"></script>
+    <script src="js/NewDay.js" defer="true"></script>
+    <script src="js/options.js" defer="true"></script>
   </head>
   <body>
     <main>
@@ -36,7 +40,7 @@
             <p>Manage how to sent if send notifications</p>
           </div>
 
-          <div class="notifications_enable">
+          <div class="section_options_enable notifications_enable">
             <input
               type="checkbox"
               data-type="toggle"
@@ -46,7 +50,7 @@
             <label for="notifications_enable_checkbox">Enable notifications</label>
           </div>
 
-          <div class="notifications_more_options">
+          <div class="section_options_more notifications_more_options">
             <div class="notifications_config notifications_frequency disabled">
               <label for="notifications_content_frequency">
                 <span class="notifications_config_span_title">Frequency (in minutes)</span>
@@ -73,6 +77,72 @@
                 name="notifications_content_checkbox"
                 id="notifications_content_checkbox"
               />
+            </div>
+          </div>
+        </section>
+
+        <!-- New Day Start -->
+        <section class="section_options new_day">
+          <div class="section_options_header">
+            <h2>New Day Start</h2>
+            <p>Choose the hour to start a new day (relative to midnight)</p>
+          </div>
+
+          <div class="section_options_options slider_options">
+            <p>
+              Move left for hours before midnight (previus day).<br />
+              Move right for hours after midnight (next day).<br />
+              Steps are 1 hour each.
+            </p>
+            <div class="slider_options_slider">
+              <input
+                id="slider_options_slider_range"
+                type="range"
+                value="0"
+                min="-12"
+                max="12"
+                step="1"
+              />
+
+              <div class="slider_options_slider_labels">
+                <span data-order="0">12PM<br />12:00</span>
+                <span data-order="2">03PM<br />15:00</span>
+                <span data-order="1">06PM<br />18:00</span>
+                <span data-order="2">09PM<br />21:00</span>
+                <span data-order="0">12AM<br />00:00</span>
+                <span data-order="2">03AM<br />03:00</span>
+                <span data-order="1">06AM<br />06:00</span>
+                <span data-order="2">09AM<br />09:00</span>
+                <span data-order="0">12PM<br />12:00</span>
+              </div>
+
+              <span
+                class="slider_options_slider_current"
+                disabled="true"
+                aria-disabled="true"
+                style="display: none"
+              ></span>
+            </div>
+          </div>
+
+          <div class="section_options_enable input_enable">
+            <input type="checkbox" data-type="toggle" id="input_manually" name="input_manually" />
+            <label for="input_manually">Input number</label>
+          </div>
+
+          <div class="section_options_more input_more_options">
+            <div class="input">
+              <input
+                type="number"
+                min="-12"
+                max="12"
+                value="0"
+                id="new_day_input_hours"
+                name="new_day_input_hours"
+              />
+              <label for="new_day_input_hours"
+                >Negative for before midnight and positive for after (e.g. -1 = 11PM/23:00)</label
+              >
             </div>
           </div>
         </section>

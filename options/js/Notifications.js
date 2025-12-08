@@ -57,16 +57,14 @@ class Notifications {
   }
 
   handleInputUpdate(e) {
-    let result_value = Validator.number(this.optionsElements.timeBetweenInput, e);
+    Validator.number(this.optionsElements.timeBetweenInput, e);
+    let valid_value = Validator.validate(this.optionsElements.timeBetweenInput, 1, 1440);
 
-    // If has a result value to be changed
-    if (result_value) {
-      this.optionsElements.timeBetweenInput.value = result_value;
-      this.timeBetween = result_value;
+    // If has the result value has changed and needs to be saved
+    if (valid_value) {
+      this.timeBetween = Number(this.optionsElements.timeBetweenInput.value);
       this.waitToSave();
     }
-
-    Validator.validate(this.optionsElements.timeBetweenInput, 1, 1440);
   }
 
   waitToSave() {

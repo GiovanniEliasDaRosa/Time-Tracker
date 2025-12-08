@@ -3,6 +3,10 @@ main {
   --breakout-max-width: 130ch;
 }
 
+footer {
+  margin-top: 2em;
+}
+
 .section_options {
   display: grid;
   gap: 1em;
@@ -10,8 +14,15 @@ main {
 }
 
 .section_options_header,
-.notifications_more_options {
+.section_options_more,
+.section_options_options {
   display: grid;
+  gap: 0.5em;
+}
+
+.section_options_enable {
+  display: flex;
+  align-items: center;
   gap: 0.5em;
 }
 
@@ -20,7 +31,7 @@ main {
   border-bottom: 0.125em solid #a7cde4;
 }
 
-.notifications_more_options {
+.section_options_more {
   margin-left: 0.75em;
   padding-left: calc(0.75em + 0.5em);
   position: relative;
@@ -29,7 +40,7 @@ main {
   gap: 1em;
 }
 
-.notifications_more_options::before {
+.section_options_more::before {
   content: "";
   position: absolute;
   left: -0.0625em;
@@ -43,35 +54,4 @@ main {
   clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
 
   border-radius: 0 0 0.5em 0.5em;
-}
-
-.notifications_enable {
-  display: flex;
-  align-items: center;
-}
-
-.notifications_enable,
-.notifications_config {
-  gap: 0.5em;
-}
-
-.notifications_config {
-  display: grid;
-  padding: 0.5em;
-  border: solid 0.1em #d6e9f5;
-  border-radius: 0.5em;
-}
-
-.notifications_config > label {
-  display: grid;
-  gap: 0.25em;
-}
-
-.notifications_config_span_title {
-  font-weight: 700;
-  display: block;
-}
-
-#notifications_content_frequency {
-  width: calc(1.125em + 4ch);
 }

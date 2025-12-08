@@ -1,0 +1,66 @@
+.slider_options_slider {
+  position: relative;
+  grid-row: inherit;
+  gap: 0.5em;
+}
+
+#slider_options_slider_range {
+  height: 2em;
+  margin-inline: calc(2.5ch - 0.6em);
+  width: calc(100% - 5ch + 1.2em);
+}
+
+.slider_options_slider_labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider_options_slider_labels span {
+  text-align: center;
+  position: relative;
+  width: 5ch;
+}
+
+.slider_options_slider_labels span::before {
+  content: "";
+  position: absolute;
+  top: -1em;
+  left: 50%;
+  width: 0.125em;
+  height: 0.5em;
+  background-color: hsl(207, 28%, 51%);
+  translate: -50%;
+  z-index: -1;
+}
+
+.slider_options_slider_current {
+  position: absolute;
+  top: 0;
+
+  --width-calc: calc(5ch + 1em);
+  --half-width-calc: calc(var(--width-calc) / 2);
+  --fourth-width-calc: calc(var(--width-calc) / 4);
+
+  padding: 0.5em;
+  border-radius: 0.5em;
+  color: white;
+  font-weight: 900;
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(0.1em);
+  width: var(--width-calc);
+  text-align: center;
+
+  --percentage: 0%;
+  --side: 0;
+
+  left: calc(var(--percentage) - (var(--side) * (var(--fourth-width-calc) + (2.5ch - 0.6em))));
+
+  transform-origin: 50% 0%;
+  translate: -50% 1.75em;
+  scale: 0;
+  transition: scale 0.25s ease-out;
+}
+
+.slider_options_slider_current.show {
+  scale: 1;
+}

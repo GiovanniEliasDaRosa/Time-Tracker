@@ -17,7 +17,7 @@ main {
 
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
-  min-height: 100svh;
+  min-height: 100lvh;
 }
 
 :is(main, .full-width) > :not(.breakout, .full-width) {

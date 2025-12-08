@@ -39,14 +39,12 @@ class Validator {
       }
     }
 
-    let result_value = null;
-
     // If has a min limiter
     if (options.min) {
       if (input.value < options.min) {
         result_value = options.min;
         e.preventDefault();
-        console.log("MIN");
+        console.log("Limit MIN");
       }
     }
 
@@ -55,18 +53,18 @@ class Validator {
       if (input.value > options.max) {
         result_value = options.max;
         e.preventDefault();
-        console.log("MAX");
+        console.log("Limit MAX");
       }
     }
-
-    return Number(result_value);
   }
 
   static validate(input, min, max) {
     if (input.value == "" || input.value < min || input.value > max) {
       input.classList.add("input_error");
+      return false;
     } else {
       input.classList.remove("input_error");
+      return true;
     }
   }
 }

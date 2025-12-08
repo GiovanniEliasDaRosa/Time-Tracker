@@ -169,7 +169,6 @@ function animatorAnimate(options) {
   let timeout = options.timeout;
   let animate = options.animate ?? true;
 
-  console.log(timeout);
   if (parent == null || more == null || enabled == null || timeout == null) {
     console.error("Animator has an variable with an empty element associated with it", options);
     return;

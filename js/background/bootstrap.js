@@ -20,6 +20,10 @@ let configurations = {
     timeBetween: 30,
     showTopThree: true,
   },
+  newDayStart: {
+    hour: 0,
+    side: "",
+  },
 };
 
 let notification_timer = {
