@@ -1,14 +1,14 @@
 // MARK: Dates
-function getDateInfo(date) {
+function getDateInfo(date, time = "00:00") {
   // If passed a string as a date get the DATE prototype
   if (typeof date == "string") {
-    date = new Date(`${date}T00:00`);
+    date = new Date(`${date} ${time}`);
   }
 
   [month, day, year] = date.format().split("/").map(Number);
   [monthLong, weekday] = date.format({ weekday: "long", month: "long" }).split(" ");
 
-  let temp_date = date;
+  let temp_date = new Date(date.getTime());
 
   // Set to the nearest Thursday: current date + 4 - current day number
   temp_date.setDate(temp_date.getDate() + 4 - (temp_date.getDay() || 7));

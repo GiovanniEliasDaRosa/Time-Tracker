@@ -1,5 +1,6 @@
 // MARK: Summary
-let today = getDateInfo(new Date());
+// let today = getDateInfo(new Date());
+let today = null;
 let tracking_time_local = null;
 let tracked_time_history_local = null;
 
@@ -23,11 +24,12 @@ let tutorial = {
 async function main() {
   let response = await MessageManager.send({
     type: "get",
-    options: ["tracking_time", "tracked_time_history"],
+    options: ["today_date", "tracking_time", "tracked_time_history"],
   });
 
   tracking_time_local = response.trackingTime;
   tracked_time_history_local = response.trackedTimeHistory;
+  today = response.todayDate;
 
   for (const key in timers) {
     if (!Object.hasOwn(timers, key)) continue;
