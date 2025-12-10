@@ -65,13 +65,13 @@
 }
 
 .timer_item_no_data {
-  background-color: hsl(195, 60%, 85%);
-  border-color: hsl(196, 89%, 22%);
+  background-color: var(--summary-timer-item-no-data-background-color);
+  border-color: var(--summary-timer-item-no-data-border-color);
 }
 
 .timer_item_invalid {
-  background-color: hsl(16, 100%, 91%);
-  border-color: hsl(0, 94%, 21%);
+  background-color: var(--summary-timer-item-invalid-background-color);
+  border-color: var(--summary-timer-item-invalid-border-color);
 }
 
 .timer_item_data::before {
@@ -88,7 +88,7 @@
   right: 0;
   bottom: 0;
   height: 0.0625em;
-  background-color: hsl(189, 44%, 61%);
+  background-color: var(--summary-timer-item-row-line-background-color);
 }
 
 @container timer (width < 50rem) {
@@ -102,7 +102,7 @@
 
 /* In the TOTAL row doesn't need a number, so re can reset it */
 .timer_item_total {
-  background-color: hsl(190, 51%, 90%);
+  background-color: var(--summary-timer-item-total-time-background-color);
 }
 
 .timer_item_total::before {
@@ -135,9 +135,9 @@
 
   height: 1.25em;
   width: calc(var(--hours) * 100%);
-  background-color: hsl(189, 74%, 31%);
-  border-left: 0.125em solid hsl(189, 79%, 23%);
-  border-bottom: 0.125em solid hsl(189, 79%, 23%);
+  background-color: var(--summary-timer-item-progress-background-color);
+  border-left: 0.125em solid var(--summary-timer-item-progress-border-color);
+  border-bottom: 0.125em solid var(--summary-timer-item-progress-border-color);
 }
 
 /* MARK: Show more
@@ -223,17 +223,17 @@
   bottom: unset;
 
   height: 1em;
-  background-color: hsl(0, 0%, 100%);
+  background-color: var(--background-color);
   opacity: 0;
 }
 
 .timer_body_more::before {
-  background-color: hsl(0, 0%, 100%);
+  background-color: var(--background-color);
 }
 
 .timer_body_more::after {
   top: calc(100% - 1em);
-  background-color: hsl(189, 58%, 55%);
+  background-color: var(--summary-timer-body-more-background-color);
 
   scale: 0 1;
   transition: scale 0.25s;
@@ -278,7 +278,7 @@
 /* Start the transition from 1em to the heigh of the content */
 .animate_in {
   transition: height 1s;
-  background-color: hsl(189, 58%, 55%);
+  background-color: var(--summary-timer-body-more-background-color);
   animation: timer_body_more_show 1s forwards;
 }
 
@@ -295,7 +295,7 @@
   transition: none;
 
   animation: 0.25s test_anim forwards;
-  /* animation: 3s test_anim infinite; */
+
   mask-image: linear-gradient(
     90deg,
     hsl(0, 0%, 0%) calc(50% - var(--start)),

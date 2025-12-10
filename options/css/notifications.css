@@ -5,7 +5,7 @@
 .notifications_config {
   display: grid;
   padding: 0.5em;
-  border: solid 0.1em #d6e9f5;
+  border: solid 0.1em var(--options-notifications-config-border-color);
   border-radius: 0.5em;
 }
 

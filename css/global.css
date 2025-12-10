@@ -6,6 +6,125 @@
   font-weight: 100 900;
 }
 
+:root {
+  /* * global.css */
+  --background-color: hsl(0, 0%, 100%);
+  --text-color: hsl(0, 0%, 5%);
+
+  --focus-outline: hsl(207, 93%, 21%);
+  --focus-box-shadow: hsl(210, 10%, 92%);
+
+  /* * full-page.css */
+  --main-children-box-shadow: hsla(0, 0%, 0%, 0.2);
+  --footer-color: hsl(207, 100%, 84%);
+
+  /* * input.css */
+  /* - buttons */
+  --button-border-color: hsl(208, 56%, 52%);
+  --button-background-color: hsl(208, 53%, 86%);
+
+  --button-border-color-hover: hsl(208, 67%, 60%);
+  --button-background-color-hover: hsl(207, 57%, 72%);
+
+  --button-border-color-active: hsl(208, 54%, 42%);
+  --button-background-color-active: hsl(207, 40%, 55%);
+
+  /* - inputs */
+  --input-border-color: hsl(208, 73%, 69%);
+  --input-background-color: hsl(208, 54%, 93%);
+
+  --input-border-color-hover: hsl(208, 70%, 66%);
+  --input-background-color-hover: hsl(208, 47%, 88%);
+
+  --input-border-color-active: hsl(208, 62%, 57%);
+  --input-background-color-active: hsl(207, 48%, 78%);
+
+  --input-error-border-color: hsl(0, 76%, 56%);
+  /* - checkbox radio */
+  --input-checkbox-radio-border-color: hsl(208, 78%, 60%);
+  --input-checkbox-radio-background-color: hsl(207, 33%, 95%);
+
+  --input-checkbox-radio-border-color-hover: hsl(203, 68%, 50%);
+  --input-checkbox-radio-background-color-hover: hsl(204, 48%, 86%);
+
+  --input-checkbox-radio-border-color-active: hsl(208, 68%, 46%);
+  --input-checkbox-radio-background-color-active: hsl(203, 46%, 62%);
+
+  /* - checkbox check */
+  --input-checkbox-checked-border-color: hsl(162, 87%, 40%);
+  --input-checkbox-checked-background-color: hsl(162, 77%, 64%);
+
+  /* - checkbox toggle  */
+  --input-checkbox-toggle-background-color: hsl(160, 10%, 36%);
+  --input-checkbox-toggle-background-color-active: hsl(159, 10%, 46%);
+  --input-checkbox-toggle-background-color-active-checked: hsl(162, 60%, 50%);
+  --input-checkbox-toggle-background-color-checked: hsl(162, 87%, 40%);
+
+  /* - radio check */
+  --input-radio-checked-background-color: hsl(208, 68%, 46%);
+
+  /* * popup.css */
+  --popup-background-color-color: hsl(190, 29%, 92%);
+  --popup-background-color-hover: hsl(188, 43%, 84%);
+  --popup-background-color-active: hsl(189, 32%, 69%);
+
+  --popup-timer-separator-background-color: hsl(196, 19%, 65%);
+
+  --popup-footer-background-color: hsl(196, 19%, 65%);
+
+  --popup-progress-bar-background-color: hsl(189, 39%, 52%);
+  --popup-progress-bar-box-shadow: hsl(189, 41%, 46%);
+  --popup-progress-bar-fill-background-color: hsl(189, 79%, 15%);
+
+  /* * summary.css */
+  /* - tutorial */
+  --summary-tutorial-no-pointers-background-color: hsla(0, 0%, 0%, 0.25);
+  --summary-tutorial-highlighter-background-color: hsla(0, 0%, 0%, 0.125);
+  --summary-tutorial-highlighter-box-shadow: hsla(0, 0%, 0%, 0.5);
+
+  --summary-tutorial-popup-box-shadowr: hsla(0, 0%, 0%, 0.5);
+  --summary-tutorial-popup-background-color: hsl(200, 63%, 86%);
+  --summary-tutorial-popup-border-color: hsl(203, 100%, 36%);
+
+  --summary-tutorial-popup-finished-background-color: hsl(161, 35%, 91%);
+  --summary-tutorial-popup-finished-border-color: hsl(162, 73%, 49%);
+
+  --summary-tutorial-description-tip-border-left-color: hsl(200, 42%, 69%);
+  --summary-tutorial-description-tip-background-color: hsl(200, 54%, 81%);
+
+  /* button_skip background-color was not added because the mix-color is to darken the button always */
+
+  /* - timer */
+  /* - - message */
+  --summary-timer-item-no-data-background-color: hsl(195, 60%, 85%);
+  --summary-timer-item-no-data-border-color: hsl(196, 89%, 22%);
+
+  --summary-timer-item-invalid-background-color: hsl(16, 100%, 91%);
+  --summary-timer-item-invalid-border-color: hsl(0, 94%, 21%);
+
+  /* - - item rows */
+  --summary-timer-item-row-line-background-color: hsl(189, 44%, 61%);
+  --summary-timer-item-total-time-background-color: hsl(190, 51%, 90%);
+
+  --summary-timer-item-progress-background-color: hsl(189, 74%, 31%);
+  --summary-timer-item-progress-border-color: hsl(189, 79%, 23%);
+
+  /* - - show more */
+  --summary-timer-body-more-background-color: hsl(189, 58%, 55%);
+
+  /* * options.css */
+  --options-header-border-bottom-color: hsl(203, 53%, 77%);
+  --options-options-more-border-color: hsl(0, 0%, 71%);
+
+  /* - notifications */
+  --options-notifications-config-border-color: hsl(203, 61%, 90%);
+
+  /* - new day */
+  --options-new-day-step-pointer-background-color: hsl(207, 28%, 51%);
+  --options-new-day-current-text-color: hsl(0, 0%, 100%);
+  --options-new-day-current-background-color: rgba(0, 0, 0, 0.25);
+}
+
 /* MARK: Global
 */
 *,
@@ -15,12 +134,13 @@
   margin: 0;
   padding: 0;
   font-family: Inconsolata, sans-serif;
+  color: var(--text-color);
 }
 
 :focus-visible {
-  outline: 0.125em dashed hsl(207, 93%, 21%);
+  outline: 0.125em dashed var(--focus-outline);
   outline-offset: 0.125em;
-  box-shadow: 0 0 0 0.375em hsl(210, 10%, 92%);
+  box-shadow: 0 0 0 0.375em var(--focus-box-shadow);
 }
 
 [disabled="true"] {

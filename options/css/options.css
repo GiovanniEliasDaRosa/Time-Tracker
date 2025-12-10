@@ -3,10 +3,6 @@ main {
   --breakout-max-width: 130ch;
 }
 
-footer {
-  margin-top: 2em;
-}
-
 .section_options {
   display: grid;
   gap: 1em;
@@ -28,7 +24,7 @@ footer {
 
 .section_options_header {
   padding-bottom: 1em;
-  border-bottom: 0.125em solid #a7cde4;
+  border-bottom: 0.125em solid var(--options-header-border-bottom-color);
 }
 
 .section_options_more {
@@ -49,8 +45,8 @@ footer {
 
   width: 0.75em;
 
-  border-left: 0.125em solid hsl(0, 0%, 71%);
-  border-bottom: 0.125em solid hsl(0, 0%, 71%);
+  border-left: 0.125em solid var(--options-options-more-border-color);
+  border-bottom: 0.125em solid var(--options-options-more-border-color);
   clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
 
   border-radius: 0 0 0.5em 0.5em;

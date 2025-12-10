@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-color: hsla(0, 0%, 0%, 0.25);
+  background-color: var(--summary-tutorial-no-pointers-background-color);
 }
 
 #tutorial[data-selectable="true"] .tutorial_no_poiters {
@@ -16,8 +16,8 @@
   top: 0;
   width: 0;
   height: 0;
-  border: solid 0.25em hsla(0, 0%, 0%, 0.125);
-  box-shadow: 0 0 0 200vmax hsla(0, 0%, 0%, 0.5);
+  border: solid 0.25em var(--summary-tutorial-highlighter-background-color);
+  box-shadow: 0 0 0 200vmax var(--summary-tutorial-highlighter-box-shadow);
 
   box-sizing: content-box;
   translate: -0.25em -0.25em;
@@ -36,16 +36,16 @@
   display: grid;
   gap: 1em;
 
-  background-color: #c6e3f2;
-  border: solid 0.125em #0072b8;
+  background-color: var(--summary-tutorial-popup-background-color);
+  border: solid 0.125em var(--summary-tutorial-popup-border-color);
   border-radius: 0.5em;
 
-  box-shadow: 0 0.25em 0.5em -0.25em hsla(0, 0%, 0%, 0.5);
+  box-shadow: 0 0.25em 0.5em -0.25em var(--summary-tutorial-popup-box-shadowr);
 }
 
 .tutorial_popup[data-finished="true"] {
-  background-color: #e0f0eb;
-  border-color: #21d8a1;
+  background-color: var(--summary-tutorial-popup-finished-background-color);
+  border-color: var(--summary-tutorial-popup-finished-border-color);
 }
 
 .popup_animate_in {
@@ -100,8 +100,8 @@
 .tutorial_popup_text_description_tip {
   padding: 0.5em;
   padding-right: calc(0.5em + 0.25em);
-  border-left: solid 0.25em #8fbbd1;
-  background-color: #b5d8e9;
+  border-left: solid 0.25em var(--summary-tutorial-description-tip-border-left-color);
+  background-color: var(--summary-tutorial-description-tip-background-color);
 }
 
 .tutorial_popup_buttons,

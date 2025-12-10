@@ -19,8 +19,8 @@ button:not(.no_button_style) {
 }
 
 button:not(.no_button_style) {
-  border: solid 0.1em hsl(208, 56%, 52%);
-  background-color: hsl(208, 53%, 86%);
+  border: solid 0.1em var(--button-border-color);
+  background-color: var(--button-background-color);
 }
 
 [class*="square"] {
@@ -38,38 +38,38 @@ button:not(.no_button_style) {
 }
 
 button:not(.no_button_style):is(:hover, :focus-visible) {
-  border-color: hsl(208, 67%, 60%);
-  background-color: hsl(207, 57%, 72%);
+  border-color: var(--button-border-color-hover);
+  background-color: var(--button-background-color-hover);
 }
 
 button:not(.no_button_style):active {
-  border-color: hsl(208, 54%, 42%);
-  background-color: hsl(207, 40%, 55%);
+  border-color: var(--button-border-color-active);
+  background-color: var(--button-background-color-active);
 }
 
 /* MARK: Other inputs
 */
 input:not([type="checkbox"], [type="radio"], .no_input_style) {
-  border: solid 0.1em hsl(208, 73%, 69%);
-  background-color: hsl(208, 54%, 93%);
+  border: solid 0.1em var(--input-border-color);
+  background-color: var(--input-background-color);
 }
 
 input:not([type="checkbox"], [type="radio"], .no_input_style):is(:hover, :focus-visible) {
-  border-color: hsl(208, 70%, 66%);
-  background-color: hsl(208, 47%, 88%);
+  border-color: var(--input-border-color-hover);
+  background-color: var(--input-background-color-hover);
 }
 
 input:not([type="checkbox"], [type="radio"], .no_input_style):active {
-  border-color: hsl(208, 62%, 57%);
-  background-color: hsl(207, 48%, 78%);
+  border-color: var(--input-border-color-active);
+  background-color: var(--input-background-color-active);
 }
 
 /* MARK: Checkbox & Radio
 */
 input:is([type="checkbox"], [type="radio"]) {
   appearance: none;
-  border: solid 0.1em hsl(208, 78%, 60%);
-  background-color: hsl(207, 33%, 95%);
+  border: solid 0.1em var(--input-checkbox-radio-border-color);
+  background-color: var(--input-checkbox-radio-background-color);
   border-radius: 0.5em;
   height: 1.5em;
   width: 1.5em;
@@ -78,13 +78,13 @@ input:is([type="checkbox"], [type="radio"]) {
 }
 
 input:is([type="checkbox"], [type="radio"]):is(:hover, :focus-visible) {
-  border-color: hsl(203, 68%, 50%);
-  background-color: hsl(204, 48%, 86%);
+  border-color: var(--input-checkbox-radio-border-color-hover);
+  background-color: var(--input-checkbox-radio-background-color-hover);
 }
 
 input:is([type="checkbox"], [type="radio"]):active {
-  border-color: hsl(208, 68%, 46%);
-  background-color: hsl(203, 46%, 62%);
+  border-color: var(--input-checkbox-radio-border-color-active);
+  background-color: var(--input-checkbox-radio-background-color-active);
 }
 
 /* MARK: Checkbox Normal
@@ -105,8 +105,8 @@ input[type="checkbox"]::before {
 }
 
 input[type="checkbox"]:not([data-type="toggle"]):checked {
-  border-color: hsl(162, 87%, 40%);
-  background-color: hsl(162, 77%, 64%);
+  border-color: var(--input-checkbox-checked-border-color);
+  background-color: var(--input-checkbox-checked-background-color);
   transition: 0.25s ease-out;
 }
 
@@ -142,7 +142,7 @@ input[type="checkbox"][data-type="toggle"]::before {
   top: 0.1em;
 
   border-radius: 1em;
-  background-color: hsl(160, 10%, 36%);
+  background-color: var(--input-checkbox-toggle-background-color);
   opacity: 1;
 
   transform-origin: 0% 50%;
@@ -155,15 +155,15 @@ input[type="checkbox"][data-type="toggle"]:checked::before {
 }
 
 input[type="checkbox"][data-type="toggle"]:active::before {
-  background-color: hsl(159, 10%, 46%);
+  background-color: var(--input-checkbox-toggle-background-color-active);
 }
 
 input[type="checkbox"][data-type="toggle"]:checked:active::before {
-  background-color: hsl(162, 60%, 50%);
+  background-color: var(--input-checkbox-toggle-background-color-active-checked);
 }
 
 input[type="checkbox"][data-type="toggle"]:checked::before {
-  background-color: hsl(162, 87%, 40%);
+  background-color: var(--input-checkbox-toggle-background-color-checked);
   translate: 1.3em;
   transform-origin: 100% 50%;
 }
@@ -198,7 +198,7 @@ input[type="radio"]::before {
   inset: 0;
 
   user-select: none;
-  background-color: hsl(208, 68%, 46%);
+  background-color: var(--input-radio-checked-background-color);
 
   margin: 0.25em;
   opacity: 0;
@@ -210,7 +210,7 @@ input[type="radio"]:checked::before {
 }
 
 .input_error {
-  border-color: hsl(0, 76%, 56%) !important;
+  border-color: var(--input-error-border-color) !important;
 }
 
 input:not([type="range"]) {

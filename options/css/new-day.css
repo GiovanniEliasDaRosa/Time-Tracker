@@ -28,7 +28,7 @@
   left: 50%;
   width: 0.125em;
   height: 0.5em;
-  background-color: hsl(207, 28%, 51%);
+  background-color: var(--options-new-day-step-pointer-background-color);
   translate: -50%;
   z-index: -1;
 }
@@ -43,9 +43,9 @@
 
   padding: 0.5em;
   border-radius: 0.5em;
-  color: white;
+  color: var(--options-new-day-current-text-color);
   font-weight: 900;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--options-new-day-current-background-color);
   backdrop-filter: blur(0.1em);
   width: var(--width-calc);
   text-align: center;
