@@ -215,6 +215,10 @@ async function handleMessageReceived(request, sender) {
       };
 
       return { isOk: true };
+    } else if (option == "configurations_theme") {
+      configurations.darkTheme = data.darkTheme;
+
+      return { isOk: true };
     }
 
     return {

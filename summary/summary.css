@@ -40,7 +40,7 @@
   border: solid 0.125em var(--summary-tutorial-popup-border-color);
   border-radius: 0.5em;
 
-  box-shadow: 0 0.25em 0.5em -0.25em var(--summary-tutorial-popup-box-shadowr);
+  box-shadow: 0 0.25em 0.5em -0.25em var(--summary-tutorial-popup-box-shadow);
 }
 
 .tutorial_popup[data-finished="true"] {

@@ -26,6 +26,7 @@ let configurations = {
     hour: 0,
     side: "",
   },
+  darkTheme: false,
 };
 
 let notification_timer = {

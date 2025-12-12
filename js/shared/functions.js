@@ -289,3 +289,17 @@ Object.prototype.isEmpty = function () {
 
   return true;
 };
+
+// As this JS file is necessary for the pages, this is where the code can be placed and remove unecessary repeating
+async function loadTheme(override_theme = null) {
+  let load = await browser.storage.local.get("configurations");
+
+  // Has config, and is dark theme
+  if (!load.isEmpty() && load.configurations.darkTheme) {
+    document.querySelector(":root").setAttribute("data-theme-dark", "true");
+  } else {
+    document.querySelector(":root").setAttribute("data-theme-dark", "false");
+  }
+}
+
+loadTheme();

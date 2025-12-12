@@ -19,6 +19,7 @@
 
     <script src="js/Notifications.js" defer="true"></script>
     <script src="js/NewDay.js" defer="true"></script>
+    <script src="js/Themes.js" defer="true"></script>
     <script src="js/options.js" defer="true"></script>
   </head>
   <body>
@@ -144,6 +145,24 @@
                 >Negative for before midnight and positive for after (e.g. -1 = 11PM/23:00)</label
               >
             </div>
+          </div>
+        </section>
+
+        <!-- Theme -->
+        <section class="section_options theme">
+          <div class="section_options_header">
+            <h2>Theme</h2>
+            <p>Select theme as dark/light mode</p>
+          </div>
+
+          <div class="section_options_enable">
+            <input
+              type="checkbox"
+              data-type="toggle"
+              name="dark_theme_toggle"
+              id="dark_theme_toggle"
+            />
+            <label for="dark_theme_toggle">Dark mode</label>
           </div>
         </section>
 

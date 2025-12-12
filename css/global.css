@@ -7,122 +7,284 @@
 }
 
 :root {
-  /* * global.css */
-  --background-color: hsl(0, 0%, 100%);
-  --text-color: hsl(0, 0%, 5%);
+  --hue: 208;
+  --separation: 45;
 
-  --focus-outline: hsl(207, 93%, 21%);
-  --focus-box-shadow: hsl(210, 10%, 92%);
+  --light: hsl(var(--hue) 4% 98%);
+  --dark: hsl(var(--hue) 50% 4%);
+
+  --theme: var(--light);
+  --theme-inverse: var(--dark);
+
+  --primary-color: hsl(var(--hue) 100% 50%);
+  --secondary-1-color: hsl(calc(var(--hue) - var(--separation)) 100% 50%);
+  --secondary-2-color: hsl(calc(var(--hue) - 180 - var(--separation)) 100% 50%);
+  --complement-color: hsl(calc(var(--hue) + 180) 100% 50%);
+
+  /* Have the CSS below as a default to prevent flashing a white screen */
+  color-scheme: dark;
+  --theme: var(--dark);
+  --theme-inverse: var(--light);
+}
+
+:root[data-theme-dark="false"] {
+  color-scheme: light;
+
+  --theme: var(--light);
+  --theme-inverse: var(--dark);
+
+  /* * global.css */
+  --background-color: var(--light);
+  --text-color: var(--dark);
+
+  --focus-outline: hsl(from var(--primary-color) h 90% 20%);
+  --focus-box-shadow: hsl(from var(--primary-color) h 10% 90%);
 
   /* * full-page.css */
-  --main-children-box-shadow: hsla(0, 0%, 0%, 0.2);
-  --footer-color: hsl(207, 100%, 84%);
+  --main-children-box-shadow: hsla(from var(--theme-inverse) h s l / 0.2);
+  --footer-color: hsl(from var(--complement-color) h 100% 92%);
 
   /* * input.css */
   /* - buttons */
-  --button-border-color: hsl(208, 56%, 52%);
-  --button-background-color: hsl(208, 53%, 86%);
+  --button-border-color: hsl(from var(--primary-color) h 56% 52%);
+  --button-background-color: hsl(from var(--primary-color) h 53% 86%);
 
-  --button-border-color-hover: hsl(208, 67%, 60%);
-  --button-background-color-hover: hsl(207, 57%, 72%);
+  --button-border-color-hover: hsl(from var(--primary-color) h 67% 60%);
+  --button-background-color-hover: hsl(from var(--primary-color) h 57% 72%);
 
-  --button-border-color-active: hsl(208, 54%, 42%);
-  --button-background-color-active: hsl(207, 40%, 55%);
+  --button-border-color-active: hsl(from var(--primary-color) h 54% 42%);
+  --button-background-color-active: hsl(from var(--primary-color) h 40% 55%);
 
   /* - inputs */
-  --input-border-color: hsl(208, 73%, 69%);
-  --input-background-color: hsl(208, 54%, 93%);
+  --input-border-color: hsl(from var(--primary-color) h 73% 69%);
+  --input-background-color: hsl(from var(--primary-color) h 54% 93%);
 
-  --input-border-color-hover: hsl(208, 70%, 66%);
-  --input-background-color-hover: hsl(208, 47%, 88%);
+  --input-border-color-hover: hsl(from var(--primary-color) h 70% 66%);
+  --input-background-color-hover: hsl(from var(--primary-color) h 47% 88%);
 
-  --input-border-color-active: hsl(208, 62%, 57%);
-  --input-background-color-active: hsl(207, 48%, 78%);
+  --input-border-color-active: hsl(from var(--primary-color) h 62% 57%);
+  --input-background-color-active: hsl(from var(--primary-color) h 48% 78%);
 
-  --input-error-border-color: hsl(0, 76%, 56%);
-  /* - checkbox radio */
-  --input-checkbox-radio-border-color: hsl(208, 78%, 60%);
-  --input-checkbox-radio-background-color: hsl(207, 33%, 95%);
+  --input-error-border-color: hsl(from var(--secondary-2-color) h 76% 56%);
+  /* - checkbox and radio */
+  --input-checkbox-radio-border-color: hsl(from var(--primary-color) h 78% 60%);
+  --input-checkbox-radio-background-color: hsl(from var(--primary-color) h 33% 95%);
 
-  --input-checkbox-radio-border-color-hover: hsl(203, 68%, 50%);
-  --input-checkbox-radio-background-color-hover: hsl(204, 48%, 86%);
+  --input-checkbox-radio-border-color-hover: hsl(from var(--primary-color) h 68% 50%);
+  --input-checkbox-radio-background-color-hover: hsl(from var(--primary-color) h 48% 86%);
 
-  --input-checkbox-radio-border-color-active: hsl(208, 68%, 46%);
-  --input-checkbox-radio-background-color-active: hsl(203, 46%, 62%);
+  --input-checkbox-radio-border-color-active: hsl(from var(--primary-color) h 68% 46%);
+  --input-checkbox-radio-background-color-active: hsl(from var(--primary-color) h 46% 62%);
 
   /* - checkbox check */
-  --input-checkbox-checked-border-color: hsl(162, 87%, 40%);
-  --input-checkbox-checked-background-color: hsl(162, 77%, 64%);
+  --input-checkbox-checked-border-color: hsl(from var(--secondary-1-color) h 87% 40%);
+  --input-checkbox-checked-background-color: hsl(from var(--secondary-1-color) h 77% 64%);
 
   /* - checkbox toggle  */
-  --input-checkbox-toggle-background-color: hsl(160, 10%, 36%);
-  --input-checkbox-toggle-background-color-active: hsl(159, 10%, 46%);
-  --input-checkbox-toggle-background-color-active-checked: hsl(162, 60%, 50%);
-  --input-checkbox-toggle-background-color-checked: hsl(162, 87%, 40%);
+  --input-checkbox-toggle-background-color: hsl(from var(--secondary-1-color) h 10% 36%);
+  --input-checkbox-toggle-background-color-active: hsl(from var(--secondary-1-color) h 10% 46%);
+  --input-checkbox-toggle-background-color-active-checked: hsl(
+    from var(--secondary-1-color) h 60% 50%
+  );
+  --input-checkbox-toggle-background-color-checked: hsl(from var(--secondary-1-color) h 87% 40%);
 
   /* - radio check */
-  --input-radio-checked-background-color: hsl(208, 68%, 46%);
+  --input-radio-checked-background-color: hsl(from var(--primary-color) h 68% 46%);
 
   /* * popup.css */
-  --popup-background-color-color: hsl(190, 29%, 92%);
-  --popup-background-color-hover: hsl(188, 43%, 84%);
-  --popup-background-color-active: hsl(189, 32%, 69%);
+  --popup-background-color-color: hsl(from var(--primary-color) h 29% 92%);
+  --popup-background-color-hover: hsl(from var(--primary-color) h 43% 84%);
+  --popup-background-color-active: hsl(from var(--primary-color) h 32% 69%);
 
-  --popup-timer-separator-background-color: hsl(196, 19%, 65%);
+  --popup-timer-separator-background-color: hsl(from var(--primary-color) h 19% 65%);
 
-  --popup-footer-background-color: hsl(196, 19%, 65%);
+  --popup-footer-background-color: hsl(from var(--primary-color) h 19% 65%);
 
-  --popup-progress-bar-background-color: hsl(189, 39%, 52%);
-  --popup-progress-bar-box-shadow: hsl(189, 41%, 46%);
-  --popup-progress-bar-fill-background-color: hsl(189, 79%, 15%);
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 39% 52%);
+  --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 41% 46%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 79% 15%);
 
   /* * summary.css */
   /* - tutorial */
-  --summary-tutorial-no-pointers-background-color: hsla(0, 0%, 0%, 0.25);
-  --summary-tutorial-highlighter-background-color: hsla(0, 0%, 0%, 0.125);
-  --summary-tutorial-highlighter-box-shadow: hsla(0, 0%, 0%, 0.5);
+  --summary-tutorial-no-pointers-background-color: hsla(from var(--theme-inverse) h s l / 0.25);
+  --summary-tutorial-highlighter-background-color: hsla(from var(--theme-inverse) h s l / 0.125);
+  --summary-tutorial-highlighter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
 
-  --summary-tutorial-popup-box-shadowr: hsla(0, 0%, 0%, 0.5);
-  --summary-tutorial-popup-background-color: hsl(200, 63%, 86%);
-  --summary-tutorial-popup-border-color: hsl(203, 100%, 36%);
+  --summary-tutorial-popup-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --summary-tutorial-popup-background-color: hsl(from var(--primary-color) calc(h - 8) 63% 86%);
+  --summary-tutorial-popup-border-color: hsl(from var(--primary-color) calc(h - 8) 100% 36%);
 
-  --summary-tutorial-popup-finished-background-color: hsl(161, 35%, 91%);
-  --summary-tutorial-popup-finished-border-color: hsl(162, 73%, 49%);
+  --summary-tutorial-popup-finished-background-color: hsl(from var(--secondary-1-color) h 35% 91%);
+  --summary-tutorial-popup-finished-border-color: hsl(from var(--secondary-1-color) h 73% 49%);
 
-  --summary-tutorial-description-tip-border-left-color: hsl(200, 42%, 69%);
-  --summary-tutorial-description-tip-background-color: hsl(200, 54%, 81%);
+  --summary-tutorial-description-tip-border-left-color: hsl(
+    from var(--primary-color) calc(h - 8) 42% 69%
+  );
+  --summary-tutorial-description-tip-background-color: hsl(
+    from var(--primary-color) calc(h - 8) 54% 81%
+  );
 
   /* button_skip background-color was not added because the mix-color is to darken the button always */
 
   /* - timer */
   /* - - message */
-  --summary-timer-item-no-data-background-color: hsl(195, 60%, 85%);
-  --summary-timer-item-no-data-border-color: hsl(196, 89%, 22%);
+  --summary-timer-item-no-data-background-color: hsl(from var(--primary-color) h 60% 85%);
+  --summary-timer-item-no-data-border-color: hsl(from var(--primary-color) h 89% 22%);
 
-  --summary-timer-item-invalid-background-color: hsl(16, 100%, 91%);
-  --summary-timer-item-invalid-border-color: hsl(0, 94%, 21%);
+  --summary-timer-item-invalid-background-color: hsl(from var(--secondary-2-color) h 60% 90%);
+  --summary-timer-item-invalid-border-color: hsl(from var(--secondary-2-color) h 94% 21%);
 
   /* - - item rows */
-  --summary-timer-item-row-line-background-color: hsl(189, 44%, 61%);
-  --summary-timer-item-total-time-background-color: hsl(190, 51%, 90%);
+  --summary-timer-item-row-line-background-color: hsl(from var(--primary-color) h 44% 61%);
+  --summary-timer-item-total-time-background-color: hsl(from var(--primary-color) h 51% 90%);
 
-  --summary-timer-item-progress-background-color: hsl(189, 74%, 31%);
-  --summary-timer-item-progress-border-color: hsl(189, 79%, 23%);
+  --summary-timer-item-progress-background-color: hsl(from var(--primary-color) h 74% 31%);
+  --summary-timer-item-progress-border-color: hsl(from var(--primary-color) h 79% 23%);
 
   /* - - show more */
-  --summary-timer-body-more-background-color: hsl(189, 58%, 55%);
+  --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 58% 55%);
 
   /* * options.css */
-  --options-header-border-bottom-color: hsl(203, 53%, 77%);
-  --options-options-more-border-color: hsl(0, 0%, 71%);
+  --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 53% 77%);
+  --options-options-more-border-color: hsl(from var(--primary-color) h 5% 70%);
 
   /* - notifications */
-  --options-notifications-config-border-color: hsl(203, 61%, 90%);
+  --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 61% 90%);
 
   /* - new day */
-  --options-new-day-step-pointer-background-color: hsl(207, 28%, 51%);
-  --options-new-day-current-text-color: hsl(0, 0%, 100%);
-  --options-new-day-current-background-color: rgba(0, 0, 0, 0.25);
+  --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 28% 50%);
+  --options-new-day-current-text-color: hsl(from var(--light) h s l);
+  --options-new-day-current-background-color: hsla(from var(--primary-color) h 40% 30% / 0.7);
+}
+
+:root[data-theme-dark="true"] {
+  color-scheme: dark;
+
+  --theme: var(--dark);
+  --theme-inverse: var(--light);
+
+  /* * global.css */
+  --background-color: var(--dark);
+  --text-color: var(--light);
+
+  --focus-outline: hsl(from var(--primary-color) h 50% 95%);
+  --focus-box-shadow: hsl(from var(--primary-color) h 10% 20%);
+
+  /* * full-page.css */
+  --main-children-box-shadow: hsla(from var(--theme-inverse) h s l / 0.3);
+  --footer-color: hsl(from var(--complement-color) h 15% 10%);
+
+  /* * input.css */
+  /* - buttons */
+  --button-border-color: hsl(from var(--primary-color) h 35% 35%);
+  --button-background-color: hsl(from var(--primary-color) h 30% 20%);
+
+  --button-border-color-hover: hsl(from var(--primary-color) h 40% 45%);
+  --button-background-color-hover: hsl(from var(--primary-color) h 35% 28%);
+
+  --button-border-color-active: hsl(from var(--primary-color) h 45% 55%);
+  --button-background-color-active: hsl(from var(--primary-color) h 40% 40%);
+
+  /* - inputs */
+  --input-border-color: hsl(from var(--primary-color) h 40% 20%);
+  --input-background-color: hsl(from var(--primary-color) h 30% 10%);
+
+  --input-border-color-hover: hsl(from var(--primary-color) h 45% 30%);
+  --input-background-color-hover: hsl(from var(--primary-color) h 35% 15%);
+
+  --input-border-color-active: hsl(from var(--primary-color) h 50% 40%);
+  --input-background-color-active: hsl(from var(--primary-color) h 40% 20%);
+
+  --input-error-border-color: hsl(from var(--secondary-2-color) h 75% 50%);
+  /* - checkbox and radio */
+  --input-checkbox-radio-border-color: hsl(from var(--primary-color) h 35% 20%);
+  --input-checkbox-radio-background-color: hsl(from var(--primary-color) h 8% 5%);
+
+  --input-checkbox-radio-border-color-hover: hsl(from var(--primary-color) h 40% 25%);
+  --input-checkbox-radio-background-color-hover: hsl(from var(--primary-color) h 23% 14%);
+
+  --input-checkbox-radio-border-color-active: hsl(from var(--primary-color) h 50% 30%);
+  --input-checkbox-radio-background-color-active: hsl(from var(--primary-color) h 21% 25%);
+
+  /* - checkbox check */
+  --input-checkbox-checked-border-color: hsl(from var(--secondary-1-color) h 60% 60%);
+  --input-checkbox-checked-background-color: hsl(from var(--secondary-1-color) h 50% 35%);
+
+  /* - checkbox toggle  */
+  --input-checkbox-toggle-background-color: hsl(from var(--secondary-1-color) h 2% 65%);
+  --input-checkbox-toggle-background-color-active: hsl(from var(--secondary-1-color) h 4% 55%);
+  --input-checkbox-toggle-background-color-active-checked: hsl(
+    from var(--secondary-1-color) h 50% 80%
+  );
+  --input-checkbox-toggle-background-color-checked: hsl(from var(--secondary-1-color) h 60% 60%);
+
+  /* - radio check */
+  --input-radio-checked-background-color: hsl(from var(--primary-color) h 80% 60%);
+
+  /* * popup.css */
+  --popup-background-color-color: hsl(from var(--primary-color) h 4% 10%);
+  --popup-background-color-hover: hsl(from var(--primary-color) h 18% 16%);
+  --popup-background-color-active: hsl(from var(--primary-color) h 20% 28%);
+
+  --popup-timer-separator-background-color: hsl(from var(--primary-color) h 2% 35%);
+
+  --popup-footer-background-color: hsl(from var(--primary-color) h 2% 25%);
+
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 15% 35%);
+  --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 15% 25%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 50% 70%);
+
+  /* * summary.css */
+  /* - tutorial */
+  --summary-tutorial-no-pointers-background-color: hsla(from var(--theme-inverse) h s l / 0.25);
+  --summary-tutorial-highlighter-background-color: hsla(from var(--theme-inverse) h s l / 0.125);
+  --summary-tutorial-highlighter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+
+  --summary-tutorial-popup-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --summary-tutorial-popup-background-color: hsl(from var(--primary-color) calc(h - 8) 38% 14%);
+  --summary-tutorial-popup-border-color: hsl(from var(--primary-color) calc(h - 8) 60% 35%);
+
+  --summary-tutorial-popup-finished-background-color: hsl(from var(--secondary-1-color) h 15% 18%);
+  --summary-tutorial-popup-finished-border-color: hsl(from var(--secondary-1-color) h 48% 35%);
+
+  --summary-tutorial-description-tip-border-left-color: hsl(
+    from var(--primary-color) calc(h - 8) 58% 31%
+  );
+  --summary-tutorial-description-tip-background-color: hsl(
+    from var(--primary-color) calc(h - 8) 46% 19%
+  );
+
+  /* button_skip background-color was not added because the mix-color is to darken the button always */
+
+  /* - timer */
+  /* - - message */
+  --summary-timer-item-no-data-background-color: hsl(from var(--primary-color) h 35% 10%);
+  --summary-timer-item-no-data-border-color: hsl(from var(--primary-color) h 10% 60%);
+
+  --summary-timer-item-invalid-background-color: hsl(from var(--secondary-2-color) h 75% 10%);
+  --summary-timer-item-invalid-border-color: hsl(from var(--secondary-2-color) h 30% 60%);
+
+  /* - - item rows */
+  --summary-timer-item-row-line-background-color: hsl(from var(--primary-color) h 20% 25%);
+  --summary-timer-item-total-time-background-color: hsl(from var(--primary-color) h 25% 15%);
+
+  --summary-timer-item-progress-background-color: hsl(from var(--primary-color) h 50% 70%);
+  --summary-timer-item-progress-border-color: hsl(from var(--primary-color) h 40% 60%);
+
+  /* - - show more */
+  --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 33% 45%);
+
+  /* * options.css */
+  --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 28% 20%);
+  --options-options-more-border-color: hsl(from var(--primary-color) h 10% 25%);
+
+  /* - notifications */
+  --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 28% 18%);
+
+  /* - new day */
+  --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 30% 70%);
+  --options-new-day-current-text-color: hsl(from var(--light) h s l);
+  --options-new-day-current-background-color: hsla(from var(--primary-color) h 15% 30% / 0.7);
 }
 
 /* MARK: Global
@@ -147,6 +309,7 @@
   pointer-events: none;
   color: initial;
   background-color: initial;
+  color: var(--text-color);
 }
 
 [disabled="true"]:not([data-disabled-effect="true"]) {

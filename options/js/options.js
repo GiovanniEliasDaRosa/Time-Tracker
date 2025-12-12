@@ -17,12 +17,16 @@ document.querySelector("#tutorial_start").onclick = () => {
 // New Day
 let new_day = new NewDay();
 
+// Themes
+let themes = new Themes();
+
 // * MARK: Setup options
 async function main() {
   configurations = await Storage.get("configurations");
 
   notifications.setup();
   new_day.setup();
+  themes.setup();
 }
 
 main();
