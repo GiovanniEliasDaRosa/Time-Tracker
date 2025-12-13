@@ -291,7 +291,7 @@ Object.prototype.isEmpty = function () {
 };
 
 // As this JS file is necessary for the pages, this is where the code can be placed and remove unecessary repeating
-async function loadTheme(override_theme = null) {
+async function loadTheme() {
   let load = await browser.storage.local.get("configurations");
 
   // Has config, and is dark theme

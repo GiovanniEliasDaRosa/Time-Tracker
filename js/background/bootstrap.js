@@ -35,6 +35,8 @@ let notification_timer = {
 
 let timer_timeout = null;
 
+let first_install = false;
+
 // start everything
 async function bootstrap() {
   // Update the current and last tab values
@@ -65,6 +67,21 @@ async function bootstrap() {
   timer_timeout = setTimeout(() => {
     saveTrackedTime({ firstRun: true });
   }, (60 - next_minute) * 1000);
+
+  if (first_install) {
+    // User prefers dark mode
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      configurations.darkTheme = true;
+    } else {
+      configurations.darkTheme = false;
+    }
+
+    // Update the right prefered theme
+    configurations = await Storage.set("configurations", configurations);
+
+    // Open tutorial
+    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+  }
 }
 
 async function handleNewDayStart(from_timer = false) {

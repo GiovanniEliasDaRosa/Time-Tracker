@@ -242,7 +242,7 @@ messageManager.listen();
 function handleInstalled(details) {
   // Fist install on this browser
   if (details.reason == "install") {
-    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+    first_install = true;
   }
 }
 
