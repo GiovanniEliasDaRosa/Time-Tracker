@@ -74,12 +74,13 @@ class NewDay {
     }
 
     this.range.value = hour;
-    this.handleInputUpdate("slider", { tooltip: false });
+    this.handleInputUpdate("slider", { tooltip: false, save: false });
   }
 
   handleInputUpdate(from, options_passed = {}) {
     let options = {
       tooltip: options_passed.tooltip ?? true,
+      save: options_passed.save ?? true,
     };
 
     clearTimeout(this.newDaySliderTimeout);
@@ -89,6 +90,8 @@ class NewDay {
       this.range.value = this.inputHours.value;
     } else {
       this.inputHours.value = this.range.value;
+
+      Validator.validate(this.inputHours, -12, 12);
     }
 
     let hour = Number(this.range.value);
@@ -132,13 +135,16 @@ class NewDay {
         this.newDaySliderTimeout = setTimeout(() => {
           this.current.disable();
         }, 250);
-      }, 15000);
+      }, 1500);
     }
 
     // If has a result value to be changed
     this.hoursSide = hour == -12 ? "left" : "";
     this.hoursSelected = Number(formatted.hour24);
-    this.waitToSave();
+
+    if (options.save) {
+      this.waitToSave();
+    }
   }
 
   handleInputManuallyUpdate(animate = true) {
