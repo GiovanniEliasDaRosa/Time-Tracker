@@ -1,15 +1,17 @@
 const tabManager = new TabManager();
 
-let today = getDateInfo(new Date());
+let new_day_last_update = null;
+
+let today = null;
 
 let tracked_time_history = {
   trackedDates: {},
-  lastTrack: today.isoDate,
+  lastTrack: null,
   totalDays: 0,
 };
 
 let tracking_time = {
-  isoDate: today.isoDate,
+  isoDate: null,
   domains: [],
   totalTime: 0,
 };
@@ -20,39 +22,72 @@ let configurations = {
     timeBetween: 30,
     showTopThree: true,
   },
+  newDayStart: {
+    hour: 0,
+    side: "",
+  },
+  darkTheme: false,
 };
 
 let notification_timer = {
   minutesPassed: 0,
 };
 
-// let timer = {
-//   active: true,
-//   minutesSinceLast active
-// };
-
 let timer_timeout = null;
+
+let first_install = false;
 
 // start everything
 async function bootstrap() {
   // Update the current and last tab values
   tabManager.updatedTab(false);
 
-  console.clear();
   console.warn("------\nNEW RUN\n------");
-
-  // Check for "tracked_time_history" in storage, if has get that, else set to the defaults
-  tracked_time_history = await Storage.getOrAdd("tracked_time_history", tracked_time_history);
 
   // Check for "configurations" in storage, if has get that, else set to the defaults
   configurations = await Storage.getOrAdd("configurations", configurations);
+
+  today = getDateInfo(await checkNewDay({ returnHour: true }));
+  tracked_time_history.lastTrack = today.isoDate;
+  tracking_time.isoDate = today.isoDate;
+
+  // Check for "tracked_time_history" in storage, if has get that, else set to the defaults
+  tracked_time_history = await Storage.getOrAdd("tracked_time_history", tracked_time_history);
 
   // Get today's date
   // Check for "today's date" in storage, if has get that, else set to the defaults
   tracking_time = await Storage.getOrAdd(today.isoDate, tracking_time);
 
+  await handleNewDayStart();
+
+  // Calculate seconds until the next minute
+  let next_minute = new Date().getSeconds();
+
+  // Start tracking time
+  timer_timeout = setTimeout(() => {
+    saveTrackedTime({ firstRun: true });
+  }, (60 - next_minute) * 1000);
+
+  if (first_install) {
+    // User prefers dark mode
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      configurations.darkTheme = true;
+    } else {
+      configurations.darkTheme = false;
+    }
+
+    // Update the right prefered theme
+    configurations = await Storage.set("configurations", configurations);
+
+    // Open tutorial
+    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+  }
+}
+
+async function handleNewDayStart(from_timer = false) {
   // First access to the browser this day
-  if (tracking_time.domains.length == 0) {
+  // Or the day changed while extension was running
+  if (tracking_time.domains.length == 0 || from_timer) {
     // Push a new domain on the today's data
     tabManager.handeDomainChange();
 
@@ -94,6 +129,22 @@ async function bootstrap() {
     tracked_time_history.lastTrack = today.isoDate;
     tracked_time_history.totalDays += 1;
     tracked_time_history = await Storage.set("tracked_time_history", tracked_time_history);
+
+    // Reset current tracked time
+    tracking_time = {
+      isoDate: today.isoDate,
+      domains: [],
+      totalTime: 0,
+    };
+
+    // Stop tabManager tracking, and reset tabManager domains
+    tabManager.stopTraker();
+    tabManager.sessionDomains = [];
+
+    // Restore tabManager tracking
+    tabManager.startTraker();
+
+    tracking_time = await Storage.set("tracking_time", tracking_time);
   } else {
     // Access on the same day
     let goto_sessions_domains = [];
@@ -107,14 +158,6 @@ async function bootstrap() {
 
     tabManager.sessionDomains = goto_sessions_domains;
   }
-
-  // Calculate seconds until the next minute
-  let nextMinute = new Date().getSeconds();
-
-  // Start tracking time
-  timer_timeout = setTimeout(() => {
-    saveTrackedTime({ firstRun: true });
-  }, (60 - nextMinute) * 1000);
 }
 
 bootstrap();

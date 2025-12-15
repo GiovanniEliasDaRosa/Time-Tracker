@@ -54,7 +54,7 @@ class Storage {
     }
   }
 
-  error(error) {
+  static error(error) {
     console.error(error);
     console.trace();
     return false;

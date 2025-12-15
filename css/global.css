@@ -1,9 +1,294 @@
+@import "input.css";
+
 @font-face {
   font-family: "Inconsolata";
   src: url("../fonts/inconsolata-variable.ttf");
   font-weight: 100 900;
 }
 
+:root {
+  --hue: 208;
+  --separation: 45;
+
+  --light: hsl(var(--hue) 4% 98%);
+  --dark: hsl(var(--hue) 50% 4%);
+
+  --theme: var(--light);
+  --theme-inverse: var(--dark);
+
+  --primary-color: hsl(var(--hue) 100% 50%);
+  --secondary-1-color: hsl(calc(var(--hue) - var(--separation)) 100% 50%);
+  --secondary-2-color: hsl(calc(var(--hue) - 180 - var(--separation)) 100% 50%);
+  --complement-color: hsl(calc(var(--hue) + 180) 100% 50%);
+
+  /* Have the CSS below as a default to prevent flashing a white screen */
+  color-scheme: dark;
+  --theme: var(--dark);
+  --theme-inverse: var(--light);
+}
+
+:root[data-theme-dark="false"] {
+  color-scheme: light;
+
+  --theme: var(--light);
+  --theme-inverse: var(--dark);
+
+  /* * global.css */
+  --background-color: var(--light);
+  --text-color: var(--dark);
+
+  --focus-outline: hsl(from var(--primary-color) h 90% 20%);
+  --focus-box-shadow: hsl(from var(--primary-color) h 10% 90%);
+
+  /* * full-page.css */
+  --main-children-box-shadow: hsla(from var(--theme-inverse) h s l / 0.2);
+  --footer-color: hsl(from var(--complement-color) h 100% 92%);
+
+  /* * input.css */
+  /* - buttons */
+  --button-border-color: hsl(from var(--primary-color) h 56% 52%);
+  --button-background-color: hsl(from var(--primary-color) h 53% 86%);
+
+  --button-border-color-hover: hsl(from var(--primary-color) h 67% 60%);
+  --button-background-color-hover: hsl(from var(--primary-color) h 57% 72%);
+
+  --button-border-color-active: hsl(from var(--primary-color) h 54% 42%);
+  --button-background-color-active: hsl(from var(--primary-color) h 40% 55%);
+
+  /* - inputs */
+  --input-border-color: hsl(from var(--primary-color) h 73% 69%);
+  --input-background-color: hsl(from var(--primary-color) h 54% 93%);
+
+  --input-border-color-hover: hsl(from var(--primary-color) h 70% 66%);
+  --input-background-color-hover: hsl(from var(--primary-color) h 47% 88%);
+
+  --input-border-color-active: hsl(from var(--primary-color) h 62% 57%);
+  --input-background-color-active: hsl(from var(--primary-color) h 48% 78%);
+
+  --input-error-border-color: hsl(from var(--secondary-2-color) h 76% 56%);
+  /* - checkbox and radio */
+  --input-checkbox-radio-border-color: hsl(from var(--primary-color) h 78% 60%);
+  --input-checkbox-radio-background-color: hsl(from var(--primary-color) h 33% 95%);
+
+  --input-checkbox-radio-border-color-hover: hsl(from var(--primary-color) h 68% 50%);
+  --input-checkbox-radio-background-color-hover: hsl(from var(--primary-color) h 48% 86%);
+
+  --input-checkbox-radio-border-color-active: hsl(from var(--primary-color) h 68% 46%);
+  --input-checkbox-radio-background-color-active: hsl(from var(--primary-color) h 46% 62%);
+
+  /* - checkbox check */
+  --input-checkbox-checked-border-color: hsl(from var(--secondary-1-color) h 87% 40%);
+  --input-checkbox-checked-background-color: hsl(from var(--secondary-1-color) h 77% 64%);
+
+  /* - checkbox toggle  */
+  --input-checkbox-toggle-background-color: hsl(from var(--secondary-1-color) h 10% 36%);
+  --input-checkbox-toggle-background-color-active: hsl(from var(--secondary-1-color) h 10% 46%);
+  --input-checkbox-toggle-background-color-active-checked: hsl(
+    from var(--secondary-1-color) h 60% 50%
+  );
+  --input-checkbox-toggle-background-color-checked: hsl(from var(--secondary-1-color) h 87% 40%);
+
+  /* - radio check */
+  --input-radio-checked-background-color: hsl(from var(--primary-color) h 68% 46%);
+
+  /* * popup.css */
+  --popup-background-color-color: hsl(from var(--primary-color) h 29% 92%);
+  --popup-background-color-hover: hsl(from var(--primary-color) h 43% 84%);
+  --popup-background-color-active: hsl(from var(--primary-color) h 32% 69%);
+
+  --popup-timer-separator-background-color: hsl(from var(--primary-color) h 19% 65%);
+
+  --popup-footer-background-color: hsl(from var(--primary-color) h 19% 65%);
+
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 39% 52%);
+  --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 41% 46%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 79% 15%);
+
+  /* * summary.css */
+  /* - tutorial */
+  --summary-tutorial-no-pointers-background-color: hsla(from var(--theme-inverse) h s l / 0.25);
+  --summary-tutorial-highlighter-background-color: hsla(from var(--theme-inverse) h s l / 0.125);
+  --summary-tutorial-highlighter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+
+  --summary-tutorial-popup-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --summary-tutorial-popup-background-color: hsl(from var(--primary-color) calc(h - 8) 63% 86%);
+  --summary-tutorial-popup-border-color: hsl(from var(--primary-color) calc(h - 8) 100% 36%);
+
+  --summary-tutorial-popup-finished-background-color: hsl(from var(--secondary-1-color) h 35% 91%);
+  --summary-tutorial-popup-finished-border-color: hsl(from var(--secondary-1-color) h 73% 49%);
+
+  --summary-tutorial-description-tip-border-left-color: hsl(
+    from var(--primary-color) calc(h - 8) 42% 69%
+  );
+  --summary-tutorial-description-tip-background-color: hsl(
+    from var(--primary-color) calc(h - 8) 54% 81%
+  );
+
+  /* button_skip background-color was not added because the mix-color is to darken the button always */
+
+  /* - timer */
+  /* - - message */
+  --summary-timer-item-no-data-background-color: hsl(from var(--primary-color) h 60% 85%);
+  --summary-timer-item-no-data-border-color: hsl(from var(--primary-color) h 89% 22%);
+
+  --summary-timer-item-invalid-background-color: hsl(from var(--secondary-2-color) h 60% 90%);
+  --summary-timer-item-invalid-border-color: hsl(from var(--secondary-2-color) h 94% 21%);
+
+  /* - - item rows */
+  --summary-timer-item-row-line-background-color: hsl(from var(--primary-color) h 44% 61%);
+  --summary-timer-item-total-time-background-color: hsl(from var(--primary-color) h 51% 90%);
+
+  --summary-timer-item-progress-background-color: hsl(from var(--primary-color) h 74% 31%);
+  --summary-timer-item-progress-border-color: hsl(from var(--primary-color) h 79% 23%);
+
+  /* - - show more */
+  --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 58% 55%);
+
+  /* * options.css */
+  --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 53% 77%);
+  --options-options-more-border-color: hsl(from var(--primary-color) h 5% 70%);
+
+  /* - notifications */
+  --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 61% 90%);
+
+  /* - new day */
+  --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 28% 50%);
+  --options-new-day-current-text-color: hsl(from var(--light) h s l);
+  --options-new-day-current-background-color: hsla(from var(--primary-color) h 40% 30% / 0.7);
+}
+
+:root[data-theme-dark="true"] {
+  color-scheme: dark;
+
+  --theme: var(--dark);
+  --theme-inverse: var(--light);
+
+  /* * global.css */
+  --background-color: var(--dark);
+  --text-color: var(--light);
+
+  --focus-outline: hsl(from var(--primary-color) h 50% 95%);
+  --focus-box-shadow: hsl(from var(--primary-color) h 10% 20%);
+
+  /* * full-page.css */
+  --main-children-box-shadow: hsla(from var(--theme-inverse) h s l / 0.3);
+  --footer-color: hsl(from var(--complement-color) h 15% 10%);
+
+  /* * input.css */
+  /* - buttons */
+  --button-border-color: hsl(from var(--primary-color) h 35% 35%);
+  --button-background-color: hsl(from var(--primary-color) h 30% 20%);
+
+  --button-border-color-hover: hsl(from var(--primary-color) h 40% 45%);
+  --button-background-color-hover: hsl(from var(--primary-color) h 35% 28%);
+
+  --button-border-color-active: hsl(from var(--primary-color) h 45% 55%);
+  --button-background-color-active: hsl(from var(--primary-color) h 40% 40%);
+
+  /* - inputs */
+  --input-border-color: hsl(from var(--primary-color) h 40% 20%);
+  --input-background-color: hsl(from var(--primary-color) h 30% 10%);
+
+  --input-border-color-hover: hsl(from var(--primary-color) h 45% 30%);
+  --input-background-color-hover: hsl(from var(--primary-color) h 35% 15%);
+
+  --input-border-color-active: hsl(from var(--primary-color) h 50% 40%);
+  --input-background-color-active: hsl(from var(--primary-color) h 40% 20%);
+
+  --input-error-border-color: hsl(from var(--secondary-2-color) h 75% 50%);
+  /* - checkbox and radio */
+  --input-checkbox-radio-border-color: hsl(from var(--primary-color) h 35% 20%);
+  --input-checkbox-radio-background-color: hsl(from var(--primary-color) h 8% 5%);
+
+  --input-checkbox-radio-border-color-hover: hsl(from var(--primary-color) h 40% 25%);
+  --input-checkbox-radio-background-color-hover: hsl(from var(--primary-color) h 23% 14%);
+
+  --input-checkbox-radio-border-color-active: hsl(from var(--primary-color) h 50% 30%);
+  --input-checkbox-radio-background-color-active: hsl(from var(--primary-color) h 21% 25%);
+
+  /* - checkbox check */
+  --input-checkbox-checked-border-color: hsl(from var(--secondary-1-color) h 60% 60%);
+  --input-checkbox-checked-background-color: hsl(from var(--secondary-1-color) h 50% 35%);
+
+  /* - checkbox toggle  */
+  --input-checkbox-toggle-background-color: hsl(from var(--secondary-1-color) h 2% 65%);
+  --input-checkbox-toggle-background-color-active: hsl(from var(--secondary-1-color) h 4% 55%);
+  --input-checkbox-toggle-background-color-active-checked: hsl(
+    from var(--secondary-1-color) h 50% 80%
+  );
+  --input-checkbox-toggle-background-color-checked: hsl(from var(--secondary-1-color) h 60% 60%);
+
+  /* - radio check */
+  --input-radio-checked-background-color: hsl(from var(--primary-color) h 80% 60%);
+
+  /* * popup.css */
+  --popup-background-color-color: hsl(from var(--primary-color) h 4% 10%);
+  --popup-background-color-hover: hsl(from var(--primary-color) h 18% 16%);
+  --popup-background-color-active: hsl(from var(--primary-color) h 20% 28%);
+
+  --popup-timer-separator-background-color: hsl(from var(--primary-color) h 2% 35%);
+
+  --popup-footer-background-color: hsl(from var(--primary-color) h 2% 25%);
+
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 15% 35%);
+  --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 15% 25%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 50% 70%);
+
+  /* * summary.css */
+  /* - tutorial */
+  --summary-tutorial-no-pointers-background-color: hsla(from var(--theme-inverse) h s l / 0.25);
+  --summary-tutorial-highlighter-background-color: hsla(from var(--theme-inverse) h s l / 0.125);
+  --summary-tutorial-highlighter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+
+  --summary-tutorial-popup-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --summary-tutorial-popup-background-color: hsl(from var(--primary-color) calc(h - 8) 38% 14%);
+  --summary-tutorial-popup-border-color: hsl(from var(--primary-color) calc(h - 8) 60% 35%);
+
+  --summary-tutorial-popup-finished-background-color: hsl(from var(--secondary-1-color) h 15% 18%);
+  --summary-tutorial-popup-finished-border-color: hsl(from var(--secondary-1-color) h 48% 35%);
+
+  --summary-tutorial-description-tip-border-left-color: hsl(
+    from var(--primary-color) calc(h - 8) 58% 31%
+  );
+  --summary-tutorial-description-tip-background-color: hsl(
+    from var(--primary-color) calc(h - 8) 46% 19%
+  );
+
+  /* button_skip background-color was not added because the mix-color is to darken the button always */
+
+  /* - timer */
+  /* - - message */
+  --summary-timer-item-no-data-background-color: hsl(from var(--primary-color) h 35% 10%);
+  --summary-timer-item-no-data-border-color: hsl(from var(--primary-color) h 10% 60%);
+
+  --summary-timer-item-invalid-background-color: hsl(from var(--secondary-2-color) h 75% 10%);
+  --summary-timer-item-invalid-border-color: hsl(from var(--secondary-2-color) h 30% 60%);
+
+  /* - - item rows */
+  --summary-timer-item-row-line-background-color: hsl(from var(--primary-color) h 20% 25%);
+  --summary-timer-item-total-time-background-color: hsl(from var(--primary-color) h 25% 15%);
+
+  --summary-timer-item-progress-background-color: hsl(from var(--primary-color) h 50% 70%);
+  --summary-timer-item-progress-border-color: hsl(from var(--primary-color) h 40% 60%);
+
+  /* - - show more */
+  --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 33% 45%);
+
+  /* * options.css */
+  --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 28% 20%);
+  --options-options-more-border-color: hsl(from var(--primary-color) h 10% 25%);
+
+  /* - notifications */
+  --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 28% 18%);
+
+  /* - new day */
+  --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 30% 70%);
+  --options-new-day-current-text-color: hsl(from var(--light) h s l);
+  --options-new-day-current-background-color: hsla(from var(--primary-color) h 15% 30% / 0.7);
+}
+
+/* MARK: Global
+*/
 *,
 *::before,
 *::after {
@@ -11,234 +296,20 @@
   margin: 0;
   padding: 0;
   font-family: Inconsolata, sans-serif;
+  color: var(--text-color);
 }
 
 :focus-visible {
-  outline: 0.125em dashed hsl(207, 93%, 21%);
+  outline: 0.125em dashed var(--focus-outline);
   outline-offset: 0.125em;
-  box-shadow: 0 0 0 0.375em hsl(210, 10%, 92%);
-}
-
-/* Remove Arrows from number inputs */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-input,
-button {
-  font-size: 1rem;
-  border-radius: 0.5em;
-}
-
-input:is([type="checkbox"], [type="radio"]),
-button,
-label {
-  cursor: pointer;
-}
-
-button:not(.no_button_style) {
-  padding: 0.5em 1em;
-}
-
-input:not([type="range"]) {
-  padding: 0.5em;
-}
-
-button:not(.no_button_style) {
-  border: solid 0.1em hsl(208, 56%, 52%);
-  background-color: hsl(208, 53%, 86%);
-}
-
-[class*="square"] {
-  padding: 0.5em !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: calc(1em + 1.2em + 0.2em);
-  height: calc(1em + 1.2em + 0.2em);
-}
-
-.square_big {
-  width: 4em;
-  height: 4em;
-}
-
-button:not(.no_button_style):is(:hover, :focus-visible) {
-  border-color: hsl(208, 67%, 60%);
-  background-color: hsl(207, 57%, 72%);
-}
-
-button:not(.no_button_style):active {
-  border-color: hsl(208, 54%, 42%);
-  background-color: hsl(207, 40%, 55%);
-}
-
-input:is([type="checkbox"], [type="radio"]) {
-  appearance: none;
-  border: solid 0.1em hsl(208, 78%, 60%);
-  background-color: hsl(207, 33%, 95%);
-  border-radius: 0.5em;
-  height: 1.5em;
-  width: 1.5em;
-
-  position: relative;
-}
-
-input:not([type="checkbox"], [type="radio"], .no_input_style) {
-  border: solid 0.1em hsl(208, 73%, 69%);
-  background-color: hsl(208, 54%, 93%);
-}
-
-input:not([type="checkbox"], [type="radio"], .no_input_style):is(:hover, :focus-visible) {
-  border-color: hsl(208, 70%, 66%);
-  background-color: hsl(208, 47%, 88%);
-}
-
-input:not([type="checkbox"], [type="radio"], .no_input_style):active {
-  border-color: hsl(208, 62%, 57%);
-  background-color: hsl(207, 48%, 78%);
-}
-
-input[type="checkbox"][data-type="toggle"] {
-  width: 2.8em;
-  height: 1.5em;
-  border-radius: 1em;
-  flex: 0 0 2.8em;
-}
-
-input[type="checkbox"][data-type="toggle"]::before {
-  content: "";
-  width: 1.1em;
-  height: 1.1em;
-  position: absolute;
-  left: 0.1em;
-  top: 0.1em;
-
-  border-radius: 1em;
-  background-color: hsl(160, 10%, 36%);
-  opacity: 1;
-
-  transform-origin: 0% 50%;
-  transition: 0.2s ease-out;
-  animation: toggle_out 0.5s;
-}
-
-input[type="checkbox"][data-type="toggle"]:checked::before {
-  animation: toggle_in 0.5s;
-}
-
-input[type="checkbox"][data-type="toggle"]:active::before {
-  background-color: hsl(159, 10%, 46%);
-}
-
-input[type="checkbox"][data-type="toggle"]:checked:active::before {
-  background-color: hsl(162, 60%, 50%);
-}
-
-input[type="checkbox"][data-type="toggle"]:checked::before {
-  background-color: hsl(162, 87%, 40%);
-  translate: 1.3em;
-  transform-origin: 100% 50%;
-}
-
-@keyframes toggle_out {
-  50% {
-    scale: 1.1 0.9;
-  }
-  100% {
-    scale: 1 1;
-  }
-}
-
-@keyframes toggle_in {
-  50% {
-    scale: 1.1 0.9;
-  }
-  100% {
-    scale: 1 1;
-  }
-}
-
-input[type="radio"] {
-  border-radius: 1em;
-}
-
-input:is([type="checkbox"], [type="radio"]):is(:hover, :focus-visible) {
-  border-color: hsl(203, 68%, 50%);
-  background-color: hsl(204, 48%, 86%);
-}
-
-input:is([type="checkbox"], [type="radio"]):active {
-  border-color: hsl(208, 68%, 46%);
-  background-color: hsl(203, 46%, 62%);
-}
-
-input[type="checkbox"]::before {
-  content: "\f00c";
-  position: absolute;
-  inset: 0;
-
-  user-select: none;
-  margin-right: 0 !important;
-
-  display: flex !important;
-  justify-content: center;
-  align-content: center;
-
-  opacity: 0;
-}
-
-input[type="radio"]::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  user-select: none;
-  background-color: hsl(208, 68%, 46%);
-
-  margin: 0.25em;
-  opacity: 0;
-  border-radius: inherit;
-}
-
-input[type="checkbox"]:not([data-type="toggle"]):checked {
-  border-color: hsl(162, 87%, 40%);
-  background-color: hsl(162, 77%, 64%);
-  transition: 0.25s ease-out;
-}
-
-input[type="checkbox"]:not([data-type="toggle"]):checked::before {
-  opacity: 1;
-  animation: 0.5s check_in cubic-bezier(0.5, 0.2, 0.3, 0.8);
-}
-
-input[type="radio"]:checked::before {
-  opacity: 1;
-}
-
-@keyframes check_in {
-  0% {
-    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-  }
-  100% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  }
+  box-shadow: 0 0 0 0.375em var(--focus-box-shadow);
 }
 
 [disabled="true"] {
   pointer-events: none;
   color: initial;
   background-color: initial;
+  color: var(--text-color);
 }
 
 [disabled="true"]:not([data-disabled-effect="true"]) {
@@ -246,11 +317,8 @@ input[type="radio"]:checked::before {
   filter: grayscale(75%);
 }
 
-.input_error {
-  border-color: hsl(0, 76%, 56%) !important;
-}
-
-/* Animator CSS */
+/* MARK: Animator
+*/
 .animator_expandable {
   overflow: hidden;
 }

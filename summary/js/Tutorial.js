@@ -184,8 +184,6 @@ You can restart the tutorial anytime by going to:
       this.popupButtons.skip.disable({ hide: false });
       this.skipConfirm = false;
       this.tutorialComplete(false);
-
-      this.element.setAttribute("data-selectable", "false");
       return;
     }
 

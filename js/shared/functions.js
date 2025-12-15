@@ -1,14 +1,14 @@
 // MARK: Dates
-function getDateInfo(date) {
+function getDateInfo(date, time = "00:00") {
   // If passed a string as a date get the DATE prototype
   if (typeof date == "string") {
-    date = new Date(`${date}T00:00`);
+    date = new Date(`${date} ${time}`);
   }
 
   [month, day, year] = date.format().split("/").map(Number);
   [monthLong, weekday] = date.format({ weekday: "long", month: "long" }).split(" ");
 
-  let temp_date = date;
+  let temp_date = new Date(date.getTime());
 
   // Set to the nearest Thursday: current date + 4 - current day number
   temp_date.setDate(temp_date.getDate() + 4 - (temp_date.getDay() || 7));
@@ -169,7 +169,6 @@ function animatorAnimate(options) {
   let timeout = options.timeout;
   let animate = options.animate ?? true;
 
-  console.log(timeout);
   if (parent == null || more == null || enabled == null || timeout == null) {
     console.error("Animator has an variable with an empty element associated with it", options);
     return;
@@ -290,3 +289,17 @@ Object.prototype.isEmpty = function () {
 
   return true;
 };
+
+// As this JS file is necessary for the pages, this is where the code can be placed and remove unecessary repeating
+async function loadTheme() {
+  let load = await browser.storage.local.get("configurations");
+
+  // Has config, and is dark theme
+  if (!load.isEmpty() && load.configurations.darkTheme) {
+    document.querySelector(":root").setAttribute("data-theme-dark", "true");
+  } else {
+    document.querySelector(":root").setAttribute("data-theme-dark", "false");
+  }
+}
+
+loadTheme();

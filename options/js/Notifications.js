@@ -40,10 +40,11 @@ class Notifications {
       this.waitToSave();
     };
 
-    this.optionsElements.timeBetweenInput.onkeydown = (e) => {
-      this.handleInputUpdate(e);
+    this.optionsElements.timeBetweenInput.onbeforeinput = (e) => {
+      Validator.number(this.optionsElements.timeBetweenInput, e);
     };
-    this.optionsElements.timeBetweenInput.onkeyup = (e) => {
+
+    this.optionsElements.timeBetweenInput.oninput = (e) => {
       this.handleInputUpdate(e);
     };
 
@@ -56,30 +57,12 @@ class Notifications {
   }
 
   handleInputUpdate(e) {
-    let char_code = e.code;
-    let any_key = char_code.match("Key|Digit|F|Arrow");
+    Validator.number(this.optionsElements.timeBetweenInput, e);
+    let valid_value = Validator.validate(this.optionsElements.timeBetweenInput, 1, 1440);
 
-    if (char_code == "Backspace" || char_code == "Tab") {
-      this.handleInputValidate();
-      return;
-    }
-
-    if (any_key == null || (any_key[0] == "Key" && !e.ctrlKey)) {
-      e.preventDefault();
-      return;
-    }
-
-    let input_value = this.optionsElements.timeBetweenInput.value;
-    if (input_value > 1440) {
-      input_value = 1440;
-      e.preventDefault();
-    }
-    this.optionsElements.timeBetweenInput.value = Number(input_value);
-
-    this.handleInputValidate();
-
-    if (input_value > 0) {
-      this.timeBetween = Number(input_value);
+    // If has the result value has changed and needs to be saved
+    if (valid_value) {
+      this.timeBetween = Number(this.optionsElements.timeBetweenInput.value);
       this.waitToSave();
     }
   }
@@ -90,14 +73,6 @@ class Notifications {
     this.waitSaveTimeout = setTimeout(() => {
       this.save();
     }, 500);
-  }
-
-  handleInputValidate() {
-    if (this.optionsElements.timeBetweenInput.value == 0) {
-      this.optionsElements.timeBetweenInput.classList.add("input_error");
-    } else {
-      this.optionsElements.timeBetweenInput.classList.remove("input_error");
-    }
   }
 
   handleUpdate(animate = true) {

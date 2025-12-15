@@ -1,3 +1,7 @@
+body {
+  background-color: var(--background-color);
+}
+
 main {
   --padding-inline: 1rem;
   --content-max-width: 160ch;
@@ -17,7 +21,7 @@ main {
 
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
-  min-height: 100svh;
+  min-height: 100lvh;
 }
 
 :is(main, .full-width) > :not(.breakout, .full-width) {
@@ -66,7 +70,7 @@ header > button {
 
 #main_content > *:not(.no_default_main) {
   padding: 1em;
-  box-shadow: 0 0.25em 0.5em -0.125em hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 0.25em 0.5em -0.125em var(--main-children-box-shadow);
   border-radius: 0.5em;
   display: grid;
   gap: 1em;
@@ -74,7 +78,8 @@ header > button {
 
 /* footer */
 footer {
-  background-color: hsl(207, 100%, 84%);
+  background-color: var(--footer-color);
+  margin-top: 2em;
 }
 
 .footer_div {

@@ -1,6 +1,4 @@
 async function saveTrackedTime(options_passed = {}) {
-  console.log("saveTrackedTime()");
-
   let options = {
     newTimeout: options_passed.newTimeout ?? true,
     firstRun: options_passed.firstRun ?? false,
@@ -9,6 +7,8 @@ async function saveTrackedTime(options_passed = {}) {
   updateTrackedTime();
 
   await tabManager.updateTodaysData();
+
+  checkNewDay();
 
   // If it is not first save since start of extension
   if (!options.firstRun) {
@@ -24,14 +24,92 @@ async function saveTrackedTime(options_passed = {}) {
 
   if (options.newTimeout) {
     // Calculate seconds until the next minute
-    let nextMinute = new Date().getSeconds();
+    let next_minute = new Date().getSeconds();
 
-    timer_timeout = setTimeout(saveTrackedTime, (60 - nextMinute) * 1000);
+    timer_timeout = setTimeout(saveTrackedTime, (60 - next_minute) * 1000);
   }
 }
 
+async function checkNewDay(options_passed = {}) {
+  let options = {
+    handleNewDayStart: options_passed.handleNewDayStart ?? true,
+    returnHour: options_passed.returnHour ?? false,
+  };
+
+  let turn_hour = configurations.newDayStart.hour;
+  let current = new Date();
+
+  let new_day_tomorrow_actual = null;
+
+  // If the time is after midnight, add a day to have it next day check
+  let temporary_date = current;
+  if (turn_hour < 12) {
+    temporary_date = new Date(current.getTime() + 1000 * 60 * 60 * 24);
+
+    if (current.getHours() < 12) {
+      new_day_tomorrow_actual = new Date(current.getTime());
+    } else {
+      new_day_tomorrow_actual = new Date(current.getTime());
+    }
+  } else {
+    if (current.getHours() < 12) {
+      new_day_tomorrow_actual = new Date(current.getTime());
+    } else {
+      new_day_tomorrow_actual = new Date(current.getTime() + 1000 * 60 * 60 * 24);
+    }
+  }
+
+  let new_day_tomorrow = new Date(`${getDateInfo(temporary_date).isoDate} ${turn_hour}:00`);
+  new_day_tomorrow_actual = new Date(
+    `${getDateInfo(new_day_tomorrow_actual).isoDate} ${turn_hour}:00`
+  );
+
+  if (options.returnHour) {
+    return new_day_tomorrow_actual;
+  }
+
+  // First run in this session, extension startup
+  if (new_day_last_update == null) {
+    new_day_last_update = new_day_tomorrow;
+
+    // The time passed
+    if (current.getTime() >= new_day_last_update.getTime()) {
+      // It's not last tracked day
+      if (tracked_time_history.lastTrack != getDateInfo(new_day_tomorrow_actual).isoDate) {
+        today = getDateInfo(new_day_tomorrow_actual);
+
+        // Want to hadle the day change
+        if (options.handleNewDayStart) {
+          await handleNewDayStart(true);
+        }
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // The time passed
+  if (current.getTime() >= new_day_last_update.getTime()) {
+    // It's not last tracked day
+    if (tracked_time_history.lastTrack != getDateInfo(new_day_tomorrow_actual).isoDate) {
+      today = getDateInfo(new_day_tomorrow_actual);
+
+      // Want to hadle the day change
+      if (options.handleNewDayStart) {
+        await handleNewDayStart(true);
+      }
+
+      return true;
+    }
+  }
+
+  new_day_last_update = new_day_tomorrow;
+  return false;
+}
+
 function updateTrackedTime() {
-  console.log("updateTrackedTime()");
   let total_increase = 0;
 
   for (let i = 0; i < tracking_time.domains.length; i++) {
@@ -95,6 +173,7 @@ async function handleMessageReceived(request, sender) {
       current_tab: () => ({ currentTab: tabManager.current }),
       tracking_time: () => ({ trackingTime: tracking_time }),
       tracked_time_history: () => ({ trackedTimeHistory: tracked_time_history }),
+      today_date: () => ({ todayDate: today }),
     };
 
     // Run for each option passed
@@ -120,13 +199,24 @@ async function handleMessageReceived(request, sender) {
     return result;
   } else if (type == "set") {
     let option = options[0];
-    console.log(options, data);
+
     if (option == "configurations_notification") {
       configurations.notifications = {
         enabled: data.notifications.enabled,
         timeBetween: data.notifications.timeBetween,
         showTopThree: data.notifications.showTopThree,
       };
+
+      return { isOk: true };
+    } else if (option == "configurations_new_day_start") {
+      configurations.newDayStart = {
+        hour: data.newDayStart.hour,
+        side: data.newDayStart.side,
+      };
+
+      return { isOk: true };
+    } else if (option == "configurations_theme") {
+      configurations.darkTheme = data.darkTheme;
 
       return { isOk: true };
     }
@@ -152,7 +242,7 @@ messageManager.listen();
 function handleInstalled(details) {
   // Fist install on this browser
   if (details.reason == "install") {
-    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+    first_install = true;
   }
 }
 

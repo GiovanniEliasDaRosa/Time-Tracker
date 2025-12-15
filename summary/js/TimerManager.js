@@ -241,10 +241,10 @@ class TimerManager {
               this.bodyMore.classList.remove("animate_height");
 
               this.bodyMore.disable();
-            }, 500);
+            }, 750);
           }, 250);
         }, 1000);
-      }, 250);
+      }, 500);
     } else {
       this.showMore.span_less.enable();
       this.showMore.open = true;
@@ -256,6 +256,7 @@ class TimerManager {
       // Reset height to get the bounding box size
       this.bodyMore.style.height = "";
       let height = this.bodyMore.getBoundingClientRect().height;
+      this.bodyMore.style.height = "0";
 
       // This transitions the height, and show the pre background of the pre-laoder, this is to make the text under don't appear
       this.bodyMore.classList.add("animate_height");
@@ -269,26 +270,31 @@ class TimerManager {
 
       // Waits 0 ms, to make the transition happen
       this.showMore.timeout = setTimeout(() => {
-        this.bodyMore.classList.add("will_animate_in");
+        // Set height and transition to it
+        this.bodyMore.style.height = "1em";
 
-        // Wait to the height be 1em and the pre-loader finish
         this.showMore.timeout = setTimeout(() => {
-          // Remove unecessary classes, that is of no use anymore
-          this.bodyMore.classList.remove("animate_height");
-          this.bodyMore.classList.remove("will_animate_in");
+          this.bodyMore.classList.add("will_animate_in");
 
-          // Add the real animation from 1em to the height of the content
-          this.bodyMore.classList.add("animate_in");
-          this.bodyMore.style.height = height + "px";
-
-          // On finishing transisioning the height
+          // Wait to the height be 1em and the pre-loader finish
           this.showMore.timeout = setTimeout(() => {
-            // Remove unecessary class, to prevent any bugs of possibly happen
-            this.bodyMore.classList.remove("animate_in");
-            this.bodyMore.style.height = "";
-          }, 1000);
+            // Remove unecessary classes, that is of no use anymore
+            this.bodyMore.classList.remove("animate_height");
+            this.bodyMore.classList.remove("will_animate_in");
+
+            // Add the real animation from 1em to the height of the content
+            this.bodyMore.classList.add("animate_in");
+            this.bodyMore.style.height = height + "px";
+
+            // On finishing transisioning the height
+            this.showMore.timeout = setTimeout(() => {
+              // Remove unecessary class, to prevent any bugs of possibly happen
+              this.bodyMore.classList.remove("animate_in");
+              this.bodyMore.style.height = "";
+            }, 1000);
+          }, 500);
         }, 250);
-      }, 250);
+      }, 0);
     }
   }
 }
