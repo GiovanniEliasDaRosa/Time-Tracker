@@ -78,3 +78,23 @@ input[type="checkbox"]::before,
 .icons.play::before {
   content: "\f04b";
 }
+
+.icons.upload::before {
+  content: "\f093";
+}
+
+.icons.download::before {
+  content: "\f019";
+}
+
+.icons.trash::before {
+  content: "\f1f8";
+}
+
+.icons.forward_step::after {
+  content: "\f051";
+}
+
+.icons.download_file::before {
+  content: "\f56d";
+}

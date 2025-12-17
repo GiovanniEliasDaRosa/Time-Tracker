@@ -155,6 +155,27 @@
   --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 28% 50%);
   --options-new-day-current-text-color: hsl(from var(--light) h s l);
   --options-new-day-current-background-color: hsla(from var(--primary-color) h 40% 30% / 0.7);
+
+  /* - data */
+  --options-data-feedbacks-border-color: hsl(from var(--primary-color) h 73% 32%);
+  --options-data-feedbacks-progress-fill-background-color: hsl(from var(--primary-color) h 79% 66%);
+  --options-data-feedbacks-step-option-border-color: hsl(from var(--primary-color) h 73% 32%);
+  --options-data-feedbacks-step-option-border-color-hover: hsl(from var(--primary-color) h 64% 89%);
+  --options-data-feedbacks-step-option-border-color-active: hsl(
+    from var(--primary-color) h 65% 81%
+  );
+  --options-data-feedbacks-step-option-checked-border-color: hsl(
+    from var(--secondary-1-color) h 70% 82%
+  );
+  --options-data-feedbacks-step-option-checked-border-color-hover: hsl(
+    from var(--secondary-1-color) h 68% 78%
+  );
+  --options-data-feedbacks-step-option-checked-border-color-active: hsl(
+    from var(--secondary-1-color) h 62% 69%
+  );
+  --options-data-feedbacks-step-error-message-color: hsl(
+    from var(--secondary-2-color) calc(h + 10) 92% 35%
+  );
 }
 
 :root[data-theme-dark="true"] {
@@ -285,6 +306,27 @@
   --options-new-day-step-pointer-background-color: hsl(from var(--primary-color) h 30% 70%);
   --options-new-day-current-text-color: hsl(from var(--light) h s l);
   --options-new-day-current-background-color: hsla(from var(--primary-color) h 15% 30% / 0.7);
+
+  /* - data */
+  --options-data-feedbacks-border-color: hsl(from var(--primary-color) h 38% 30%);
+  --options-data-feedbacks-progress-fill-background-color: hsl(from var(--primary-color) h 45% 50%);
+  --options-data-feedbacks-step-option-border-color: hsl(from var(--primary-color) h 40% 50%);
+  --options-data-feedbacks-step-option-border-color-hover: hsl(from var(--primary-color) h 29% 11%);
+  --options-data-feedbacks-step-option-border-color-active: hsl(
+    from var(--primary-color) h 30% 19%
+  );
+  --options-data-feedbacks-step-option-checked-border-color: hsl(
+    from var(--secondary-1-color) h 35% 18%
+  );
+  --options-data-feedbacks-step-option-checked-border-color-hover: hsl(
+    from var(--secondary-1-color) h 33% 22%
+  );
+  --options-data-feedbacks-step-option-checked-border-color-active: hsl(
+    from var(--secondary-1-color) h 27% 31%
+  );
+  --options-data-feedbacks-step-error-message-color: hsl(
+    from var(--secondary-2-color) calc(h + 10) 54% 68%
+  );
 }
 
 /* MARK: Global

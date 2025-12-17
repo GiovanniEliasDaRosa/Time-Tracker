@@ -1,0 +1,88 @@
+.data_tabs {
+  display: flex;
+  gap: 0.5em;
+}
+
+.data_tabs_buttons {
+  margin-bottom: 0.5em;
+}
+
+.data_tabs_buttons[data-selected-tab="true"] {
+  border-radius: 0.5em 0.5em 0 0;
+  padding-bottom: 1em;
+  margin-bottom: 0;
+  border-bottom-color: transparent !important;
+}
+
+.data_tabs_buttons:last-child {
+  margin-left: auto;
+}
+
+.data_feedbacks {
+  display: grid;
+  gap: 1em;
+
+  padding: 1em;
+  padding-top: 1.5em;
+  border: solid 0.1em var(--options-data-feedbacks-border-color);
+  border-radius: 0 0 0.25em 0.25em;
+
+  position: relative;
+}
+
+.data_feedback_progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.5em;
+  display: grid;
+}
+
+.data_feedback_progress_fill {
+  background-color: var(--options-data-feedbacks-progress-fill-background-color);
+}
+
+.data_feedbacks_step {
+  display: grid;
+  gap: 1em;
+}
+
+.data_feedbacks_step_options {
+  display: grid;
+  gap: 0.5em;
+}
+
+.data_feedbacks_step_options_option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.75em;
+  border: solid 0.1em var(--options-data-feedbacks-step-option-border-color);
+  border-radius: 0.5em;
+}
+
+.data_feedbacks_step_options_option:hover {
+  background-color: var(--options-data-feedbacks-step-option-border-color-hover);
+}
+
+.data_feedbacks_step_options_option:active {
+  background-color: var(--options-data-feedbacks-step-option-border-color-active);
+}
+
+.data_feedbacks_step_options_option:has(> input:checked) {
+  background-color: var(--options-data-feedbacks-step-option-checked-border-color);
+}
+
+.data_feedbacks_step_options_option:has(> input:checked):hover {
+  background-color: var(--options-data-feedbacks-step-option-checked-border-color-hover);
+}
+
+.data_feedbacks_step_options_option:has(> input:checked):active {
+  background-color: var(--options-data-feedbacks-step-option-checked-border-color-active);
+}
+
+.data_feedbacks_step_error_message {
+  color: var(--options-data-feedbacks-step-error-message-color);
+}

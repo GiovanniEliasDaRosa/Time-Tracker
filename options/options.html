@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/options.css" />
     <link rel="stylesheet" href="css/notifications.css" />
     <link rel="stylesheet" href="css/new-day.css" />
+    <link rel="stylesheet" href="css/data.css" />
 
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/Storage.js" defer="true"></script>
@@ -20,6 +21,7 @@
     <script src="js/Notifications.js" defer="true"></script>
     <script src="js/NewDay.js" defer="true"></script>
     <script src="js/Themes.js" defer="true"></script>
+    <script src="js/DataManager.js" defer="true"></script>
     <script src="js/options.js" defer="true"></script>
   </head>
   <body>
@@ -175,6 +177,113 @@
 
           <div class="tutorial_options">
             <button class="icons play" id="tutorial_start">Start tutorial</button>
+          </div>
+        </section>
+
+        <!-- Data: Export & Import -->
+        <section class="section_options data">
+          <div class="section_options_header">
+            <h2>Data</h2>
+            <p>Export, import, or delete all data</p>
+          </div>
+
+          <div class="section_options_tab_content">
+            <div class="data_tabs">
+              <button class="data_tabs_buttons icons download" id="data_export_button">
+                Export
+              </button>
+              <button
+                class="data_tabs_buttons icons upload"
+                id="data_import_button"
+                aria-disabled="true"
+                disabled="true"
+              >
+                Import
+              </button>
+              <button
+                class="data_tabs_buttons icons trash"
+                id="data_delete_button"
+                aria-disabled="true"
+                disabled="true"
+              >
+                Delete
+              </button>
+            </div>
+
+            <div class="data_feedbacks" style="display: none" aria-disabled="true" disabled="true">
+              <div class="data_feedback_progress">
+                <div class="data_feedback_progress_fill"></div>
+              </div>
+
+              <!-- Export steps -->
+              <div
+                class="data_feedback_export"
+                style="display: none"
+                aria-disabled="true"
+                disabled="true"
+              >
+                <div class="data_feedbacks_step" data-step="0">
+                  <h3>What do you want to export?</h3>
+
+                  <div class="data_feedbacks_step_options">
+                    <label class="data_feedbacks_step_options_option" for="data_time_checkbox">
+                      <input type="checkbox" name="data_time_checkbox" id="data_time_checkbox" />
+                      <span>Time</span>
+                    </label>
+                    <label class="data_feedbacks_step_options_option" for="data_config_checkbox">
+                      <input
+                        type="checkbox"
+                        name="data_config_checkbox"
+                        id="data_config_checkbox"
+                      />
+                      <span>Configurations</span>
+                    </label>
+                    <p class="data_feedbacks_step_error_message"></p>
+                  </div>
+                </div>
+                <div class="data_feedbacks_step" data-step="1">
+                  <h3>Getting data</h3>
+                </div>
+                <div class="data_feedbacks_step" data-step="2">
+                  <h3>Exported with success!</h3>
+                  <p>
+                    Download should start automatically. If not, click the button to download
+                    manually.
+                  </p>
+                  <button id="data_download_button" class="icons download_file">Download</button>
+                </div>
+              </div>
+
+              <!-- Import steps -->
+              <div
+                class="data_feedback_import"
+                style="display: none"
+                aria-disabled="true"
+                disabled="true"
+              >
+                <div class="data_feedback_import_steps">
+                  <div class="data_feedbacks_step" data-step="0">
+                    <p>Import coming soon!</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Delete steps -->
+              <div
+                class="data_feedback_delete"
+                style="display: none"
+                aria-disabled="true"
+                disabled="true"
+              >
+                <div class="data_feedbacks_step" data-step="0">
+                  <p>Delete coming soon!</p>
+                </div>
+              </div>
+
+              <button class="icons forward_step icons_after" id="data_feedbacks_next_step_button">
+                Next
+              </button>
+            </div>
           </div>
         </section>
       </div>

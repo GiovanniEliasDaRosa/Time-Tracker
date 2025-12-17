@@ -174,6 +174,7 @@ async function handleMessageReceived(request, sender) {
       tracking_time: () => ({ trackingTime: tracking_time }),
       tracked_time_history: () => ({ trackedTimeHistory: tracked_time_history }),
       today_date: () => ({ todayDate: today }),
+      configurations: () => ({ configurations: configurations }),
     };
 
     // Run for each option passed

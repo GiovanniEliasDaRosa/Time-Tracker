@@ -20,6 +20,9 @@ let new_day = new NewDay();
 // Themes
 let themes = new Themes();
 
+// Data
+let data_manager = new DataManager();
+
 // * MARK: Setup options
 async function main() {
   configurations = await Storage.get("configurations");
