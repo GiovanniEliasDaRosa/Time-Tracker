@@ -202,16 +202,163 @@ async function handleMessageReceived(request, sender) {
     let option = options[0];
 
     if (option == "import") {
-      console.log("IMPORTED");
-      console.log(data);
-
       if (data.configurations) {
         configurations = await Storage.set("configurations", data.configurations);
       }
 
       if (data.time) {
-        // TODO: import time correctly
+        let imported = data.time;
+
+        // * Stop extension running
+        // Stop tabManager tracking, and reset tabManager domains
+        tabManager.stopTraker();
+        // Fully reset tabManager sessions
+        // tabManager.sessionDomains = [];
+        clearTimeout(timer_timeout);
+
+        // * Time type resolve
+        // The options page has already checked for conflicts
+        if (data.type == "no_conflicts") {
+          if (tracking_time.isoDate == imported.lastTrack.isoDate) {
+            tracking_time = imported.trackedDates[tracking_time.isoDate];
+          }
+        } else {
+          let overlap_day = {
+            isoDate: imported.lastTrack.isoDate,
+            isToday: false,
+          };
+
+          if (tracking_time.isoDate == imported.lastTrack.isoDate) {
+            overlap_day = {
+              isoDate: tracking_time.isoDate,
+              isToday: true,
+            };
+          }
+
+          switch (data.type) {
+            case "merge":
+              // Merge (Add together)
+              // Remove selected date from the tracked import
+              let compare = {
+                current: null,
+                import: imported.trackedDates[overlap_day.isoDate],
+              };
+
+              // Remove selected date from the tracked import
+              delete imported.trackedDates[overlap_day.isoDate];
+
+              if (overlap_day.isToday) {
+                compare.current = tracking_time;
+              } else {
+                compare.current = tracked_time_history[overlap_day.isoDate];
+              }
+
+              let more_domains, less_domains;
+
+              // If the current data has more domains to compare
+              if (compare.current.domains.length > compare.import.domains.length) {
+                more_domains = compare.current.domains;
+                less_domains = compare.import.domains;
+              } else {
+                less_domains = compare.current.domains;
+                more_domains = compare.import.domains;
+              }
+
+              let result = {
+                domains: [],
+                totalTime: 0,
+              };
+
+              // Get the most domains so the check gets all
+              for (let more_domain = 0; more_domain < more_domains.length; more_domain++) {
+                const current_more_domain = more_domains[more_domain];
+
+                const search_index = less_domains.findIndex(
+                  (current_less_domain) => current_less_domain.url == current_more_domain.url
+                );
+
+                // No url found in the smaller one matching the larger one
+                if (search_index == -1) {
+                  result.domains.push(current_more_domain);
+                  result.totalTime += current_more_domain.time;
+                } else {
+                  let found_domain = less_domains[search_index];
+                  let sum = {
+                    url: current_more_domain.url,
+                    time: current_more_domain.time + found_domain.time,
+                  };
+
+                  result.domains.push(sum);
+                  result.totalTime += sum.time;
+
+                  less_domains.splice(search_index, 1);
+                }
+              }
+
+              // Set on the right place
+              if (overlap_day.isToday) {
+                tracking_time.domains = result.domains;
+                tracking_time.totalTime = result.totalTime;
+              } else {
+                tracked_time_history[overlap_day.isoDate].domains = result.domains;
+                tracked_time_history[overlap_day.isoDate].totalTime = result.totalTime;
+              }
+
+              break;
+            case "keep_local":
+              // Keep local (Keep saved only)
+              // No need to do anything with it, so delete the key in the import
+              delete imported.trackedDates[tracking_time.isoDate];
+              break;
+            case "replace_import":
+              // Replace with import (Keep import only)
+              if (overlap_day.isToday) {
+                tracking_time = imported.trackedDates[overlap_day.isoDate];
+                delete imported.trackedDates[overlap_day.isoDate];
+              } else {
+                // As the code below this adds empty days in the current extension from the import
+                // Deleting from the current will automatically replace
+                delete tracked_time_history.trackedDates[overlap_day.isoDate];
+              }
+              break;
+          }
+        }
+
+        // Add days that don't exist in current from the import
+        for (const date in imported.trackedDates) {
+          // Invalid/empty key
+          if (!Object.hasOwn(imported.trackedDates, date)) continue;
+
+          tracked_time_history.trackedDates[date] = imported.trackedDates[date];
+
+          // If the date doens't exist in current extension's storage
+          if (tracked_time_history.trackedDates[date] == null) {
+            tracked_time_history.trackedDates.totalDays++;
+          }
+        }
+
+        // * Return extension back to running
+        // Set tabManager sessions to changed values
+        let goto_sessions_domains = [];
+        tracking_time.domains.forEach((tracked_domain) => {
+          goto_sessions_domains.push({
+            url: tracked_domain.url,
+            startTime: null,
+            ellapsedTime: 0,
+          });
+        });
+
+        tabManager.sessionDomains = goto_sessions_domains;
+
+        // Restore tabManager tracking
+        tabManager.startTraker();
+
+        tracked_time_history = await Storage.set("tracked_time_history", tracked_time_history);
+        // This automatically saves tracking_time
+        saveTrackedTime();
       }
+
+      return { isOk: true };
     }
 
     if (option == "configurations_notification") {

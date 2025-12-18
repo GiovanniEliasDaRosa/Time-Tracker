@@ -85,9 +85,9 @@ async function bootstrap() {
 }
 
 async function handleNewDayStart(from_timer = false) {
-  // First access to the browser this day
+  // The date doesn't exist in the tracked dates, which mean a new day
   // Or the day changed while extension was running
-  if (tracking_time.domains.length == 0 || from_timer) {
+  if (tracked_time_history.trackedDates[tracking_time.isoDate] == null || from_timer) {
     // Push a new domain on the today's data
     tabManager.handeDomainChange();
 
@@ -124,6 +124,8 @@ async function handleNewDayStart(from_timer = false) {
     // Updathe the Tracked Time History, so that it knows a new day has begun
     tracked_time_history.trackedDates[today.isoDate] = {
       isoDate: today.isoDate,
+      domains: [],
+      totalTime: 0,
       trackingFinished: false,
     };
     tracked_time_history.lastTrack = today.isoDate;

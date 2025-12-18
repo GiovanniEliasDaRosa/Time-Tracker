@@ -65,6 +65,9 @@ class DataManager {
       tab.button.onclick = () => {
         this.currentSession = structuredClone(this.currentSessionDefaults);
 
+        // Scroll button into view, in case of small screens
+        tab.button.scrollIntoView({ behavior: "smooth", inline: "center" });
+
         this.selectedTab = key;
         this.tabs[this.selectedTab].stepCurrent = 0;
         this.updateFeedback();
@@ -86,10 +89,11 @@ class DataManager {
     this.tabs.import.importFileName.disable();
 
     this.tabs.import.importFile.oninput = () => {
-      // Cancel file reader, as the user will upload a new file
-      this.tabs.import.fileReader.abort();
-
       let files = this.tabs.import.importFile.files;
+
+      this.tabs.import.stepsElements[0]
+        .querySelector(".data_feedbacks_step_error_message")
+        .disable();
 
       // Has no file selected
       if (files.length == 0) return;
@@ -103,7 +107,7 @@ class DataManager {
       if (file.type.split("/")[1] != "json") {
         this.currentSession.error.active = true;
         this.currentSession.error.message = `Please upload a .json file, "${file.name}" is not a valid type.`;
-        this.upda();
+        this.showErrorStep();
         return;
       }
 
@@ -114,10 +118,19 @@ class DataManager {
         name: file.name,
       };
 
-      this.nextStep();
+      // The next step starts reading the file
+      // Wait 0.25 seconds
+      this.waitForStep(1, 250);
 
-      // Start reading the file
-      this.tabs.import.fileReader.readAsText(file);
+      // Animate bar
+      clearTimeout(this.waitProgressFillTimeout);
+      this.feedbacksProgressFill.style.transition = "";
+      this.feedbacksProgressFill.style.width = "0%";
+
+      this.waitProgressFillTimeout = setTimeout(() => {
+        this.feedbacksProgressFill.style.transition = "width 0.25s ease-out";
+        this.feedbacksProgressFill.style.width = "100%";
+      }, 10);
     };
 
     // While reading show progress
@@ -181,10 +194,8 @@ class DataManager {
     this.updateFeedback();
   }
 
-  waitForStep(step_dir = 0) {
+  waitForStep(step_dir = 0, time = 500) {
     clearTimeout(this.waitForNextStepTimeout);
-
-    this.feedbacksProgressFill.style.width = "0%";
 
     this.waitForNextStepTimeout = setTimeout(() => {
       // User didn't close the feedback
@@ -195,7 +206,7 @@ class DataManager {
           this.previousStep();
         }
       }
-    }, 500);
+    }, time);
   }
 
   updateFeedback() {
@@ -376,6 +387,8 @@ class DataManager {
 
     if (current_step == 0) {
       // * Screen to select file
+      // Cancel file reader, as the user will upload a new file
+      this.tabs.import.fileReader.abort();
 
       this.currentSession.active = true;
 
@@ -393,6 +406,12 @@ class DataManager {
       error_message.disable();
     } else if (current_step == 1) {
       // * Screen of reading file
+
+      // Start reading the file
+      clearTimeout(this.waitProgressFillTimeout);
+      this.feedbacksProgressFill.style.transition = "";
+      this.feedbacksProgressFill.style.width = "0%";
+      this.tabs.import.fileReader.readAsText(this.tabs.import.importFile.files[0]);
 
       current_step_element.querySelector(".data_feedbacks_step_file_name").innerText =
         this.currentSession.data.file.name;
@@ -524,16 +543,15 @@ Check if your system clock is correct.`;
 
       // The last day of the import matches is today
       if (imported.lastTrack.isoDate == current.trackingTime.isoDate) {
-        console.log("Last day is today");
         current_last_tracked_data = current.trackingTime;
       } else {
-        console.log("Last day is NOT today");
         let search = current.trackedTimeHistory.trackedDates[imported.lastTrack.isoDate];
 
-        // No date found, means no conflict
-        if (search == null) {
+        // No date found, means no conflict or
+        // Date found with no domains saved
+        console.log(search);
+        if (search == null || search.domains == null || search.domains.length == 0) {
           this.currentSession.options.conflictDate = null;
-          console.log("No date found overlapping");
           this.waitForStep(1);
           return;
         }
@@ -542,13 +560,10 @@ Check if your system clock is correct.`;
         current_last_tracked_data = search;
       }
 
-      console.log(imported_last_tracked_data);
-      console.log(current_last_tracked_data);
-
       // Check if last tracked day of import or current has no data, this way no conflict
       if (imported_last_tracked_data.totalTime == 0 || current_last_tracked_data.totalTime == 0) {
-        console.log("No date found overlapping, because one of the 2 had zero totalTime");
-
+        this.currentSession.options.conflictDate = null;
+        this.waitForStep(1);
         return;
       }
 
@@ -580,8 +595,6 @@ Check if your system clock is correct.`;
 
       // If want to import configurations
       if (this.currentSession.options.configurations) {
-        console.log("Configurations import");
-
         result.configurations = this.currentSession.data.file.data.configurations;
         configurations = result.configurations;
       }
@@ -590,18 +603,32 @@ Check if your system clock is correct.`;
       if (this.currentSession.options.time) {
         let past_step_element = current_tab.stepsElements[current_tab.stepCurrent - 1];
 
-        let import_merge = past_step_element.querySelector("#data_import_merge").checked;
-        let import_keep = past_step_element.querySelector("#data_import_keep").checked;
+        let conflict_resolve_option = past_step_element.querySelector(
+          "input[name='data_import_conflict']:checked"
+        );
 
-        if (import_merge) {
-          // Merge (Add together)
-        } else if (import_keep) {
-          // Keep local (Keep saved only)
+        result.time = this.currentSession.data.file.data.time;
+
+        // Has no conflicts
+        if (this.currentSession.options.conflictDate == null) {
+          result.type = "no_conflicts";
         } else {
-          // Replace with import (Keep import only)
+          // Has  conflicts
+          switch (conflict_resolve_option.id) {
+            case "data_import_merge":
+              // Merge (Add together)
+              result.type = "merge";
+              break;
+            case "data_import_keep":
+              // Keep local (Keep saved only)
+              result.type = "keep_local";
+              break;
+            case "data_import_replace":
+              // Replace with import (Keep import only)
+              result.type = "replace_import";
+              break;
+          }
         }
-
-        // TODO: resolve conflict by the options (Merge / Keep local / Replace with import)
       }
 
       await MessageManager.send({

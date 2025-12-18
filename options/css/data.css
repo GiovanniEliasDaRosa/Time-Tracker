@@ -1,17 +1,27 @@
 .data_tabs {
   display: flex;
   gap: 0.5em;
+
+  overflow: auto;
+  scrollbar-width: thin;
+  position: relative;
 }
 
 .data_tabs_buttons {
-  margin-bottom: 0.5em;
+  flex: 0 0 calc(8ch + 0.8em + 2.2em);
+
+  margin-bottom: 0.75em;
 }
 
 .data_tabs_buttons[data-selected-tab="true"] {
   border-radius: 0.5em 0.5em 0 0;
-  padding-bottom: 1em;
+  padding-bottom: 1.25em;
   margin-bottom: 0;
   border-bottom-color: transparent !important;
+}
+
+.data_tabs_buttons:nth-child(2) {
+  margin-right: 1em;
 }
 
 .data_tabs_buttons:last-child {
