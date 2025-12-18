@@ -188,18 +188,12 @@
           </div>
 
           <div class="section_options_tab_content">
+            <!-- Button to open the tab -->
             <div class="data_tabs">
               <button class="data_tabs_buttons icons download" id="data_export_button">
                 Export
               </button>
-              <button
-                class="data_tabs_buttons icons upload"
-                id="data_import_button"
-                aria-disabled="true"
-                disabled="true"
-              >
-                Import
-              </button>
+              <button class="data_tabs_buttons icons upload" id="data_import_button">Import</button>
               <button
                 class="data_tabs_buttons icons trash"
                 id="data_delete_button"
@@ -210,7 +204,9 @@
               </button>
             </div>
 
+            <!-- Tabs oppened by the buttons -->
             <div class="data_feedbacks" style="display: none" aria-disabled="true" disabled="true">
+              <!-- Progress bar up top-->
               <div class="data_feedback_progress">
                 <div class="data_feedback_progress_fill"></div>
               </div>
@@ -238,14 +234,14 @@
                       />
                       <span>Configurations</span>
                     </label>
-                    <p class="data_feedbacks_step_error_message"></p>
+                    <p class="data_feedbacks_step_error_message icons circle_exclamation"></p>
                   </div>
                 </div>
                 <div class="data_feedbacks_step" data-step="1">
                   <h3>Getting data</h3>
                 </div>
                 <div class="data_feedbacks_step" data-step="2">
-                  <h3>Exported with success!</h3>
+                  <h3 class="icons thumbs_up">Exported with success!</h3>
                   <p>
                     Download should start automatically. If not, click the button to download
                     manually.
@@ -261,10 +257,132 @@
                 aria-disabled="true"
                 disabled="true"
               >
-                <div class="data_feedback_import_steps">
-                  <div class="data_feedbacks_step" data-step="0">
-                    <p>Import coming soon!</p>
+                <div class="data_feedbacks_step" data-step="0">
+                  <h3>Import JSON file</h3>
+                  <p class="data_feedbacks_step_error_message icons circle_exclamation"></p>
+                  <div class="data_feedbacks_step_import_file_group">
+                    <input
+                      type="file"
+                      name="data_import_file"
+                      id="data_import_file"
+                      style="display: none"
+                    />
+                    <label
+                      class="section_options_button_not_full_width button icons upload_file"
+                      for="data_import_file"
+                      tabindex="0"
+                      >Select file</label
+                    >
+                    <p
+                      class="data_import_file_name"
+                      style="display: none"
+                      aria-disabled="true"
+                      disabled="true"
+                    >
+                      Filename.png
+                    </p>
                   </div>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="1">
+                  <h3>Reading <span class="data_feedbacks_step_file_name"></span></h3>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="2">
+                  <h3>What do you want to import?</h3>
+
+                  <div class="data_feedbacks_step_options">
+                    <label
+                      class="data_feedbacks_step_options_option"
+                      for="data_import_time_checkbox"
+                    >
+                      <input
+                        type="checkbox"
+                        name="data_import_time_checkbox"
+                        id="data_import_time_checkbox"
+                      />
+                      <span>Time</span>
+                    </label>
+                    <label
+                      class="data_feedbacks_step_options_option"
+                      for="data_import_config_checkbox"
+                    >
+                      <input
+                        type="checkbox"
+                        name="data_import_config_checkbox"
+                        id="data_import_config_checkbox"
+                      />
+                      <span>Configurations</span>
+                    </label>
+                    <p class="data_feedbacks_step_error_message icons circle_exclamation"></p>
+                  </div>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="3">
+                  <h3>Getting data</h3>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="4">
+                  <h3>Checking conflicts</h3>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="5">
+                  <h3>Conflict found</h3>
+                  <p>
+                    There is an overlap in
+                    <span class="data_feedbacks_step_date_conflict">10/10/2025</span>. How should it
+                    be resolved?
+                  </p>
+
+                  <div class="data_feedbacks_step_options">
+                    <label class="data_feedbacks_step_options_option" for="data_import_merge">
+                      <input type="radio" name="data_import_conflict" id="data_import_merge" />
+
+                      <span class="data_feedbacks_step_options_option_text">
+                        <span class="data_feedbacks_step_options_option_text_title icons plus"
+                          >Merge (Add together)</span
+                        >
+                        <span
+                          >Sum times per domain and per day. <strong>No data lost.</strong></span
+                        >
+                      </span>
+                    </label>
+                    <label class="data_feedbacks_step_options_option" for="data_import_keep">
+                      <input type="radio" name="data_import_conflict" id="data_import_keep" />
+
+                      <span class="data_feedbacks_step_options_option_text">
+                        <span class="data_feedbacks_step_options_option_text_title icons hard_drive"
+                          >Keep local (Keep saved only)</span
+                        >
+                        <span
+                          >Keep the extension's existing data.
+                          <strong> Imported overlapping day will be ignored.</strong></span
+                        >
+                      </span>
+                    </label>
+                    <label class="data_feedbacks_step_options_option" for="data_import_replace">
+                      <input type="radio" name="data_import_conflict" id="data_import_replace" />
+
+                      <span class="data_feedbacks_step_options_option_text">
+                        <span
+                          class="data_feedbacks_step_options_option_text_title icons file_import"
+                          >Replace with import (Keep import only)</span
+                        >
+                        <span
+                          >Overwrite local overlapping days with the imported data.
+                          <strong> Local data for the day will be replaced.</strong></span
+                        >
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="6">
+                  <h3>Importing</h3>
+                </div>
+
+                <div class="data_feedbacks_step" data-step="7">
+                  <h3 class="icons thumbs_up">Imported with success!</h3>
                 </div>
               </div>
 

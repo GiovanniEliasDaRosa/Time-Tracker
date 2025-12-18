@@ -30,6 +30,7 @@ async function main() {
   notifications.setup();
   new_day.setup();
   themes.setup();
+  data_manager.setup();
 }
 
 main();

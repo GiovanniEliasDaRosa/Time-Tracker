@@ -201,6 +201,19 @@ async function handleMessageReceived(request, sender) {
   } else if (type == "set") {
     let option = options[0];
 
+    if (option == "import") {
+      console.log("IMPORTED");
+      console.log(data);
+
+      if (data.configurations) {
+        configurations = await Storage.set("configurations", data.configurations);
+      }
+
+      if (data.time) {
+        // TODO: import time correctly
+      }
+    }
+
     if (option == "configurations_notification") {
       configurations.notifications = {
         enabled: data.notifications.enabled,

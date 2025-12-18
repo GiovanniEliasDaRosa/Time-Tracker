@@ -176,6 +176,10 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 92% 35%
   );
+  --options-data-feedbacks-step-file-name-background-color: hsl(
+    from var(--primary-color) h 47% 93%
+  );
+  --options-data-feedbacks-step-thumbs-up-text-color: hsl(from var(--secondary-1-color) h 57% 30%);
 }
 
 :root[data-theme-dark="true"] {
@@ -327,6 +331,10 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 54% 68%
   );
+  --options-data-feedbacks-step-file-name-background-color: hsl(
+    from var(--primary-color) h 68% 16%
+  );
+  --options-data-feedbacks-step-thumbs-up-text-color: hsl(from var(--secondary-1-color) h 85% 40%);
 }
 
 /* MARK: Global

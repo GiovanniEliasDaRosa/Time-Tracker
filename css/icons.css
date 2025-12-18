@@ -98,3 +98,27 @@ input[type="checkbox"]::before,
 .icons.download_file::before {
   content: "\f56d";
 }
+
+.icons.upload_file::before {
+  content: "\f574";
+}
+
+.icons.plus::before {
+  content: "\2b";
+}
+
+.icons.hard_drive::before {
+  content: "\f0a0";
+}
+
+.icons.file_import::before {
+  content: "\f56f";
+}
+
+.icons.thumbs_up::before {
+  content: "\f164";
+}
+
+.icons.circle_exclamation::before {
+  content: "\f06a";
+}

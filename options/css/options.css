@@ -51,3 +51,7 @@ main {
 
   border-radius: 0 0 0.5em 0.5em;
 }
+
+.section_options_button_not_full_width {
+  width: fit-content;
+}
