@@ -122,3 +122,7 @@ input[type="checkbox"]::before,
 .icons.circle_exclamation::before {
   content: "\f06a";
 }
+
+.icons.triangle_exclamation::before {
+  content: "\f071";
+}

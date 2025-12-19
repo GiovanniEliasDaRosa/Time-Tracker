@@ -4,19 +4,19 @@ let new_day_last_update = null;
 
 let today = null;
 
-let tracked_time_history = {
+const tracked_time_history_default = {
   trackedDates: {},
   lastTrack: null,
   totalDays: 0,
 };
 
-let tracking_time = {
+const tracking_time_default = {
   isoDate: null,
   domains: [],
   totalTime: 0,
 };
 
-let configurations = {
+const configurations_default = {
   notifications: {
     enabled: false,
     timeBetween: 30,
@@ -28,6 +28,12 @@ let configurations = {
   },
   darkTheme: false,
 };
+
+let tracked_time_history = structuredClone(tracked_time_history_default);
+
+let tracking_time = structuredClone(tracking_time_default);
+
+let configurations = structuredClone(configurations_default);
 
 let notification_timer = {
   minutesPassed: 0,

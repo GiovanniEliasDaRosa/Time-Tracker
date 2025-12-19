@@ -196,12 +196,7 @@
               <button class="data_tabs_buttons icons upload nomargin" id="data_import_button">
                 Import
               </button>
-              <button
-                class="data_tabs_buttons icons trash nomargin"
-                id="data_delete_button"
-                aria-disabled="true"
-                disabled="true"
-              >
+              <button class="data_tabs_buttons icons trash nomargin" id="data_delete_button">
                 Delete
               </button>
             </div>
@@ -212,6 +207,13 @@
               <div class="data_feedback_progress">
                 <div class="data_feedback_progress_fill"></div>
               </div>
+
+              <!-- Close feedback icon -->
+              <button
+                class="square_small icons xmark nomargin"
+                title="Close feedback"
+                id="data_feedbacks_close_feedback_button"
+              ></button>
 
               <!-- Export steps -->
               <div
@@ -396,7 +398,67 @@
                 disabled="true"
               >
                 <div class="data_feedbacks_step" data-step="0">
-                  <p>Delete coming soon!</p>
+                  <h3>What do you want to delete?</h3>
+                  <p>
+                    This action is permanent.
+                    <strong class="data_feedbacks_step_no_undo">You cannot undo it.</strong>
+                  </p>
+                  <div class="data_feedbacks_step_options">
+                    <label
+                      class="data_feedbacks_step_options_option"
+                      for="data_delete_time_checkbox"
+                    >
+                      <input
+                        type="checkbox"
+                        name="data_delete_time_checkbox"
+                        id="data_delete_time_checkbox"
+                      />
+                      <span>Time</span>
+                    </label>
+                    <label
+                      class="data_feedbacks_step_options_option"
+                      for="data_delete_config_checkbox"
+                    >
+                      <input
+                        type="checkbox"
+                        name="data_delete_config_checkbox"
+                        id="data_delete_config_checkbox"
+                      />
+                      <span>Configurations</span>
+                    </label>
+                    <p class="data_feedbacks_step_error_message icons circle_exclamation"></p>
+                  </div>
+                </div>
+                <div class="data_feedbacks_step" data-step="1">
+                  <h3 class="icons triangle_exclamation">Confirm deletion</h3>
+                  <p>
+                    Type in the input below
+                    <span class="data_feedbacks_step_confirm_wanted_value">confirm deletion</span>
+                  </p>
+                  <input
+                    type="text"
+                    name="data_delete_confirm_input"
+                    id="data_delete_confirm_input"
+                    class="section_options_button_not_full_width"
+                    autocomplete="off"
+                  />
+                  <p class="data_feedbacks_step_error_message icons circle_exclamation"></p>
+                </div>
+                <div class="data_feedbacks_step" data-step="2">
+                  <h3>
+                    Deleting
+                    <span class="data_feedbacks_step_selected_options"
+                      >Time and configurations</span
+                    >
+                  </h3>
+                </div>
+                <div class="data_feedbacks_step" data-step="3">
+                  <h3>
+                    Successfully deleted:
+                    <span class="data_feedbacks_step_selected_options"
+                      >Time and configurations</span
+                    >
+                  </h3>
                 </div>
               </div>
 

@@ -180,6 +180,12 @@
     from var(--primary-color) h 47% 93%
   );
   --options-data-feedbacks-step-thumbs-up-text-color: hsl(from var(--secondary-1-color) h 57% 30%);
+  --options-data-feedbacks-step-triangle-exclamation-text-color: hsl(
+    from var(--complement-color) h 85% 37%
+  );
+  --options-data-feedbacks-step-no-undo-color: hsl(
+    from var(--secondary-2-color) calc(h + 10) 86% 35%
+  );
 }
 
 :root[data-theme-dark="true"] {
@@ -335,6 +341,12 @@
     from var(--primary-color) h 68% 16%
   );
   --options-data-feedbacks-step-thumbs-up-text-color: hsl(from var(--secondary-1-color) h 85% 40%);
+  --options-data-feedbacks-step-triangle-exclamation-text-color: hsl(
+    from var(--complement-color) h 85% 50%
+  );
+  --options-data-feedbacks-step-no-undo-color: hsl(
+    from var(--secondary-2-color) calc(h + 8) 100% 70%
+  );
 }
 
 /* MARK: Global

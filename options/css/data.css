@@ -2,7 +2,6 @@
   display: flex;
   gap: 0.5em;
 
-  overflow: auto;
   scrollbar-width: thin;
   position: relative;
 }
@@ -11,6 +10,21 @@
   flex: 0 0 calc(8ch + 0.8em + 2.2em);
 
   margin-bottom: 0.75em;
+}
+
+@media (max-width: 30em) {
+  .data_tabs {
+    padding: 0.5em;
+    padding-bottom: 0;
+    overflow-x: auto;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      white 0.5em,
+      white calc(100% - 0.5em),
+      transparent 100%
+    );
+  }
 }
 
 .data_tabs_buttons[data-selected-tab="true"] {
@@ -57,6 +71,12 @@
   background-color: var(--options-data-feedbacks-step-thumbs-up-text-color);
 }
 
+#data_feedbacks_close_feedback_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .data_feedbacks_step {
   display: grid;
   gap: 1em;
@@ -64,8 +84,10 @@
 
 .data_feedbacks_step > h3.thumbs_up::before {
   color: var(--options-data-feedbacks-step-thumbs-up-text-color);
-  /* --input-checkbox-checked-border-color: hsl(from var(--secondary-1-color) h 87% 40%);
-  --input-checkbox-checked-background-color: hsl(from var(--secondary-1-color) h 77% 64%); */
+}
+
+.data_feedbacks_step > h3.triangle_exclamation::before {
+  color: var(--options-data-feedbacks-step-triangle-exclamation-text-color);
 }
 
 .data_feedbacks_step_options {
@@ -117,6 +139,10 @@
   color: var(--options-data-feedbacks-step-error-message-color);
 }
 
+.data_feedbacks_step_no_undo {
+  color: var(--options-data-feedbacks-step-no-undo-color);
+}
+
 .data_feedbacks_step_import_file_group {
   display: flex;
   align-items: center;
@@ -125,7 +151,9 @@
 }
 
 .data_feedbacks_step_date_conflict,
-.data_feedbacks_step_file_name {
+.data_feedbacks_step_file_name,
+.data_feedbacks_step_selected_options,
+.data_feedbacks_step_confirm_wanted_value {
   padding: 0.25em 0.5em;
   border-radius: 0.5em;
   background-color: var(--options-data-feedbacks-step-file-name-background-color);

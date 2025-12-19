@@ -213,7 +213,8 @@ async function handleMessageReceived(request, sender) {
         // Stop tabManager tracking, and reset tabManager domains
         tabManager.stopTraker();
         // Fully reset tabManager sessions
-        // tabManager.sessionDomains = [];
+        tabManager.sessionDomains = [];
+        // Stop save timeout each minute
         clearTimeout(timer_timeout);
 
         // * Time type resolve
@@ -354,7 +355,7 @@ async function handleMessageReceived(request, sender) {
         tabManager.startTraker();
 
         tracked_time_history = await Storage.set("tracked_time_history", tracked_time_history);
-        // This automatically saves tracking_time
+        // This automatically saves tracking_time and restores save timeout each minute
         saveTrackedTime();
       }
 
@@ -387,6 +388,47 @@ async function handleMessageReceived(request, sender) {
       error: "No option defined for that yet",
       options: options,
     };
+  } else if (type == "delete") {
+    // Run for each option passed
+    let has = {
+      time: false,
+      configurations: false,
+    };
+
+    // Check what options there are
+    options.forEach((option) => {
+      if (option == "time") {
+        has.time = true;
+      } else if (option == "configurations") {
+        has.configurations = true;
+      }
+    });
+
+    if (has.configurations) {
+      await Storage.delete("configurations");
+      configurations = await Storage.set("configurations", structuredClone(configurations_default));
+    }
+
+    if (has.time) {
+      // * Stop extension running
+      // Stop tabManager tracking, and reset tabManager domains
+      tabManager.stopTraker();
+      // Fully reset tabManager sessions
+      tabManager.sessionDomains = [];
+      // Stop save timeout each minute
+      clearTimeout(timer_timeout);
+
+      await Storage.delete("tracked_time_history");
+      await Storage.delete(today.isoDate);
+
+      tracked_time_history = structuredClone(tracked_time_history_default);
+      tracking_time = structuredClone(tracking_time_default);
+
+      // * Simulate a restart of the extension
+      bootstrap();
+    }
+
+    return { isOk: true };
   } else {
     return {
       isOk: false,

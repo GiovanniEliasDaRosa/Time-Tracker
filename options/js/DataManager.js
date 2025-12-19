@@ -11,6 +11,7 @@ class DataManager {
         active: false,
         message: null,
       },
+      previousStep: -1,
     };
     this.currentSession = structuredClone(this.currentSessionDefaults);
 
@@ -48,6 +49,13 @@ class DataManager {
     this.nextStepButton = this.element.querySelector("#data_feedbacks_next_step_button");
     this.nextStepButton.onclick = () => {
       this.nextStep();
+    };
+
+    this.closeFeedbackButton = this.feedbacks.querySelector(
+      "#data_feedbacks_close_feedback_button"
+    );
+    this.closeFeedbackButton.onclick = () => {
+      this.closeFeedback();
     };
 
     this.waitNextStepTimeout = null;
@@ -176,15 +184,24 @@ class DataManager {
     };
   }
 
-  setupDelete() {}
+  setupDelete() {
+    // On press enter in "Confirm deletion" text input
+    this.tabs.delete.feedback.querySelector("#data_delete_confirm_input").onkeyup = (e) => {
+      if (e.code == "Enter") {
+        this.nextStep();
+      }
+    };
+  }
 
   // Update steps
   nextStep() {
+    this.currentSession.previousStep = this.tabs[this.selectedTab].stepCurrent;
     this.tabs[this.selectedTab].stepCurrent++;
     this.updateFeedback();
   }
 
   previousStep() {
+    this.currentSession.previousStep = this.tabs[this.selectedTab].stepCurrent;
     this.tabs[this.selectedTab].stepCurrent--;
     this.updateFeedback();
   }
@@ -215,11 +232,6 @@ class DataManager {
     clearTimeout(this.waitNextStepTimeout);
     clearTimeout(this.waitForNextStepTimeout);
 
-    // The selected step is greater that the quantity of steps available
-    if (current_tab.stepCurrent > current_tab.stepsElements.length - 1) {
-      return;
-    }
-
     for (const key in this.tabs) {
       if (!Object.hasOwn(this.tabs, key)) continue;
 
@@ -228,12 +240,28 @@ class DataManager {
       tab.feedback.disable();
     }
 
+    // Closing feedback
+    if (current_tab == null) {
+      this.feedbacks.disable();
+      return;
+    }
+
+    // The selected step is greater that the quantity of steps available
+    if (current_tab.stepCurrent > current_tab.stepsElements.length - 1) {
+      return;
+    }
+
     current_tab.feedback.enable();
     current_tab.button.setAttribute("data-selected-tab", "true");
     this.feedbacks.enable();
     this.feedbacks.removeAttribute("data-success");
 
     this.updateStep(current_tab);
+  }
+
+  closeFeedback() {
+    this.selectedTab = null;
+    this.updateFeedback();
   }
 
   updateStep(current_tab) {
@@ -647,5 +675,130 @@ Check if your system clock is correct.`;
   }
 
   // Update delete steps
-  deleteStepUpdate() {}
+  async deleteStepUpdate(current_tab) {
+    let current_step = current_tab.stepCurrent;
+    let current_step_element = current_tab.stepsElements[current_step];
+
+    if (current_step == 0) {
+      // * Screen to select what to delete
+      this.currentSession.active = true;
+
+      let time_checkbox = current_step_element.querySelector("#data_delete_time_checkbox");
+      let config_checkbox = current_step_element.querySelector("#data_delete_config_checkbox");
+      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+
+      // It returned a step, because something  need to check at least one option
+      if (this.currentSession.error.active) {
+        time_checkbox.parentElement.classList.add("input_error");
+        config_checkbox.parentElement.classList.add("input_error");
+        error_message.innerText = this.currentSession.error.message;
+        error_message.enable();
+      } else {
+        // If it's the first time, make both cheked as default
+        time_checkbox.checked = false;
+        config_checkbox.checked = false;
+
+        time_checkbox.parentElement.classList.remove("input_error");
+        config_checkbox.parentElement.classList.remove("input_error");
+        error_message.disable();
+      }
+
+      this.nextStepButton.enable();
+    } else if (current_step == 1) {
+      // * Screen to validate and confirm deletion
+
+      let past_step_element = current_tab.stepsElements[current_tab.stepCurrent - 1];
+
+      this.currentSession.options.time = past_step_element.querySelector(
+        "#data_delete_time_checkbox"
+      ).checked;
+      this.currentSession.options.configurations = past_step_element.querySelector(
+        "#data_delete_config_checkbox"
+      ).checked;
+
+      // Unchecked both boxes
+      if (
+        this.currentSession.options.time == false &&
+        this.currentSession.options.configurations == false
+      ) {
+        this.currentSession.error = {
+          active: true,
+          message: "Check at least one option",
+        };
+        this.previousStep();
+        return;
+      }
+
+      let confirm_input = current_step_element.querySelector("#data_delete_confirm_input");
+      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+
+      // It returned a step the confirm value didn't match
+      if (this.currentSession.error.active && this.currentSession.previousStep == 2) {
+        confirm_input.classList.add("input_error");
+        error_message.innerText = this.currentSession.error.message;
+        error_message.enable();
+      } else {
+        // If it's the first time, make both cheked as default
+        confirm_input.value = "";
+        confirm_input.classList.remove("input_error");
+        error_message.disable();
+      }
+
+      this.nextStepButton.enable();
+    } else if (current_step == 2) {
+      // * Screen to delete/reset
+
+      this.currentSession.error.active = false;
+      this.currentSession.error.message = null;
+
+      let past_step_element = current_tab.stepsElements[current_tab.stepCurrent - 1];
+
+      let confirm_input = past_step_element.querySelector("#data_delete_confirm_input");
+
+      // Get the input value and remove spaces before and after string
+      let inputed = confirm_input.value.trim();
+
+      // Replace more than 1 spaces to 1 space only
+      inputed = inputed.replace(/\ +/g, " ");
+
+      // The value inputed is not the expected
+      if (inputed != "confirm deletion") {
+        this.currentSession.error = {
+          active: true,
+          message: "The required value doesn't match with input",
+        };
+        this.previousStep();
+        return;
+      }
+
+      // The input is correct
+
+      let options = [];
+
+      if (this.currentSession.options.time) {
+        options.push("time");
+      }
+      if (this.currentSession.options.configurations) {
+        options.push("configurations");
+      }
+
+      this.currentSession.options.selected = options;
+
+      current_step_element.querySelector(".data_feedbacks_step_selected_options").innerText =
+        this.currentSession.options.selected.join(" and ");
+
+      // Send a delete message
+      await MessageManager.send({
+        type: "delete",
+        options: options,
+      });
+
+      this.waitForStep(1);
+    } else {
+      // * Screen of success
+
+      current_step_element.querySelector(".data_feedbacks_step_selected_options").innerText =
+        this.currentSession.options.selected.join(" and ");
+    }
+  }
 }

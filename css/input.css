@@ -35,6 +35,11 @@ button:not(.no_button_style),
   height: calc(1em + 1.2em + 0.2em);
 }
 
+[class*="square_small"] {
+  font-size: 0.75rem;
+  border-radius: 0.25em;
+}
+
 .square_big {
   width: 4em;
   height: 4em;
