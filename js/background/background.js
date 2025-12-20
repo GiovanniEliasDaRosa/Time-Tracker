@@ -406,7 +406,16 @@ async function handleMessageReceived(request, sender) {
 
     if (has.configurations) {
       await Storage.delete("configurations");
-      configurations = await Storage.set("configurations", structuredClone(configurations_default));
+      configurations = structuredClone(configurations_default);
+
+      // User prefers dark mode
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        configurations.darkTheme = true;
+      } else {
+        configurations.darkTheme = false;
+      }
+
+      configurations = await Storage.set("configurations", configurations);
     }
 
     if (has.time) {

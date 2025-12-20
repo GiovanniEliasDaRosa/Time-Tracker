@@ -2,27 +2,33 @@ class Themes {
   constructor() {
     this.element = document.querySelector(".section_options.theme");
     this.toggle = document.querySelector("#dark_theme_toggle");
-    this.dark_theme = false;
+    this.darkTheme = false;
 
     this.waitSaveTimeout = null;
 
     this.toggle.onchange = () => {
       this.updateTheme();
     };
-    this.updateTheme(false);
   }
-  setup() {
+
+  updateValue() {
     if (configurations.darkTheme) {
       this.toggle.checked = true;
-      this.dark_theme = true;
+      this.darkTheme = true;
+    } else {
+      this.toggle.checked = false;
+      this.darkTheme = false;
     }
+
+    this.updateTheme(false);
   }
+
   updateTheme(save = true) {
     if (this.toggle.checked) {
-      this.dark_theme = true;
+      this.darkTheme = true;
       document.querySelector(":root").setAttribute("data-theme-dark", "true");
     } else {
-      this.dark_theme = false;
+      this.darkTheme = false;
       document.querySelector(":root").setAttribute("data-theme-dark", "false");
     }
 
@@ -40,7 +46,7 @@ class Themes {
   }
 
   async save() {
-    configurations.darkTheme = this.dark_theme;
+    configurations.darkTheme = this.darkTheme;
 
     configurations = await Storage.set("configurations", configurations);
 

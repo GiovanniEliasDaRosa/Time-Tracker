@@ -577,7 +577,6 @@ Check if your system clock is correct.`;
 
         // No date found, means no conflict or
         // Date found with no domains saved
-        console.log(search);
         if (search == null || search.domains == null || search.domains.length == 0) {
           this.currentSession.options.conflictDate = null;
           this.waitForStep(1);
@@ -669,6 +668,10 @@ Check if your system clock is correct.`;
     } else {
       // * Screen of success
       this.feedbacks.setAttribute("data-success", "true");
+
+      if (this.currentSession.options.configurations) {
+        updatedConfigurations({ animate: true });
+      }
     }
 
     return true;
@@ -799,6 +802,8 @@ Check if your system clock is correct.`;
 
       current_step_element.querySelector(".data_feedbacks_step_selected_options").innerText =
         this.currentSession.options.selected.join(" and ");
+
+      updatedConfigurations({ animate: true });
     }
   }
 }

@@ -147,6 +147,9 @@
   /* * options.css */
   --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 53% 77%);
   --options-options-more-border-color: hsl(from var(--primary-color) h 5% 70%);
+  --options-options-changed-configuration-background-color: hsl(
+    from var(--background-color) 208 calc(s + 30) calc(l - 10)
+  );
 
   /* - notifications */
   --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 61% 90%);
@@ -308,6 +311,9 @@
   /* * options.css */
   --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 28% 20%);
   --options-options-more-border-color: hsl(from var(--primary-color) h 10% 25%);
+  --options-options-changed-configuration-background-color: hsl(
+    from var(--background-color) h calc(s + 10) calc(l + 10)
+  );
 
   /* - notifications */
   --options-notifications-config-border-color: hsl(from var(--primary-color) calc(h - 8) 28% 18%);

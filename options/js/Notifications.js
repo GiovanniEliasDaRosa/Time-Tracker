@@ -19,21 +19,8 @@ class Notifications {
       showTopThreeCheckbox: this.element.querySelector("#notifications_content_checkbox"),
     };
   }
+
   setup() {
-    if (configurations == null) {
-      console.error("No config setup");
-      return;
-    }
-    let notifications = configurations.notifications;
-
-    this.enabled = notifications.enabled ?? false;
-    this.timeBetween = notifications.timeBetween ?? 0;
-    this.showTopThree = notifications.showTopThree ?? false;
-
-    this.optionsElements.toggleEnableCheckbox.checked = this.enabled;
-    this.optionsElements.timeBetweenInput.value = this.timeBetween;
-    this.optionsElements.showTopThreeCheckbox.checked = this.showTopThree;
-
     this.optionsElements.toggleEnableCheckbox.oninput = () => {
       this.enabled = this.optionsElements.toggleEnableCheckbox.checked;
       this.handleUpdate();
@@ -53,7 +40,32 @@ class Notifications {
       this.waitToSave();
     };
 
-    this.handleUpdate(false);
+    return this;
+  }
+
+  updateValue(options_passed = {}) {
+    let options = {
+      animate: options_passed.animate ?? false,
+    };
+
+    if (configurations == null) {
+      console.error("No config setup");
+      return;
+    }
+
+    let notifications = configurations.notifications;
+
+    this.enabled = notifications.enabled ?? false;
+    this.timeBetween = notifications.timeBetween ?? 0;
+    this.showTopThree = notifications.showTopThree ?? false;
+
+    this.optionsElements.toggleEnableCheckbox.checked = this.enabled;
+    this.optionsElements.timeBetweenInput.value = this.timeBetween;
+    this.optionsElements.showTopThreeCheckbox.checked = this.showTopThree;
+
+    Validator.validate(this.optionsElements.timeBetweenInput, 1, 1440);
+
+    this.handleUpdate(options.animate);
   }
 
   handleInputUpdate(e) {
