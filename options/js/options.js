@@ -32,7 +32,7 @@ async function main() {
 
   notifications.setup().updateValue();
   new_day.updateValue();
-  themes.updateValue();
+  themes.updateValue({ animate: false, save: false });
   data_manager.setup();
 }
 
@@ -47,7 +47,7 @@ async function updatedConfigurations(options_passed = {}) {
   if (!options.animate) {
     notifications.updateValue();
     new_day.updateValue();
-    themes.updateValue();
+    themes.updateValue({ save: false });
     return;
   }
 
@@ -79,7 +79,7 @@ async function updatedConfigurations(options_passed = {}) {
     current_option.element.setAttribute("data-changed-configuration", "true");
     current_option.element.scrollIntoView({ behavior: "instant", block: "center" });
 
-    current_option.updateValue({ animate: true });
+    current_option.updateValue({ animate: true, save: false });
 
     animate_update_config_single_timeout = setTimeout(() => {
       current_option.element.removeAttribute("data-changed-configuration");

@@ -1,3 +1,10 @@
+:root[data-theme-transition="true"] *,
+:root[data-theme-transition="true"] *::before,
+:root[data-theme-transition="true"] *::after {
+  transition-property: background, background-color, border, color;
+  transition-duration: 1s;
+}
+
 main {
   --content-max-width: 120ch;
   --breakout-max-width: 130ch;
