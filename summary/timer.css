@@ -8,6 +8,7 @@
 .timer_body,
 .timer_body_more {
   display: grid;
+  align-content: start;
 }
 
 .timer_body {
@@ -143,7 +144,7 @@
 /* MARK: Show more
 */
 .button_show_more {
-  justify-self: center;
+  align-self: center;
 }
 
 .button_show_more::before {
