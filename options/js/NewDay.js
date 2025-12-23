@@ -62,8 +62,13 @@ class NewDay {
     this.newDayUpdate();
   }
 
-  setup() {
+  updateValue(options_passed = {}) {
+    let options = {
+      animate: options_passed.animate ?? false,
+    };
+
     this.hoursSelected = configurations.newDayStart.hour;
+    this.inputHours.value = this.hoursSelected;
 
     let hour_temp = ((configurations.newDayStart.hour % 24) + 24) % 24;
     let hour = hour_temp <= 12 ? hour_temp : hour_temp - 24;
@@ -74,7 +79,10 @@ class NewDay {
     }
 
     this.range.value = hour;
-    this.handleInputUpdate("slider", { tooltip: false, save: false });
+
+    Validator.validate(this.inputHours, -12, 12);
+
+    this.handleInputUpdate("slider", { tooltip: options.animate, save: false });
   }
 
   handleInputUpdate(from, options_passed = {}) {

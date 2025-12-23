@@ -78,3 +78,51 @@ input[type="checkbox"]::before,
 .icons.play::before {
   content: "\f04b";
 }
+
+.icons.upload::before {
+  content: "\f093";
+}
+
+.icons.download::before {
+  content: "\f019";
+}
+
+.icons.trash::before {
+  content: "\f1f8";
+}
+
+.icons.forward_step::after {
+  content: "\f051";
+}
+
+.icons.download_file::before {
+  content: "\f56d";
+}
+
+.icons.upload_file::before {
+  content: "\f574";
+}
+
+.icons.plus::before {
+  content: "\2b";
+}
+
+.icons.hard_drive::before {
+  content: "\f0a0";
+}
+
+.icons.file_import::before {
+  content: "\f56f";
+}
+
+.icons.thumbs_up::before {
+  content: "\f164";
+}
+
+.icons.circle_exclamation::before {
+  content: "\f06a";
+}
+
+.icons.triangle_exclamation::before {
+  content: "\f071";
+}

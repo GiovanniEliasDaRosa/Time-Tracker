@@ -1,6 +1,17 @@
+:root[data-theme-transition="true"] *,
+:root[data-theme-transition="true"] *::before,
+:root[data-theme-transition="true"] *::after {
+  transition-property: background, background-color, border, color;
+  transition-duration: 1s;
+}
+
 main {
   --content-max-width: 120ch;
   --breakout-max-width: 130ch;
+}
+
+footer {
+  margin-top: min(40em, 50vh);
 }
 
 .section_options {
@@ -50,4 +61,29 @@ main {
   clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
 
   border-radius: 0 0 0.5em 0.5em;
+}
+
+.section_options_button_not_full_width {
+  width: fit-content;
+}
+
+.section_options[data-changed-configuration="true"] {
+  background-color: var(--options-options-changed-configuration-background-color);
+  outline: 0.125em solid var(--focus-outline);
+}
+
+.section_options_more_config {
+  gap: 0.5em;
+}
+
+.section_options_more_config {
+  display: grid;
+  padding: 0.5em;
+  border: solid 0.1em var(--options-notifications-config-border-color);
+  border-radius: 0.5em;
+}
+
+.section_options_more_config > label {
+  display: grid;
+  gap: 0.25em;
 }

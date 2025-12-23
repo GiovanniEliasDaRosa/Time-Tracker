@@ -1,24 +1,27 @@
 /* MARK: Global inputs
 */
 input,
-button {
+button,
+.button {
   font-size: 1rem;
   border-radius: 0.5em;
 }
 
 input:is([type="checkbox"], [type="radio"]),
 button,
-label {
+label,
+.button {
   cursor: pointer;
 }
 
 /* MARK: Buttons
 */
-button:not(.no_button_style) {
+:is(button, .button):not(.no_button_style) {
   padding: 0.5em 1em;
 }
 
-button:not(.no_button_style) {
+button:not(.no_button_style),
+.button {
   border: solid 0.1em var(--button-border-color);
   background-color: var(--button-background-color);
 }
@@ -32,17 +35,24 @@ button:not(.no_button_style) {
   height: calc(1em + 1.2em + 0.2em);
 }
 
+[class*="square_small"] {
+  font-size: 0.75rem;
+  border-radius: 0.25em;
+}
+
 .square_big {
   width: 4em;
   height: 4em;
 }
 
-button:not(.no_button_style):is(:hover, :focus-visible) {
+button:not(.no_button_style):is(:hover, :focus-visible),
+.button:is(:hover, :focus-visible) {
   border-color: var(--button-border-color-hover);
   background-color: var(--button-background-color-hover);
 }
 
-button:not(.no_button_style):active {
+button:not(.no_button_style):active,
+.button:active {
   border-color: var(--button-border-color-active);
   background-color: var(--button-background-color-active);
 }
