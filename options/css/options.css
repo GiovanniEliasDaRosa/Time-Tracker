@@ -10,6 +10,10 @@ main {
   --breakout-max-width: 130ch;
 }
 
+footer {
+  margin-top: min(40em, 50vh);
+}
+
 .section_options {
   display: grid;
   gap: 1em;
@@ -66,4 +70,20 @@ main {
 .section_options[data-changed-configuration="true"] {
   background-color: var(--options-options-changed-configuration-background-color);
   outline: 0.125em solid var(--focus-outline);
+}
+
+.section_options_more_config {
+  gap: 0.5em;
+}
+
+.section_options_more_config {
+  display: grid;
+  padding: 0.5em;
+  border: solid 0.1em var(--options-notifications-config-border-color);
+  border-radius: 0.5em;
+}
+
+.section_options_more_config > label {
+  display: grid;
+  gap: 0.25em;
 }

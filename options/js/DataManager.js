@@ -269,6 +269,7 @@ class DataManager {
       step.disable();
     });
     current_tab.stepsElements[current_tab.stepCurrent].enable();
+    this.element.scrollIntoView({ behavior: "instant", block: "start" });
 
     clearTimeout(this.waitProgressFillTimeout);
     this.feedbacksProgressFill.style.transition = "";
