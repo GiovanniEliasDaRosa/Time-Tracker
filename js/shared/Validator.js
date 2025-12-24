@@ -10,15 +10,14 @@ class Validator {
 
     // If deleting characters
     if (char_code == null) {
-      this.validate(input, options.min, options.max);
-      return null;
+      return this.validate(input, options.min, options.max);
     }
 
     // Any digit or minus letters
     let any_char = char_code.match(/[\d\-]/);
     if (any_char == null) {
       e.preventDefault();
-      return null;
+      return this.validate(input, options.min, options.max);
     }
 
     if (e.inputType == "insertReplacementText") {
@@ -34,32 +33,35 @@ class Validator {
 
       if (input.value.match(/-/) != null) {
         e.preventDefault();
-        this.validate(input, options.min, options.max);
-        return null;
+        return this.validate(input, options.min, options.max);
       }
     }
 
-    // If has a min limiter
-    if (options.min) {
-      if (input.value < options.min) {
-        result_value = options.min;
-        e.preventDefault();
-        console.log("Limit MIN");
-      }
-    }
+    return this.validate(input, options.min, options.max);
 
-    // If has a max limiter
-    if (options.max) {
-      if (input.value > options.max) {
-        result_value = options.max;
-        e.preventDefault();
-        console.log("Limit MAX");
-      }
-    }
+    // // If has a min limiter
+    // if (options.min) {
+    //   if (input.value < options.min) {
+    //     e.preventDefault();
+    //     console.log("Limit MIN");
+    //   }
+    // }
+
+    // // If has a max limiter
+    // if (options.max) {
+    //   if (input.value > options.max) {
+    //     e.preventDefault();
+    //     console.log("Limit MAX");
+    //   }
+    // }
   }
 
   static validate(input, min, max) {
-    if (input.value == "" || input.value < min || input.value > max) {
+    if (
+      input.value == "" ||
+      (min != null && input.value < min) ||
+      (max != null && input.value > max)
+    ) {
       input.classList.add("input_error");
       return false;
     } else {

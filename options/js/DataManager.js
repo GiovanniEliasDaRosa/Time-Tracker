@@ -126,19 +126,18 @@ class DataManager {
         name: file.name,
       };
 
+      // Animate bar
+      clearTimeout(this.waitProgressFillTimeout);
+      this.feedbacksProgressFill.classList.remove("full");
+      this.feedbacksProgressFill.style.width = "";
+
+      this.waitProgressFillTimeout = setTimeout(() => {
+        this.feedbacksProgressFill.classList.add("full");
+      }, 10);
+
       // The next step starts reading the file
       // Wait 0.25 seconds
       this.waitForStep(1, 250);
-
-      // Animate bar
-      clearTimeout(this.waitProgressFillTimeout);
-      this.feedbacksProgressFill.style.transition = "";
-      this.feedbacksProgressFill.style.width = "0%";
-
-      this.waitProgressFillTimeout = setTimeout(() => {
-        this.feedbacksProgressFill.style.transition = "width 0.25s ease-out";
-        this.feedbacksProgressFill.style.width = "100%";
-      }, 10);
     };
 
     // While reading show progress
@@ -170,7 +169,9 @@ class DataManager {
       this.currentSession.error.active = false;
       this.currentSession.error.message = null;
 
-      this.feedbacksProgressFill.style.width = "100%";
+      this.feedbacksProgressFill.style.width = "";
+      this.feedbacksProgressFill.classList.add("full");
+      console.log("AAAAAAAAAAA");
 
       this.waitForStep(1);
     };
@@ -264,7 +265,7 @@ class DataManager {
     this.updateFeedback();
   }
 
-  updateStep(current_tab) {
+  async updateStep(current_tab) {
     current_tab.stepsElements.forEach((step) => {
       step.disable();
     });
@@ -272,14 +273,15 @@ class DataManager {
     this.element.scrollIntoView({ behavior: "instant", block: "start" });
 
     clearTimeout(this.waitProgressFillTimeout);
-    this.feedbacksProgressFill.style.transition = "";
-    this.feedbacksProgressFill.style.width = "0%";
+    this.feedbacksProgressFill.classList.remove("reading_file");
+    this.feedbacksProgressFill.classList.remove("full");
+    this.feedbacksProgressFill.style.width = "";
 
     let animate_full = true;
     if (this.selectedTab == "export") {
       this.exportStepUpdate(current_tab);
     } else if (this.selectedTab == "import") {
-      animate_full = this.importStepUpdate(current_tab);
+      animate_full = (await this.importStepUpdate(current_tab)) ?? true;
     } else if (this.selectedTab == "delete") {
       this.deleteStepUpdate(current_tab);
     }
@@ -287,8 +289,7 @@ class DataManager {
     if (!animate_full) return;
 
     this.waitProgressFillTimeout = setTimeout(() => {
-      this.feedbacksProgressFill.style.transition = "width 0.5s ease-out";
-      this.feedbacksProgressFill.style.width = "100%";
+      this.feedbacksProgressFill.classList.add("full");
     }, 10);
   }
 
@@ -438,8 +439,10 @@ class DataManager {
 
       // Start reading the file
       clearTimeout(this.waitProgressFillTimeout);
-      this.feedbacksProgressFill.style.transition = "";
-      this.feedbacksProgressFill.style.width = "0%";
+      this.feedbacksProgressFill.classList.remove("full");
+      this.feedbacksProgressFill.style.width = "";
+      this.feedbacksProgressFill.classList.add("reading_file");
+
       this.tabs.import.fileReader.readAsText(this.tabs.import.importFile.files[0]);
 
       current_step_element.querySelector(".data_feedbacks_step_file_name").innerText =

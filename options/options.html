@@ -28,11 +28,9 @@
     <main>
       <header>
         <h1>Options Page</h1>
-        <button
-          class="square icons chart_simple nomargin"
-          id="summary_button"
-          title="Go to summary page"
-        ></button>
+        <button class="icons chart_simple" id="summary_button" title="Go to summary page">
+          Summary
+        </button>
       </header>
 
       <div id="main_content">
@@ -208,13 +206,6 @@
                 <div class="data_feedback_progress_fill"></div>
               </div>
 
-              <!-- Close feedback icon -->
-              <button
-                class="square_small icons xmark nomargin"
-                title="Close feedback"
-                id="data_feedbacks_close_feedback_button"
-              ></button>
-
               <!-- Export steps -->
               <div
                 class="data_feedback_export"
@@ -250,7 +241,12 @@
                     Download should start automatically. If not, click the button to download
                     manually.
                   </p>
-                  <button id="data_download_button" class="icons download_file">Download</button>
+                  <button
+                    id="data_download_button"
+                    class="section_options_button_not_full_width icons download_file"
+                  >
+                    Download
+                  </button>
                 </div>
               </div>
 
@@ -462,9 +458,19 @@
                 </div>
               </div>
 
-              <button class="icons forward_step icons_after" id="data_feedbacks_next_step_button">
-                Next
-              </button>
+              <!-- Close feedback icon -->
+              <div class="data_feedback_actions">
+                <button
+                  class="icons xmark"
+                  title="Close feedback"
+                  id="data_feedbacks_close_feedback_button"
+                >
+                  Close
+                </button>
+                <button class="icons forward_step icons_after" id="data_feedbacks_next_step_button">
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </section>

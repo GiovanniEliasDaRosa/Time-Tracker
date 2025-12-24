@@ -1,14 +1,13 @@
 body {
   background-color: var(--popup-background-color-color);
   display: grid;
-  gap: 0.5em;
   width: max-content;
   min-width: 20ch;
 }
 
 #timer_button {
   border: none;
-  border-radius: 0.4em;
+  border-radius: 0;
   padding: 1em;
   background-color: transparent;
 

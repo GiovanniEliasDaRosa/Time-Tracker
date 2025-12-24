@@ -28,7 +28,10 @@ class Notifications {
     };
 
     this.optionsElements.timeBetweenInput.onbeforeinput = (e) => {
-      Validator.number(this.optionsElements.timeBetweenInput, e);
+      Validator.number(this.optionsElements.timeBetweenInput, e, {
+        min: 1,
+        max: 1440,
+      });
     };
 
     this.optionsElements.timeBetweenInput.oninput = (e) => {
@@ -69,8 +72,10 @@ class Notifications {
   }
 
   handleInputUpdate(e) {
-    Validator.number(this.optionsElements.timeBetweenInput, e);
-    let valid_value = Validator.validate(this.optionsElements.timeBetweenInput, 1, 1440);
+    let valid_value = Validator.number(this.optionsElements.timeBetweenInput, e, {
+      min: 1,
+      max: 1440,
+    });
 
     // If has the result value has changed and needs to be saved
     if (valid_value) {

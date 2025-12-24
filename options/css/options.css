@@ -10,10 +10,6 @@ main {
   --breakout-max-width: 130ch;
 }
 
-footer {
-  margin-top: min(40em, 50vh);
-}
-
 .section_options {
   display: grid;
   gap: 1em;

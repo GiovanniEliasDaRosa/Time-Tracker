@@ -434,6 +434,7 @@ async function handleMessageReceived(request, sender) {
       tracking_time = structuredClone(tracking_time_default);
 
       // * Simulate a restart of the extension
+      first_install = false;
       bootstrap();
     }
 

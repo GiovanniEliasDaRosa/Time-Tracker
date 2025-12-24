@@ -12,7 +12,6 @@ async function get_timer() {
     type: "get",
     options: ["tracking_time", "current_tab"],
   });
-  console.log(response);
 
   let tracking_time_local = response.trackingTime;
   let current_tab = response.currentTab;

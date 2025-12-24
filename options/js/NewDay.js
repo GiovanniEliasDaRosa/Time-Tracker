@@ -45,7 +45,7 @@ class NewDay {
     };
 
     this.inputHours.onbeforeinput = (e) => {
-      Validator.number(this.inputHours, e, { negative: true });
+      Validator.number(this.inputHours, e, { negative: true, min: -12, max: 12 });
     };
 
     this.inputHours.oninput = (e) => {
@@ -128,7 +128,7 @@ class NewDay {
     formatted.hour12 = hour12.pad(2) + amPm;
 
     if (options.tooltip) {
-      this.current.innerHTML = `${formatted.hour12}<br>${formatted.hour24}:00`;
+      this.current.innerHTML = `${formatted.hour12}\n${formatted.hour24}:00`;
 
       // Add delay to transition have animation in appeararing
       this.newDaySliderTimeout = setTimeout(() => {
@@ -166,8 +166,7 @@ class NewDay {
   }
 
   handleInputHoursChange(e) {
-    Validator.number(this.inputHours, e, { negative: true });
-    let valid_value = Validator.validate(this.inputHours, -12, 12);
+    let valid_value = Validator.number(this.inputHours, e, { negative: true, min: -12, max: 12 });
 
     if (valid_value) {
       this.handleInputUpdate("number");
