@@ -63,6 +63,8 @@ class Tutorial {
     this.skipConfirm = false;
     this.skipTimeout = "";
 
+    this.helperImage = popup.querySelector(".tutorial_popup_helper_image");
+
     // Steps
     this.currentStep = 0;
     this.steps = [
@@ -70,23 +72,27 @@ class Tutorial {
         title: `Welcome to Time Tracker!`,
         text: `See how much time you spend and where.`,
         highlight: null,
+        img: null,
       },
       {
         title: `How to get to this page`,
         text: `Click the extension icon to open the popup, then click inside it to open this page.
 |Tip: The popup shows a quick view of today's time.|`,
         highlight: null,
+        img: "tutorial-1.gif",
       },
       {
         title: `This is the Summary Page`,
         text: `It's a dashboard for the time spent by site.`,
         highlight: null,
+        img: null,
       },
       {
         title: `Daily section`,
         text: `Shows your time spent by domain for the selected day.
 |Tip: The top 10 domains are shown by default, and if you visited more than 10 sites that day, a "Show more" button appears.|`,
         highlight: document.querySelector(".timer"),
+        img: null,
       },
       {
         title: `Options page`,
@@ -94,6 +100,7 @@ class Tutorial {
 You can restart the tutorial anytime by going to:
 |Options page > Tutorial > Start tutorial|`,
         highlight: document.querySelector("#configurations_button"),
+        img: null,
       },
     ];
 
@@ -126,6 +133,7 @@ You can restart the tutorial anytime by going to:
   }
 
   updateStep() {
+    this.helperImage.disable();
     // If on last step
     if (this.currentStep > this.steps.length - 1) {
       this.tutorialComplete();
@@ -146,6 +154,12 @@ You can restart the tutorial anytime by going to:
       // If selected doesn't have a targed
       this.highlighter.disable();
       this.element.setAttribute("data-selectable", "false");
+    }
+
+    // If has a helper image on the step
+    if (selected.img != null) {
+      this.helperImage.src = `../img/tutorial/${selected.img}`;
+      this.helperImage.enable();
     }
   }
 
@@ -189,6 +203,7 @@ You can restart the tutorial anytime by going to:
       return;
     }
 
+    this.helperImage.disable();
     this.updateText(
       `Skip tutorial?`,
       `You can restart the tutorial anytime by going to:

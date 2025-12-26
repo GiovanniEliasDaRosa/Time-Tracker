@@ -169,3 +169,7 @@
     width: 0%;
   }
 }
+
+.tutorial_popup_helper_image {
+  display: block;
+}

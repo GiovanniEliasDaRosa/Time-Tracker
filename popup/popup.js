@@ -41,10 +41,12 @@ async function get_timer() {
 
 get_timer();
 
-document.querySelector("#timer_button").onclick = (e) => {
-  handleExtensionTab("summary/summary.html", window);
+document.querySelector("#timer_button").onclick = async () => {
+  await handleExtensionTab("summary/summary.html", null, false);
+  window.close();
 };
 
-document.querySelector("#configurations_button").onclick = () => {
-  handleExtensionTab("options/options.html", window);
+document.querySelector("#configurations_button").onclick = async () => {
+  await handleExtensionTab("options/options.html", null, false);
+  window.close();
 };

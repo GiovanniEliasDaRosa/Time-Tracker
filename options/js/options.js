@@ -1,8 +1,8 @@
 let configurations = null;
 
 // Summary handler
-document.querySelector("#summary_button").onclick = () => {
-  handleExtensionTab("summary/summary.html", window);
+document.querySelector("#summary_button").onclick = (e) => {
+  handleExtensionTab("summary/summary.html", e);
 };
 
 // * MARK: Create options
@@ -10,8 +10,8 @@ document.querySelector("#summary_button").onclick = () => {
 let notifications = new Notifications();
 
 // Tutorial
-document.querySelector("#tutorial_start").onclick = () => {
-  handleExtensionTab("summary/summary.html#show_tutorial=true", window);
+document.querySelector("#tutorial_start").onclick = (e) => {
+  handleExtensionTab("summary/summary.html#show_tutorial=true", e);
 };
 
 // New Day

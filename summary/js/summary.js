@@ -51,6 +51,6 @@ async function main() {
 
 main();
 
-document.querySelector("#configurations_button").onclick = () => {
-  handleExtensionTab("options/options.html", window);
+document.querySelector("#configurations_button").onclick = (e) => {
+  handleExtensionTab("options/options.html", e);
 };

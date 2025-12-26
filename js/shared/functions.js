@@ -95,18 +95,29 @@ Date.prototype.format = function (options, locale = "en-US") {
 };
 
 // MARK: Helper functions
-async function handleExtensionTab(path, window_passed = null) {
+async function handleExtensionTab(path, event = null, close_current_tab = true) {
   let url = browser.runtime.getURL(path);
+
+  // If have an event, see if it has crtl key pressed
+  if (event != null) {
+    // If the ctrl is pressed we don't want to close the current tab
+    let ctrl_pressed = event.ctrlKey || event.metaKey;
+    close_current_tab = !ctrl_pressed;
+  }
+
+  // Get the current tab
+  let curret_tab = await browser.tabs.query({ active: true });
 
   // Get all tabs
   let tabs = await browser.tabs.query({});
   // See if a summary tab is open
-  summary_tab = tabs.filter((tab) => tab.url == url);
+  summary_tab = tabs.filter((tab) => tab.url.replace(/#(.+)?/, "") == url.replace(/#(.+)?/, ""));
 
   // See if a summary tab is open
   if (summary_tab[0]) {
     // If it is, move to it
     await browser.tabs.update(summary_tab[0].id, {
+      url: url,
       active: true,
       highlighted: true,
     });
@@ -121,8 +132,9 @@ async function handleExtensionTab(path, window_passed = null) {
     browser.tabs.create({ url: url });
   }
 
-  if (window_passed != null) {
-    window_passed.close();
+  if (close_current_tab) {
+    // Close it
+    await browser.tabs.remove(curret_tab[0].id);
   }
 }
 
@@ -146,7 +158,7 @@ function showNotification() {
 
   browser.notifications.create({
     type: "basic",
-    iconUrl: browser.runtime.getURL("img/icon.png"),
+    iconUrl: browser.runtime.getURL("img/icons/icon.png"),
     title: `Time Tracker ${formatTime(tracking_time.totalTime).timeString}`,
     message: message,
   });
