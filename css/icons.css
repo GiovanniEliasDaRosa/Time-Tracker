@@ -12,7 +12,7 @@
   font-style: normal;
 }
 
-.icons::before,
+.icons:not(.icons_after)::before,
 input[type="checkbox"]::before,
 .icons.icons_after::after {
   display: inline-block;
@@ -47,7 +47,11 @@ input[type="checkbox"]::before,
   content: "\f053";
 }
 
-.icons.arrow_right::before {
+.icons.arrow_right:not(.icons_after)::before {
+  content: "\f054";
+}
+
+.icons.arrow_right.icons_after::after {
   content: "\f054";
 }
 

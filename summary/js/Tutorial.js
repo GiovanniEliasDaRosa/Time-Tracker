@@ -22,6 +22,7 @@ class Tutorial {
     // Popup buttons previous/cancel/skip/next
     let popup_buttons = popup.querySelector(".tutorial_popup_buttons");
     this.popupButtons = {
+      element: popup_buttons,
       previous: popup_buttons.querySelector(".button_previous"),
       cancel: popup_buttons.querySelector(".button_cancel"),
       skip: popup_buttons.querySelector(".button_skip"),
@@ -135,6 +136,7 @@ You can restart the tutorial anytime by going to:
 
     this.popup.currentStep.innerText = `${this.currentStep + 1}/${this.steps.length}`;
     this.updateText(selected.title, selected.text);
+    this.popupButtons.element.removeAttribute("data-skip-tutorial");
 
     // If selected has a targed
     if (selected.highlight != null) {
@@ -210,6 +212,7 @@ You can restart the tutorial anytime by going to:
     this.skipConfirm = true;
 
     this.element.setAttribute("data-selectable", "true");
+    this.popupButtons.element.setAttribute("data-skip-tutorial", "true");
 
     // Visually the button has a 1 second cooldown
     this.skipTimeout = setTimeout(() => {
