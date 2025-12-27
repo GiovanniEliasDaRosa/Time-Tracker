@@ -5,8 +5,8 @@
   "description": "Tracks time spent on sites",
   "permissions": ["tabs", "storage", "notifications"],
   "icons": {
-    "48": "img/icons/icon-48.png",
-    "64": "img/icons/icon.png"
+    "48": "assets/icons/icon-48.png",
+    "64": "assets/icons/icon.png"
   },
   "background": {
     "scripts": [
@@ -21,8 +21,8 @@
   },
   "browser_action": {
     "default_icon": {
-      "48": "img/icons/icon-48.png",
-      "64": "img/icons/icon.png"
+      "48": "assets/icons/icon-48.png",
+      "64": "assets/icons/icon.png"
     },
     "default_title": "Time Tracker",
     "default_popup": "popup/popup.html"

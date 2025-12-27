@@ -159,6 +159,7 @@ function showNotification() {
   browser.notifications.create({
     type: "basic",
     iconUrl: browser.runtime.getURL("img/icons/icon.png"),
+    iconUrl: browser.runtime.getURL("assets/icons/icon.png"),
     title: `Time Tracker ${formatTime(tracking_time.totalTime).timeString}`,
     message: message,
   });

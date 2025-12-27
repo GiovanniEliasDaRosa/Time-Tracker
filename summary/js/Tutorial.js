@@ -158,7 +158,7 @@ You can restart the tutorial anytime by going to:
 
     // If has a helper image on the step
     if (selected.img != null) {
-      this.helperImage.src = `../img/tutorial/${selected.img}`;
+      this.helperImage.src = `../assets/img/${selected.img}`;
       this.helperImage.enable();
     }
   }
