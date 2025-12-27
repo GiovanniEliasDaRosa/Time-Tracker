@@ -171,7 +171,6 @@ class DataManager {
 
       this.feedbacksProgressFill.style.width = "";
       this.feedbacksProgressFill.classList.add("full");
-      console.log("AAAAAAAAAAA");
 
       this.waitForStep(1);
     };
