@@ -100,9 +100,9 @@
 
   --popup-footer-background-color: hsl(from var(--primary-color) h 19% 65%);
 
-  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 39% 52%);
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 42% 60%);
   --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 41% 46%);
-  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 79% 15%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 90% 11%);
 
   /* * summary.css */
   /* - tutorial */

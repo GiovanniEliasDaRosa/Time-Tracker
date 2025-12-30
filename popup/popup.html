@@ -13,21 +13,58 @@
     <script src="popup.js" defer="true"></script>
   </head>
   <body>
-    <button class="no_button_style" id="timer_button">
-      <div class="timer_div">
-        <span class="timer_value timer_current_value">HH:MM</span>
-        <hr class="timer_separator" />
-        <span class="timer_value timer_total_value">HH:MM</span>
+    <button
+      class="no_button_style"
+      id="summary_button"
+      data-columns="1"
+      data-progress="outside"
+      data-progress-axis="horizontal"
+      data-progress-bar="thin"
+    >
+      <!-- Time in hours and minutes -->
+      <div class="summary_button_group summary_button_time">
+        <span class="summary_button_time_current">HH:MM</span>
+        <hr class="summary_button_time_hr" />
+        <span class="summary_button_time_total">HH:MM</span>
       </div>
 
-      <div class="timer_div timer_progress">
-        <p class="timer_progress_text">50%</p>
-        <div class="timer_progress_bar">
-          <div class="timer_progress_bar_fill"></div>
+      <!-- Progress bar in percentage -->
+      <div class="summary_button_group summary_button_progress">
+        <p class="summary_button_progress_text"><span>50%</span></p>
+
+        <!-- rectangular progress bar -->
+        <div class="summary_button_progress_bar_rectangular">
+          <div class="summary_button_progress_bar_rectangular_fill"></div>
+        </div>
+
+        <!-- circular progress bar -->
+        <div class="summary_button_progress_bar_circular" role="progressbar">
+          <svg class="summary_button_progress_bar_circular_svg" viewBox="0 0 176 176">
+            <circle
+              class="summary_button_progress_bar_circular_svg_circle"
+              cx="88"
+              cy="88"
+              r="80"
+              fill="none"
+            ></circle>
+            <circle
+              class="summary_button_progress_bar_circular_svg_circle summary_button_progress_bar_circular_svg_circle_shadow"
+              cx="88"
+              cy="88"
+              fill="none"
+            ></circle>
+            <circle
+              class="summary_button_progress_bar_circular_svg_circle summary_button_progress_bar_circular_svg_fill"
+              cx="88"
+              cy="88"
+              r="80"
+              fill="none"
+            ></circle>
+          </svg>
         </div>
       </div>
 
-      <span class="timer_text">Click to open<br />summary page</span>
+      <span class="summary_button_text">Click to open summary</span>
     </button>
 
     <footer>
