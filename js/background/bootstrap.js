@@ -86,7 +86,7 @@ async function bootstrap() {
     configurations = await Storage.set("configurations", configurations);
 
     // Open tutorial
-    handleExtensionTab(`summary/summary.html#show_tutorial=true`);
+    handleExtensionTab(`summary/summary.html#show_tutorial=true`, null, false);
   }
 }
 

@@ -129,7 +129,7 @@ async function handleExtensionTab(path, event = null, close_current_tab = true) 
     await browser.windows.update(summary_tab[0].windowId, { focused: true });
   } else {
     // If it isn't, create a new tab
-    browser.tabs.create({ url: url });
+    await browser.tabs.create({ url: url });
   }
 
   if (close_current_tab) {
@@ -158,7 +158,6 @@ function showNotification() {
 
   browser.notifications.create({
     type: "basic",
-    iconUrl: browser.runtime.getURL("img/icons/icon.png"),
     iconUrl: browser.runtime.getURL("assets/icons/icon.png"),
     title: `Time Tracker ${formatTime(tracking_time.totalTime).timeString}`,
     message: message,
@@ -166,8 +165,8 @@ function showNotification() {
 }
 
 // On notification clicked
-browser.notifications.onClicked.addListener((notificationId) => {
-  handleExtensionTab("summary/summary.html");
+browser.notifications.onClicked.addListener(() => {
+  handleExtensionTab("summary/summary.html", null, false);
 });
 
 async function wait(ms) {
