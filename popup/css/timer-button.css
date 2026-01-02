@@ -1,57 +1,59 @@
-body {
-  background-color: var(--popup-background-color-color);
-  display: grid;
-  width: max-content;
-  min-width: 20ch;
-}
-
 /* MARK: Summary
 */
-#summary_button {
-  border: none;
-  border-radius: 0;
-  padding: 1em;
-  background-color: transparent;
-
+.summary_button {
   display: grid;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 1rem;
+
+  padding: 1rem;
 
   text-align: center;
   cursor: pointer;
+  font-size: 1.5em;
 }
 
-#summary_button:is(:focus-visible, :hover) {
+.summary_button.on_summary_page {
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.summary_button:is(:focus-visible, :hover) {
   background-color: var(--popup-background-color-hover);
 }
 
-#summary_button:active {
+.summary_button:active {
   background-color: var(--popup-background-color-active);
 }
 
 .summary_button_group {
-  font-size: 1.5rem;
   display: grid;
-  gap: 0.25rem;
+  gap: 0.25em;
   font-weight: 600;
 }
 
-.summary_button_time_hr {
+.timer_value {
+  font-weight: 600;
+  letter-spacing: 0.0625em;
+  font-family: monospace;
+}
+
+.timer_separator {
   border: solid 0.1rem var(--popup-timer-separator-background-color);
   border-radius: 0.1rem;
 }
 
 .summary_button_text {
   grid-column: 1 / -1;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .summary_button_progress {
   --percent: 0;
   --progress: 0%;
-  gap: 0.6rem;
+  gap: 0.6em;
 }
 
 .summary_button_progress_text {
@@ -77,11 +79,11 @@ body {
   border-radius: inherit;
 }
 
-#summary_button[data-progress-axis] .summary_button_progress_text {
+.summary_button[data-progress-axis] .summary_button_progress_text {
   display: block;
 }
 
-#summary_button[data-progress-axis] .summary_button_progress_bar_rectangular {
+.summary_button[data-progress-axis] .summary_button_progress_bar_rectangular {
   display: grid;
 }
 
@@ -122,17 +124,17 @@ body {
 
 /* MARK: Columns
 */
-#summary_button[data-columns="1"] {
-  grid-template-columns: 14ch;
+.summary_button[data-columns="1"] {
+  grid-template-columns: 4em;
 }
 
-#summary_button[data-columns="2"] {
-  grid-template-columns: 14ch 14ch;
+.summary_button[data-columns="2"] {
+  grid-template-columns: 4em 4em;
 }
 
 /* MARK: Horizontal
 */
-#summary_button[data-progress-axis="horizontal"] .summary_button_progress_bar_rectangular_fill {
+.summary_button[data-progress-axis="horizontal"] .summary_button_progress_bar_rectangular_fill {
   translate: calc(var(--progress) - 100%);
   transition: translate 1s 0.25s;
 
@@ -141,69 +143,69 @@ body {
   }
 }
 
-#summary_button[data-progress="inside"][data-progress-axis="horizontal"]
+.summary_button[data-progress="inside"][data-progress-axis="horizontal"]
   :is(.summary_button_progress_text, .summary_button_progress_bar_rectangular) {
   grid-area: 1 / 1 / -1 / -1;
 }
 
-#summary_button[data-progress="inside"][data-progress-axis="horizontal"]
+.summary_button[data-progress="inside"][data-progress-axis="horizontal"]
   .summary_button_progress_text {
   z-index: 1;
   color: hsl(var(--hue), 2%, 98%);
 }
 
-#summary_button[data-columns="2"] .summary_button_progress {
+.summary_button[data-columns="2"] .summary_button_progress {
   grid-template-rows: 1fr 1fr;
   align-items: center;
 }
 
-#summary_button:is([data-progress="inside"], [data-progress-bar="large"])
+.summary_button:is([data-progress="inside"], [data-progress-bar="large"])
   .summary_button_progress_bar_rectangular {
   height: 1em;
 }
 
 /* MARK: Vertical
 */
-#summary_button[data-columns="2"][data-progress-axis="vertical"] {
-  grid-template-columns: 10ch auto;
+.summary_button[data-columns="2"][data-progress-axis="vertical"] {
+  grid-template-columns: 4em auto;
 }
 
-#summary_button[data-progress-axis="vertical"] .summary_button_progress {
+.summary_button[data-progress-axis="vertical"] .summary_button_progress {
   grid-template-rows: unset;
-  grid-template-columns: 5ch auto;
+  grid-template-columns: 4ch auto;
 }
 
-#summary_button[data-columns="1"][data-progress-axis="vertical"] .summary_button_progress {
-  grid-template-columns: 4ch 4ch;
+.summary_button[data-columns="1"][data-progress-axis="vertical"] .summary_button_progress {
+  grid-template-columns: 3em 3em;
   justify-content: center;
 }
 
-#summary_button[data-progress-axis="vertical"] .summary_button_progress_text {
+.summary_button[data-progress-axis="vertical"] .summary_button_progress_text {
   display: grid;
   align-items: center;
   text-align: right;
   align-self: stretch;
 }
 
-#summary_button[data-columns="1"][data-progress-axis="vertical"]
+.summary_button[data-columns="1"][data-progress-axis="vertical"]
   .summary_button_progress_bar_rectangular {
-  height: 8ch;
+  height: 4em;
   width: 0.5em;
 }
 
-#summary_button[data-columns="2"][data-progress-axis="vertical"]
+.summary_button[data-columns="2"][data-progress-axis="vertical"]
   .summary_button_progress_bar_rectangular {
-  height: 10ch;
+  height: 5em;
   width: 0.5em;
   margin-right: 0.5em;
 }
 
-#summary_button[data-progress-axis="vertical"][data-progress-bar="large"]
+.summary_button[data-progress-axis="vertical"][data-progress-bar="large"]
   .summary_button_progress_bar_rectangular {
   width: 1em;
 }
 
-#summary_button[data-progress-axis="vertical"] .summary_button_progress_bar_rectangular_fill {
+.summary_button[data-progress-axis="vertical"] .summary_button_progress_bar_rectangular_fill {
   translate: 0 calc(100% - var(--progress));
   transition: translate 1s 0.25s;
 
@@ -214,96 +216,89 @@ body {
 
 /* MARK: Circular
 */
-#summary_button[data-progress-axis="circular"] {
-  grid-template-columns: 22ch;
-  grid-template-rows: 22ch;
+.summary_button[data-progress-axis="circular"] {
+  grid-template-columns: 9em;
+  grid-template-rows: 9em;
 }
 
-#summary_button[data-progress-axis="circular"]
+.summary_button[data-progress-axis="circular"]
   > :is(.summary_button_time, .summary_button_progress) {
   grid-column: 1/-1;
   grid-row: 1/-1;
 }
 
-#summary_button[data-progress-axis="circular"] > .summary_button_time {
+.summary_button[data-progress-axis="circular"] > .summary_button_time {
   justify-self: center;
   align-self: center;
 }
 
-#summary_button[data-progress-axis="circular"] > .summary_button_progress {
+.summary_button[data-progress-axis="circular"] > .summary_button_progress {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
 }
 
-#summary_button[data-progress-axis="circular"]
+.summary_button[data-progress-axis="circular"]
   :is(.summary_button_progress_text, .summary_button_progress_bar_circular) {
   grid-column: 1/-1;
   grid-row: 1/-1;
 }
 
-#summary_button[data-progress-axis="circular"] .summary_button_progress_text {
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text {
   align-self: center;
 }
 
-#summary_button[data-progress-axis="circular"] .summary_button_progress_text {
-  padding-inline: 1rem;
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text {
+  padding-inline: 0.5em;
   text-align: right;
   --angle-outer: 0deg;
   --angle-inner: 0deg;
   rotate: var(--angle-outer);
   transition: rotate 1s 0.25s;
-  font-size: 1rem;
 
   @starting-style {
     rotate: -90deg;
   }
 }
 
-#summary_button[data-progress-axis="circular"] .summary_button_progress_text > span {
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text > span {
   display: inline-block;
   rotate: var(--angle-inner);
   transition: rotate 1s 0.25s;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  width: 4ch;
+  /* transform-origin: 50% calc((mod(calc(var(--progress) - 1%), 50%) + 1) * 2); */
+  position: relative;
 
   @starting-style {
     rotate: 450deg;
   }
 }
 
-#summary_button[data-progress-axis="circular"] .summary_button_time {
+/* .summary_button_progress_text > span::before {
+  content: "";
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  background-color: red;
+  translate: -50% -50%;
+  left: 50%;
+  top: calc((mod(calc(var(--progress) - 1%), 49%) + 1%) * 2);
+} */
+
+.summary_button[data-progress-axis="circular"] .summary_button_time {
   display: grid;
-  grid-template-columns: 7ch;
+  grid-template-columns: 3.5em;
 }
 
-#summary_button[data-progress-axis="circular"][data-progress-bar="large"]
+.summary_button[data-progress-axis="circular"][data-progress-bar="large"]
   .summary_button_progress_bar_circular_svg_circle {
   stroke-width: 0.4em;
 }
 
-#summary_button[data-progress-axis="circular"][data-progress-bar="large"]
+.summary_button[data-progress-axis="circular"][data-progress-bar="large"]
   .summary_button_progress_bar_circular_svg_circle_shadow {
   r: 84px;
-}
-
-/* MARK: Footer
-*/
-footer {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-  padding: 1em;
-  border-top: 0.125rem solid var(--popup-footer-background-color);
-  font-size: 0.8rem;
-}
-
-footer img {
-  width: 2rem;
-}
-
-footer p {
-  width: min-content;
-  letter-spacing: 0.25ch;
-  font-weight: 900;
-  padding-right: 0.5em;
 }

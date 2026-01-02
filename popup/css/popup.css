@@ -1,0 +1,30 @@
+body {
+  background-color: var(--popup-background-color-color);
+  display: grid;
+  width: max-content;
+  min-width: 20ch;
+}
+
+/* MARK: Footer
+*/
+footer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  padding: 1em;
+  border-top: 0.125rem solid var(--popup-footer-background-color);
+  font-size: 0.8rem;
+}
+
+footer img {
+  width: 2rem;
+}
+
+footer p {
+  width: min-content;
+  letter-spacing: 0.25ch;
+  font-weight: 900;
+  padding-right: 0.5em;
+}
