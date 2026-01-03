@@ -17,6 +17,7 @@ main {
 }
 
 .section_options_header,
+.section_options_subheader,
 .section_options_more,
 .section_options_options {
   display: grid;
@@ -32,6 +33,15 @@ main {
 .section_options_header {
   padding-bottom: 1em;
   border-bottom: 0.125em solid var(--options-header-border-bottom-color);
+}
+
+.section_options_subheader:not([data-border-header="no_top"]) {
+  padding-top: 1em;
+  border-top: 0.125em solid var(--options-header-border-bottom-color);
+}
+
+h3 {
+  font-size: 1.3rem;
 }
 
 .section_options_more {
@@ -82,4 +92,14 @@ main {
 .section_options_more_config > label {
   display: grid;
   gap: 0.25em;
+}
+
+.data_feedbacks_step_error_message,
+.data_feedbacks_step_error_message::before {
+  color: var(--options-data-feedbacks-step-error-message-color);
+}
+
+.data_feedbacks_step_warn_message,
+.data_feedbacks_step_warn_message::before {
+  color: var(--options-data-feedbacks-step-warning-message-color);
 }

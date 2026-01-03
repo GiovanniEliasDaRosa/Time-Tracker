@@ -179,6 +179,9 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 92% 35%
   );
+  --options-data-feedbacks-step-warning-message-color: hsl(
+    from var(--complement-color) calc(h + 10) 100% 23%
+  );
   --options-data-feedbacks-step-file-name-background-color: hsl(
     from var(--primary-color) h 47% 93%
   );
@@ -188,6 +191,15 @@
   );
   --options-data-feedbacks-step-no-undo-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 86% 35%
+  );
+
+  /* - popup */
+  --options-popup-presets-button-box-shadow: hsla(from var(--primary-color) h 30% 30% / 0.2);
+  --options-popup-presets-button-selected-background-color: hsl(
+    from var(--primary-color) h 58% 93%
+  );
+  --options-popup-presets-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 80% 60%
   );
 }
 
@@ -343,6 +355,9 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 54% 68%
   );
+  --options-data-feedbacks-step-warning-message-color: hsl(
+    from var(--complement-color) calc(h + 10) 60% 60%
+  );
   --options-data-feedbacks-step-file-name-background-color: hsl(
     from var(--primary-color) h 68% 16%
   );
@@ -352,6 +367,15 @@
   );
   --options-data-feedbacks-step-no-undo-color: hsl(
     from var(--secondary-2-color) calc(h + 8) 100% 70%
+  );
+
+  /* - popup */
+  --options-popup-presets-button-box-shadow: hsl(from var(--primary-color) h 30% 20%);
+  --options-popup-presets-button-selected-background-color: hsl(
+    from var(--primary-color) h 30% 20%
+  );
+  --options-popup-presets-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 60% 40%
   );
 }
 
