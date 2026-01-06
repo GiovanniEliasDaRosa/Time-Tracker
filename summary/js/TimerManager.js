@@ -110,7 +110,7 @@ class TimerManager {
 
     // No date selected
     if (this.dateInput.value == "") {
-      this.newInformation("error", `Select a date to see it's summary`);
+      this.newInformation("error", `Select a *date* to see it's summary`);
       return;
     }
 
@@ -124,7 +124,7 @@ class TimerManager {
 
     // Date selected in the future
     if (compareDates(this.date, today).difference > 0) {
-      this.newInformation("error", `Select a <strong>valid</strong> date to see it's summary`);
+      this.newInformation("error", `Select a *valid* date to see it's summary`);
       return;
     }
 
@@ -205,16 +205,55 @@ class TimerManager {
 
   newInformation(type, message = "") {
     let new_item = null;
+
     if (type == "no_data") {
       new_item = template_timer_no_data.cloneElement(".timer_item_no_data");
     } else if (type == "error") {
       this.h2.textContent = `${this.type.capitalize()} summary`;
       new_item = template_timer_invalid.cloneElement(".timer_item_invalid");
     } else {
+      console.error(`newInformation(): No defined type for "${type}"`);
+
+      this.h2.textContent = `An error occured`;
+      message = "An error occured";
       new_item = template_timer_invalid.cloneElement(".timer_item_invalid");
-      message = `<strong><em>No defined type for "${type}"<em></strong>`;
     }
-    new_item.innerHTML = message;
+
+    let want_strong_tag = message.match(/\*[^\*]+\*/g);
+    // If want bold text
+    if (want_strong_tag != null) {
+      new_item.innerText = "";
+      let last_strong_pos = 0;
+
+      // For each in between * tag
+      want_strong_tag.forEach((matched) => {
+        let pos = message.indexOf(matched);
+
+        // new_item.innerText += message.slice(last_strong_pos, pos);
+        let span_element = document.createElement("span");
+        span_element.textContent = message.slice(last_strong_pos, pos);
+        new_item.appendChild(span_element);
+
+        let strong_element = document.createElement("strong");
+        strong_element.textContent = matched.replaceAll("*", "");
+        new_item.appendChild(strong_element);
+
+        last_strong_pos = pos + matched.length;
+      });
+
+      let text_after_strong = message.slice(last_strong_pos);
+
+      // Add text after the last strong tag
+      if (text_after_strong) {
+        let span_element = document.createElement("span");
+        span_element.textContent = message.slice(last_strong_pos);
+        new_item.appendChild(span_element);
+      }
+    } else {
+      // If don't want bold text
+      new_item.innerText = message;
+    }
+
     this.body.appendChild(new_item);
   }
 

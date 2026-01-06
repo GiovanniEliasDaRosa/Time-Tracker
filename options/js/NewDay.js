@@ -128,7 +128,8 @@ class NewDay {
     formatted.hour12 = hour12.pad(2) + amPm;
 
     if (options.tooltip) {
-      this.current.innerHTML = `${formatted.hour12}\n${formatted.hour24}:00`;
+      // * resolved: fix Unsafe assignment to innerHTML
+      this.current.innerText = `${formatted.hour12}\n${formatted.hour24}:00`;
 
       // Add delay to transition have animation in appeararing
       this.newDaySliderTimeout = setTimeout(() => {
