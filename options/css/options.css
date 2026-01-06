@@ -24,6 +24,12 @@ main {
   gap: 0.5em;
 }
 
+.section_options_section {
+  display: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+}
+
 .section_options_enable {
   display: flex;
   align-items: center;

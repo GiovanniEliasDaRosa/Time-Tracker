@@ -194,6 +194,7 @@
   );
 
   /* - popup */
+  --options-popup-presets-button-text-color: hsla(from var(--text-color) h s l / 0.25);
   --options-popup-presets-button-box-shadow: hsla(from var(--primary-color) h 30% 30% / 0.2);
   --options-popup-presets-button-selected-background-color: hsl(
     from var(--primary-color) h 58% 93%
@@ -370,6 +371,7 @@
   );
 
   /* - popup */
+  --options-popup-presets-button-text-color: hsla(from var(--text-color) h s l / 0.25);
   --options-popup-presets-button-box-shadow: hsl(from var(--primary-color) h 30% 20%);
   --options-popup-presets-button-selected-background-color: hsl(
     from var(--primary-color) h 30% 20%

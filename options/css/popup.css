@@ -13,7 +13,7 @@
     .summary_button_time_total,
     .summary_button_progress_text > span
   ) {
-  background-color: hsla(from currentColor h s l / 0.25);
+  background-color: var(--options-popup-presets-button-text-color);
   color: transparent;
   border-radius: 0.25em;
   width: 4ch;
@@ -104,7 +104,7 @@
   gap: 1em;
 }
 
-.section_options {
+.popup_options_section {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
@@ -116,7 +116,11 @@
   display: grid;
   grid-template-columns: subgrid;
   grid-auto-rows: max(1.5em, auto);
-  gap: 0.5em;
+  gap: inherit;
+}
+
+.popup_options_enable_item.popup_options_margin_right {
+  margin-right: 0.5em;
 }
 
 .popup_options_enable_title {
@@ -125,7 +129,7 @@
 
 .popup_options_enable_item {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 11ch auto 11ch;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
@@ -143,9 +147,6 @@
   .section_options_all {
     grid-template-columns: 1fr auto;
   }
-  .popup_options_enable_item {
-    grid-template-columns: 1fr auto 1fr;
-  }
 }
 
 @media (max-width: 34em) {
@@ -154,5 +155,8 @@
   }
   .popup_options_enable_item {
     justify-self: left;
+  }
+  .popup_options_enable_item {
+    grid-template-columns: 1fr auto 1fr;
   }
 }

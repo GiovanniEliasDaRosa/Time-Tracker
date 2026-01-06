@@ -23,6 +23,9 @@ let themes = new Themes();
 // Data
 let data_manager = new DataManager();
 
+// Popup
+let popup = new Popup();
+
 let animate_update_config_interval = null;
 let animate_update_config_single_timeout = null;
 
@@ -34,6 +37,7 @@ async function main() {
   new_day.updateValue();
   themes.updateValue({ animate: false, save: false });
   data_manager.setup();
+  popup.setup();
 }
 
 async function updatedConfigurations(options_passed = {}) {
@@ -48,6 +52,7 @@ async function updatedConfigurations(options_passed = {}) {
     notifications.updateValue();
     new_day.updateValue();
     themes.updateValue({ save: false });
+    popup.updateValue();
     return;
   }
 
@@ -56,7 +61,7 @@ async function updatedConfigurations(options_passed = {}) {
   clearInterval(animate_update_config_interval);
   clearTimeout(animate_update_config_single_timeout);
 
-  let options_possible = [notifications, new_day, themes];
+  let options_possible = [notifications, new_day, themes, popup];
 
   // Scroll to the first with smooth so the user don't get confused where they are
   options_possible[0].element.scrollIntoView({ behavior: "smooth", block: "center" });

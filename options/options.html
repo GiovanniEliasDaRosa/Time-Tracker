@@ -26,6 +26,7 @@
     <script src="js/NewDay.js" defer="true"></script>
     <script src="js/Themes.js" defer="true"></script>
     <script src="js/DataManager.js" defer="true"></script>
+    <script src="js/Popup.js" defer="true"></script>
     <script src="js/options.js" defer="true"></script>
   </head>
   <body>
@@ -192,7 +193,8 @@
             <button
               class="popup_options_presets_button summary_button"
               data-progress-axis="circular"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
+              data-id="0"
               data-selected="true"
             >
               <!-- Time in hours and minutes -->
@@ -237,9 +239,10 @@
             <button
               class="popup_options_presets_button summary_button"
               data-columns="1"
-              data-progress="outside"
+              data-progress-text-placement="outside"
               data-progress-axis="horizontal"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
+              data-id="1"
             >
               <!-- Time in hours and minutes -->
               <div class="summary_button_group summary_button_time">
@@ -262,9 +265,10 @@
             <button
               class="popup_options_presets_button summary_button"
               data-columns="1"
-              data-progress="outside"
+              data-progress-text-placement="outside"
               data-progress-axis="vertical"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
+              data-id="2"
             >
               <!-- Time in hours and minutes -->
               <div class="summary_button_group summary_button_time">
@@ -287,9 +291,10 @@
             <button
               class="popup_options_presets_button summary_button"
               data-columns="2"
-              data-progress="outside"
+              data-progress-text-placement="outside"
               data-progress-axis="horizontal"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
+              data-id="3"
             >
               <!-- Time in hours and minutes -->
               <div class="summary_button_group summary_button_time">
@@ -312,9 +317,10 @@
             <button
               class="popup_options_presets_button summary_button"
               data-columns="2"
-              data-progress="outside"
+              data-progress-text-placement="outside"
               data-progress-axis="vertical"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
+              data-id="4"
             >
               <!-- Time in hours and minutes -->
               <div class="summary_button_group summary_button_time">
@@ -336,83 +342,104 @@
 
             <button
               class="popup_options_presets_button popup_options_presets_custom icons nomargin wrench"
+              data-id="5"
+              data-type-custom="true"
             >
               <span>Custom</span>
             </button>
           </div>
 
           <!-- Popup Customize -->
-          <div class="section_options_subheader">
-            <h3>Customize</h3>
-            <p>Tweak individual settings to fine-tune the popup.</p>
-          </div>
-          <div class="section_options_enable">
-            <p class="popup_options_enable_title">Display:</p>
+          <div class="section_options_section" data-for="customize">
+            <div class="section_options_subheader">
+              <h3>Customize</h3>
+              <p>Tweak individual settings to fine-tune the popup.</p>
+            </div>
 
-            <label class="popup_options_enable_item" for="popup_axis">
-              <span>Circular</span>
-              <input type="checkbox" data-type="toggle" name="popup_axis" id="popup_axis" />
-              <span>Rectangular</span>
-            </label>
-          </div>
+            <div class="section_options_enable section_options_all">
+              <p class="popup_options_enable_title">Display:</p>
 
-          <div class="section_options_all">
-            <div class="section_options_more section_options">
-              <div class="section_options_enable section_options_more_config popup_options_enable">
-                <p class="popup_options_enable_title">Columns:</p>
+              <label
+                class="popup_options_enable_item popup_options_margin_right"
+                for="popup_progress_rectangular"
+              >
+                <span>Circular</span>
+                <input
+                  type="checkbox"
+                  data-type="toggle"
+                  name="popup_progress_rectangular"
+                  id="popup_progress_rectangular"
+                />
+                <span>Rectangular</span>
+              </label>
 
-                <label class="popup_options_enable_item" for="popup_columns">
-                  <span>1</span>
-                  <input
-                    type="checkbox"
-                    data-type="toggle"
-                    name="popup_columns"
-                    id="popup_columns"
-                  />
-                  <span>2</span>
-                </label>
-              </div>
+              <div class="section_options_more popup_options_section">
+                <div
+                  class="section_options_enable section_options_more_config popup_options_enable"
+                >
+                  <p class="popup_options_enable_title">Columns:</p>
+                  <label class="popup_options_enable_item" for="popup_columns">
+                    <span>1</span>
+                    <input
+                      type="checkbox"
+                      data-type="toggle"
+                      name="popup_columns"
+                      id="popup_columns"
+                    />
+                    <span>2</span>
+                  </label>
+                </div>
 
-              <div class="section_options_enable section_options_more_config popup_options_enable">
-                <p class="popup_options_enable_title">Progress text placement:</p>
+                <div
+                  class="section_options_enable section_options_more_config popup_options_enable"
+                >
+                  <p class="popup_options_enable_title">Progress text placement:</p>
 
-                <label class="popup_options_enable_item" for="popup_progress">
-                  <span>outside</span>
-                  <input
-                    type="checkbox"
-                    data-type="toggle"
-                    name="popup_progress"
-                    id="popup_progress"
-                  />
-                  <span>inside</span>
-                </label>
+                  <label class="popup_options_enable_item" for="popup_progress_text_placement">
+                    <span>outside</span>
+                    <input
+                      type="checkbox"
+                      data-type="toggle"
+                      name="popup_progress_text_placement"
+                      id="popup_progress_text_placement"
+                    />
+                    <span>inside</span>
+                  </label>
 
-                <p class="data_feedbacks_step_warn_message icons triangle_exclamation">
-                  With Progress type of vertical this will not change the visual
-                </p>
-              </div>
+                  <p class="data_feedbacks_step_warn_message icons triangle_exclamation">
+                    With Progress type of vertical this will not change the visual
+                  </p>
+                </div>
 
-              <div class="section_options_enable section_options_more_config popup_options_enable">
-                <p class="popup_options_enable_title">Progress type:</p>
+                <div
+                  class="section_options_enable section_options_more_config popup_options_enable"
+                >
+                  <p class="popup_options_enable_title">Progress type:</p>
 
-                <label class="popup_options_enable_item" for="popup_orientation">
-                  <span>horizontal</span>
-                  <input
-                    type="checkbox"
-                    data-type="toggle"
-                    name="popup_orientation"
-                    id="popup_orientation"
-                  />
-                  <span>vertical</span>
-                </label>
+                  <label class="popup_options_enable_item" for="popup_progress_axis">
+                    <span>horizontal</span>
+                    <input
+                      type="checkbox"
+                      data-type="toggle"
+                      name="popup_progress_axis"
+                      id="popup_progress_axis"
+                    />
+                    <span>vertical</span>
+                  </label>
+                </div>
               </div>
             </div>
 
-            <div class="section_options">
-              <div class="section_options_enable popup_options_enable">
+            <div class="section_options_all">
+              <div
+                class="section_options_enable popup_options_section popup_options_enable popup_options_section_progress_width"
+              >
                 <p class="popup_options_enable_title">Progress width:</p>
 
-                <label class="popup_options_enable_item" for="popup_progress_width">
+                <label
+                  class="popup_options_enable_item popup_options_margin_right"
+                  for="popup_progress_width"
+                >
                   <span>thin</span>
                   <input
                     type="checkbox"
@@ -435,11 +462,12 @@
           </div>
           <div>
             <button
+              id="popup_options_preview"
               class="no_button_style summary_button on_summary_page"
               data-columns="2"
-              data-progress="outside"
+              data-progress-text-placement="outside"
               data-progress-axis="horizontal"
-              data-progress-bar="large"
+              data-progress-bar-width="large"
               disabled="true"
               aria-disabled="true"
               data-disabled-effect="true"
