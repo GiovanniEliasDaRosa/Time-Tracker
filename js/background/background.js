@@ -174,7 +174,7 @@ async function handleMessageReceived(request, sender) {
       tracking_time: () => ({ trackingTime: tracking_time }),
       tracked_time_history: () => ({ trackedTimeHistory: tracked_time_history }),
       today_date: () => ({ todayDate: today }),
-      configurations: () => ({ configurations: configurations }),
+      configurations: () => ({ configurations: structuredClone(configurations) }),
     };
 
     // Run for each option passed
@@ -379,6 +379,12 @@ async function handleMessageReceived(request, sender) {
       return { isOk: true };
     } else if (option == "configurations_theme") {
       configurations.darkTheme = data.darkTheme;
+
+      return { isOk: true };
+    } else if (option == "configurations_popup") {
+      let changed = data.popup;
+      configurations.popup[changed.selected] = changed.values;
+      configurations.popup.selected = changed.selected;
 
       return { isOk: true };
     }

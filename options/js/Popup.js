@@ -23,6 +23,17 @@ class Popup {
       popupProgressBarWidth: this.element.querySelector("#popup_progress_width"),
     };
 
+    this.waitSaveTimeout = "";
+    this.currentValues = {
+      selected: "preset",
+      values: {
+        columns: "1",
+        progressTextPlacement: "outside",
+        progressAxis: "horizontal",
+        progressBarWidth: "large",
+      },
+    };
+
     this.waitUpdateTimeouts = {
       main: undefined,
       nested: undefined,
@@ -72,7 +83,7 @@ class Popup {
       button.onclick = async () => {
         this.selectedButtonIndex = dataset.id;
         this.updateSelectedButton();
-        this.updatePreview(dataset);
+        this.updatePreview({ dataset: dataset });
 
         if (dataset.progressAxis == "circular") {
           progress_bar_circular_fill.style.transition = "none";
@@ -101,41 +112,76 @@ class Popup {
     });
 
     this.presetCustomButton.onclick = () => {
-      this.selectedButtonIndex = this.presetCustomButton.dataset.id;
+      this.selectedButtonIndex = Number(this.presetCustomButton.dataset.id);
       this.updateSelectedButton();
       this.updateCustomizeSection();
-      this.updatePreview(null, true);
+      this.updatePreview({ fromCustomize: true });
     };
 
     this.custom.popupProgressRectangular.onchange = () => {
       this.handleDisplayRectangularUpdate();
-      this.updatePreview(null, true);
+      this.updatePreview({ fromCustomize: true });
     };
 
-    this.custom.popupColumns.onchange = () => {
-      this.updatePreview(null, true);
-    };
+    let preset_buttons = [
+      this.custom.popupColumns,
+      this.custom.popupProgressTextPlacement,
+      this.custom.popupProgressAxis,
+      this.custom.popupProgressBarWidth,
+    ];
 
-    this.custom.popupProgressTextPlacement.onchange = () => {
-      this.updatePreview(null, true);
-    };
-
-    this.custom.popupProgressAxis.onchange = () => {
-      this.updatePreview(null, true);
-    };
-
-    this.custom.popupProgressBarWidth.onchange = () => {
-      this.updatePreview(null, true);
-    };
+    preset_buttons.forEach((preset_button) => {
+      preset_button.onchange = () => {
+        this.updatePreview({ fromCustomize: true });
+      };
+    });
 
     this.custom.element.disable();
 
-    this.presetButtons[this.selectedButtonIndex].click();
-
-    this.handleDisplayRectangularUpdate(false);
+    return this;
   }
 
-  updateValue() {}
+  updateValue(options_passed = {}) {
+    let options = {
+      animate: options_passed.animate ?? true,
+      save: options_passed.save ?? true,
+    };
+
+    let popup = configurations.popup;
+    let selected = popup[popup.selected];
+
+    console.log(JSON.stringify(popup));
+
+    this.custom.popupColumns.checked = selected.columns == "2" ? true : false;
+    this.custom.popupProgressTextPlacement.checked = selected.progressTextPlacement == "inside";
+    this.custom.popupProgressRectangular.checked = selected.progressAxis != "circular";
+    this.custom.popupProgressAxis.checked = selected.progressAxis == "vertical";
+    this.custom.popupProgressBarWidth.checked = selected.progressBarWidth == "large";
+
+    let show_customize = false;
+    if (popup.selected == "preset") {
+      show_customize = false;
+      this.selectedButtonIndex = Number(selected.id);
+
+      this.updatePreview({
+        dataset: this.presetButtons[this.selectedButtonIndex].dataset,
+        save: false,
+      });
+    } else {
+      show_customize = true;
+      this.selectedButtonIndex = Number(this.presetCustomButton.dataset.id);
+
+      this.updatePreview({
+        dataset: this.presetCustomButton.dataset,
+        fromCustomize: true,
+        save: false,
+      });
+    }
+
+    this.updateSelectedButton();
+    this.updateCustomizeSection(show_customize);
+    this.handleDisplayRectangularUpdate(false);
+  }
 
   handleDisplayRectangularUpdate(animate = true) {
     this.waitUpdateTimeouts = animatorAnimate({
@@ -171,15 +217,28 @@ class Popup {
     button_selected.setAttribute("data-selected", "true");
   }
 
-  updateCustomizeSection() {
-    // Enable customize section
-    this.custom.element.enable();
+  updateCustomizeSection(show = true) {
+    if (show) {
+      // Enable customize section
+      this.custom.element.enable();
+    } else {
+      // Hide customize section
+      this.custom.element.disable();
+    }
   }
 
-  async updatePreview(dataset, from_customize = false) {
+  async updatePreview(options_passed = {}) {
+    let options = {
+      dataset: options_passed.dataset ?? null,
+      fromCustomize: options_passed.fromCustomize ?? false,
+      save: options_passed.save ?? true,
+    };
+
+    console.log("updatePreview");
+
     let attributes = {};
 
-    if (from_customize) {
+    if (options.fromCustomize) {
       attributes.columns = this.custom.popupColumns.checked ? "2" : "1";
 
       attributes.progressTextPlacement = this.custom.popupProgressTextPlacement.checked
@@ -193,23 +252,41 @@ class Popup {
       }
 
       attributes.progressBarWidth = this.custom.popupProgressBarWidth.checked ? "large" : "thin";
+
+      // Save customize, as its the selected one
+
+      this.currentValues.values = {
+        columns: attributes.columns,
+        progressTextPlacement: attributes.progressTextPlacement,
+        progressAxis: attributes.progressAxis,
+        progressBarWidth: attributes.progressBarWidth,
+      };
+      this.currentValues.selected = "custom";
     } else {
-      attributes = Object.assign({}, dataset);
+      attributes = Object.assign({}, options.dataset);
+
+      attributes.columns = attributes.columns ?? 1;
+      attributes.progressTextPlacement = attributes.progressTextPlacement ?? "outside";
+      attributes.progressAxis = attributes.progressAxis ?? "horizontal";
+      attributes.progressBarWidth = attributes.progressBarWidth ?? "large";
+
+      this.currentValues.values = {
+        id: attributes.id,
+        columns: attributes.columns,
+        progressTextPlacement: attributes.progressTextPlacement,
+        progressAxis: attributes.progressAxis,
+        progressBarWidth: attributes.progressBarWidth,
+      };
+      this.currentValues.selected = "preset";
     }
 
-    this.preview.element.setAttribute("data-columns", attributes.columns ?? 1);
+    this.preview.element.setAttribute("data-columns", attributes.columns);
     this.preview.element.setAttribute(
       "data-progress-text-placement",
-      attributes.progressTextPlacement ?? "outside"
+      attributes.progressTextPlacement
     );
-    this.preview.element.setAttribute(
-      "data-progress-axis",
-      attributes.progressAxis ?? "horizontal"
-    );
-    this.preview.element.setAttribute(
-      "data-progress-bar-width",
-      attributes.progressBarWidth ?? "large"
-    );
+    this.preview.element.setAttribute("data-progress-axis", attributes.progressAxis);
+    this.preview.element.setAttribute("data-progress-bar-width", attributes.progressBarWidth);
 
     if (attributes.progressAxis == "circular") {
       this.preview.progressBarRectangular.disable();
@@ -218,5 +295,30 @@ class Popup {
       this.preview.progressBarRectangular.enable();
       this.preview.progressBarCircular.disable();
     }
+
+    if (options.save) {
+      this.waitToSave();
+    }
+  }
+
+  waitToSave() {
+    clearInterval(this.waitSaveTimeout);
+
+    this.waitSaveTimeout = setTimeout(() => {
+      this.save();
+    }, 500);
+  }
+
+  async save() {
+    configurations.popup[this.currentValues.selected] = this.currentValues.values;
+    configurations.popup.selected = this.currentValues.selected;
+
+    configurations = await Storage.set("configurations", configurations);
+
+    await MessageManager.send({
+      type: "set",
+      options: ["configurations_popup"],
+      data: configurations,
+    });
   }
 }

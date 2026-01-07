@@ -1,3 +1,5 @@
+let configurations = null;
+
 // Time
 let summary_button = document.querySelector("#summary_button");
 let summary_button_time = document.querySelector(".summary_button_time");
@@ -33,6 +35,8 @@ async function update_timer() {
     options: ["tracking_time", "current_tab"],
   });
 
+  configurations = await Storage.get("configurations");
+
   let tracking_time_local = response.trackingTime;
   let current_tab = response.currentTab;
 
@@ -61,18 +65,26 @@ async function update_timer() {
   summary_button_time_current.innerText = formatTime(current_tab_time).timeString;
   summary_button_time_total.innerText = formatTime(tracking_time_local.totalTime).timeString;
 
-  let progress_is_rectangle = true;
-  if (progress_is_rectangle) {
-    summary_button_progress_bar_rectangular.enable();
-    summary_button_progress_bar_circular.disable();
-  } else {
+  let selected = configurations.popup[configurations.popup.selected];
+
+  // If progress is circular
+  if (selected.progressAxis == "circular") {
     summary_button_progress_bar_rectangular.disable();
     summary_button_progress_bar_circular.enable();
 
     let angle = percent * 360 - 90;
     summary_button_progress_text.style.setProperty("--angle-outer", `${angle}deg`);
     summary_button_progress_text.style.setProperty("--angle-inner", `${360 - angle}deg`);
+  } else {
+    // If progress is rectangular
+    summary_button_progress_bar_rectangular.enable();
+    summary_button_progress_bar_circular.disable();
   }
+
+  summary_button.setAttribute("data-columns", selected.columns);
+  summary_button.setAttribute("data-progress-text-placement", selected.progressTextPlacement);
+  summary_button.setAttribute("data-progress-axis", selected.progressAxis);
+  summary_button.setAttribute("data-progress-bar-width", selected.progressBarWidth);
 }
 
 update_timer();

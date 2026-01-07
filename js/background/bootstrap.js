@@ -27,6 +27,22 @@ const configurations_default = {
     side: "",
   },
   darkTheme: false,
+  popup: {
+    preset: {
+      id: 0,
+      columns: "1",
+      progressTextPlacement: "outside",
+      progressAxis: "circular",
+      progressBarWidth: "large",
+    },
+    custom: {
+      columns: "1",
+      progressTextPlacement: "outside",
+      progressAxis: "circular",
+      progressBarWidth: "large",
+    },
+    selected: "preset",
+  },
 };
 
 let tracked_time_history = structuredClone(tracked_time_history_default);

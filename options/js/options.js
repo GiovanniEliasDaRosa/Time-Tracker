@@ -37,7 +37,7 @@ async function main() {
   new_day.updateValue();
   themes.updateValue({ animate: false, save: false });
   data_manager.setup();
-  popup.setup();
+  popup.setup().updateValue();
 }
 
 async function updatedConfigurations(options_passed = {}) {
