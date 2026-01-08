@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Time Tracker",
   "version": "1",
-  "description": "Tracks time spent on sites",
+  "description": "A lightweight Firefox extension that records how much time you spend on websites with a quick popup, an options page for settings and data management, and a dashboard for time by site.",
   "permissions": ["tabs", "storage", "notifications"],
   "icons": {
     "48": "assets/icons/icon-48.png",
