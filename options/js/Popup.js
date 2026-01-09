@@ -8,19 +8,38 @@ class Popup {
 
     this.presetCustomButton = this.element.querySelector(".popup_options_presets_custom");
 
+    let customize_section = this.element.querySelector(
+      ".section_options_section[data-for='customize']"
+    );
+
+    let custom_label_progress_text_placement = customize_section.querySelector(
+      "label[for='popup_progress_text_placement']"
+    );
+    let custom_label_progress_axis = customize_section.querySelector(
+      "label[for='popup_progress_axis'"
+    );
+
     this.custom = {
-      element: this.element.querySelector(".section_options_section[data-for='customize']"),
-      optionsRectangularWrapper: this.element.querySelector(
-        ".section_options_section[data-for='customize'] .section_options_all"
-      ),
-      optionsRectangular: this.element.querySelector(
-        ".section_options_section[data-for='customize'] .popup_options_section"
-      ),
-      popupProgressRectangular: this.element.querySelector("#popup_progress_rectangular"),
-      popupColumns: this.element.querySelector("#popup_columns"),
-      popupProgressTextPlacement: this.element.querySelector("#popup_progress_text_placement"),
-      popupProgressAxis: this.element.querySelector("#popup_progress_axis"),
-      popupProgressBarWidth: this.element.querySelector("#popup_progress_width"),
+      element: customize_section,
+      optionsRectangularWrapper: customize_section.querySelector(".section_options_all"),
+      optionsRectangular: customize_section.querySelector(".popup_options_section"),
+      progressRectangular: customize_section.querySelector("#popup_progress_rectangular"),
+      columns: customize_section.querySelector("#popup_columns"),
+      progressTextPlacement: {
+        label: custom_label_progress_text_placement,
+        input: custom_label_progress_text_placement.querySelector("input"),
+        warning: customize_section.querySelector(
+          "label[for='popup_progress_text_placement'] + .data_feedbacks_step_warn_message"
+        ),
+      },
+      progressAxis: {
+        label: custom_label_progress_axis,
+        input: custom_label_progress_axis.querySelector("input"),
+        warning: customize_section.querySelector(
+          "label[for='popup_progress_axis'] + .data_feedbacks_step_warn_message"
+        ),
+      },
+      progressBarWidth: customize_section.querySelector("#popup_progress_width"),
     };
 
     this.waitSaveTimeout = "";
@@ -118,20 +137,20 @@ class Popup {
       this.updatePreview({ fromCustomize: true });
     };
 
-    this.custom.popupProgressRectangular.onchange = () => {
+    this.custom.progressRectangular.onchange = () => {
       this.handleDisplayRectangularUpdate();
       this.updatePreview({ fromCustomize: true });
     };
 
-    let preset_buttons = [
-      this.custom.popupColumns,
-      this.custom.popupProgressTextPlacement,
-      this.custom.popupProgressAxis,
-      this.custom.popupProgressBarWidth,
+    let customize_inputs = [
+      this.custom.columns,
+      this.custom.progressTextPlacement.input,
+      this.custom.progressAxis.input,
+      this.custom.progressBarWidth,
     ];
 
-    preset_buttons.forEach((preset_button) => {
-      preset_button.onchange = () => {
+    customize_inputs.forEach((customize_input) => {
+      customize_input.onchange = () => {
         this.updatePreview({ fromCustomize: true });
       };
     });
@@ -150,13 +169,13 @@ class Popup {
     let popup = configurations.popup;
     let selected = popup[popup.selected];
 
-    console.log(JSON.stringify(popup));
+    this.customValuesSelected = popup.custom;
 
-    this.custom.popupColumns.checked = selected.columns == "2" ? true : false;
-    this.custom.popupProgressTextPlacement.checked = selected.progressTextPlacement == "inside";
-    this.custom.popupProgressRectangular.checked = selected.progressAxis != "circular";
-    this.custom.popupProgressAxis.checked = selected.progressAxis == "vertical";
-    this.custom.popupProgressBarWidth.checked = selected.progressBarWidth == "large";
+    this.custom.columns.checked = selected.columns == "2" ? true : false;
+    this.custom.progressTextPlacement.input.checked = selected.progressTextPlacement == "inside";
+    this.custom.progressRectangular.checked = selected.progressAxis != "circular";
+    this.custom.progressAxis.input.checked = selected.progressAxis == "vertical";
+    this.custom.progressBarWidth.checked = selected.progressBarWidth == "large";
 
     let show_customize = false;
     if (popup.selected == "preset") {
@@ -187,7 +206,7 @@ class Popup {
     this.waitUpdateTimeouts = animatorAnimate({
       parent: this.custom.optionsRectangularWrapper,
       more: this.custom.optionsRectangular,
-      enabled: this.custom.popupProgressRectangular.checked,
+      enabled: this.custom.progressRectangular.checked,
       timeout: this.waitUpdateTimeouts,
       animate: animate,
     });
@@ -234,24 +253,24 @@ class Popup {
       save: options_passed.save ?? true,
     };
 
-    console.log("updatePreview");
-
     let attributes = {};
 
     if (options.fromCustomize) {
-      attributes.columns = this.custom.popupColumns.checked ? "2" : "1";
+      attributes.columns = this.custom.columns.checked ? "2" : "1";
 
-      attributes.progressTextPlacement = this.custom.popupProgressTextPlacement.checked
+      attributes.progressTextPlacement = this.custom.progressTextPlacement.input.checked
         ? "inside"
         : "outside";
 
-      if (this.custom.popupProgressRectangular.checked) {
-        attributes.progressAxis = this.custom.popupProgressAxis.checked ? "vertical" : "horizontal";
+      if (this.custom.progressRectangular.checked) {
+        attributes.progressAxis = this.custom.progressAxis.input.checked
+          ? "vertical"
+          : "horizontal";
       } else {
         attributes.progressAxis = "circular";
       }
 
-      attributes.progressBarWidth = this.custom.popupProgressBarWidth.checked ? "large" : "thin";
+      attributes.progressBarWidth = this.custom.progressBarWidth.checked ? "large" : "thin";
 
       // Save customize, as its the selected one
 
@@ -262,6 +281,29 @@ class Popup {
         progressBarWidth: attributes.progressBarWidth,
       };
       this.currentValues.selected = "custom";
+
+      // Make the visual warnings appear and disable inputs now
+      // If rogress type is VERTICAL
+      if (this.custom.progressAxis.input.checked) {
+        this.custom.progressTextPlacement.input.disable({ hide: false });
+        this.custom.progressTextPlacement.label.disable({ hide: false });
+        this.custom.progressTextPlacement.warning.enable();
+      } else {
+        this.custom.progressTextPlacement.input.enable();
+        this.custom.progressTextPlacement.label.enable();
+        this.custom.progressTextPlacement.warning.disable();
+      }
+
+      // If Progress text placement is INSIDE
+      if (this.custom.progressTextPlacement.input.checked) {
+        this.custom.progressAxis.input.disable({ hide: false });
+        this.custom.progressAxis.label.disable({ hide: false });
+        this.custom.progressAxis.warning.enable();
+      } else {
+        this.custom.progressAxis.input.enable();
+        this.custom.progressAxis.label.enable();
+        this.custom.progressAxis.warning.disable();
+      }
     } else {
       attributes = Object.assign({}, options.dataset);
 
