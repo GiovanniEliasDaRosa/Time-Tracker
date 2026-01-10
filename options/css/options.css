@@ -17,10 +17,17 @@ main {
 }
 
 .section_options_header,
+.section_options_subheader,
 .section_options_more,
 .section_options_options {
   display: grid;
   gap: 0.5em;
+}
+
+.section_options_section {
+  display: inherit;
+  flex-direction: inherit;
+  gap: inherit;
 }
 
 .section_options_enable {
@@ -32,6 +39,15 @@ main {
 .section_options_header {
   padding-bottom: 1em;
   border-bottom: 0.125em solid var(--options-header-border-bottom-color);
+}
+
+.section_options_subheader:not([data-border-header="no_top"]) {
+  padding-top: 1em;
+  border-top: 0.125em solid var(--options-header-border-bottom-color);
+}
+
+h3 {
+  font-size: 1.3rem;
 }
 
 .section_options_more {

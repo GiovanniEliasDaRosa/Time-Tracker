@@ -1,0 +1,323 @@
+/* MARK: Summary
+*/
+.summary_button {
+  display: grid;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1rem;
+
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.summary_button.on_summary_page {
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.summary_button:is(:focus-visible, :hover) {
+  background-color: var(--popup-background-color-hover);
+}
+
+.summary_button:active {
+  background-color: var(--popup-background-color-active);
+}
+
+.summary_button_group {
+  display: grid;
+  gap: 0.25em;
+  font-weight: 600;
+}
+
+.timer_value {
+  font-weight: 600;
+  letter-spacing: 0.0625em;
+  font-family: monospace;
+}
+
+.timer_separator {
+  border: solid 0.1rem var(--popup-timer-separator-background-color);
+  border-radius: 0.1rem;
+}
+
+.summary_button_text {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+}
+
+.summary_button_progress {
+  --percent: 0;
+  --progress: 0%;
+  gap: 0.6em;
+}
+
+.summary_button_progress_text {
+  display: none;
+}
+
+.summary_button_progress_text > span {
+  color: inherit;
+}
+
+.summary_button:not([data-progress-text-placement="circular"]) .summary_button_progress_text {
+  line-height: 1em;
+}
+
+/* Rectangular */
+.summary_button_progress_bar_rectangular {
+  display: none;
+  height: 0.5em;
+  background-color: var(--popup-progress-bar-background-color);
+  border-radius: 0.5em;
+  overflow: clip;
+  box-shadow: inset 0.0625em 0.0625em 0 var(--popup-progress-bar-box-shadow);
+}
+
+.summary_button_progress_bar_rectangular_fill {
+  background-color: var(--popup-progress-bar-fill-background-color);
+  border-radius: inherit;
+}
+
+.summary_button[data-progress-axis] .summary_button_progress_text {
+  display: block;
+}
+
+.summary_button[data-progress-axis] .summary_button_progress_bar_rectangular {
+  display: grid;
+}
+
+/* Circular */
+.summary_button_progress_bar_circular {
+  aspect-ratio: 1/1;
+  transform-origin: 50% 50%;
+  stroke-linecap: round;
+}
+
+.summary_button_progress_bar_circular_svg {
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.summary_button_progress_bar_circular_svg_circle {
+  stroke: var(--popup-progress-bar-background-color);
+  z-index: 1;
+  stroke-width: 0.25em;
+}
+
+.summary_button_progress_bar_circular_svg_circle_shadow {
+  stroke: var(--popup-progress-bar-box-shadow);
+  stroke-width: 0.0625em !important;
+  r: 82px;
+}
+
+.summary_button_progress_bar_circular_svg_fill {
+  stroke: var(--popup-progress-bar-fill-background-color);
+  stroke-dasharray: calc(20.9em * var(--percent)), 20.9em;
+  stroke-dashoffset: 0;
+  transition: stroke-dasharray 1s 0.25s;
+
+  @starting-style {
+    stroke-dasharray: 0, 20.9em;
+  }
+}
+
+/* MARK: Columns
+*/
+.summary_button[data-columns="1"] {
+  grid-template-columns: 4em;
+}
+
+.summary_button[data-columns="2"] {
+  grid-template-columns: 4em 4em;
+}
+
+/* MARK: Horizontal
+*/
+.summary_button[data-progress-axis="horizontal"] .summary_button_progress_bar_rectangular_fill {
+  translate: calc(var(--progress) - 100%);
+  transition: translate 1s 0.25s;
+
+  @starting-style {
+    translate: -100%;
+  }
+}
+
+.summary_button[data-progress-text-placement="inside"][data-progress-axis="horizontal"]
+  :is(.summary_button_progress_text, .summary_button_progress_bar_rectangular) {
+  grid-area: 1 / 1 / -1 / -1;
+}
+
+.summary_button[data-progress-text-placement="inside"][data-progress-axis="horizontal"]
+  .summary_button_progress_text {
+  z-index: 1;
+  color: hsl(var(--hue), 2%, 98%);
+}
+
+.summary_button[data-columns="2"] .summary_button_progress {
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+}
+
+.summary_button[data-progress-text-placement="inside"][data-progress-bar-width="thin"]
+  .summary_button_progress_text {
+  font-size: 0.75em;
+}
+
+.summary_button[data-progress-text-placement="inside"][data-progress-bar-width="thin"]
+  .summary_button_progress_bar_rectangular {
+  height: 0.75em;
+}
+
+.summary_button[data-progress-text-placement="inside"][data-progress-bar-width="large"]
+  .summary_button_progress_bar_rectangular {
+  height: 1em;
+}
+
+.summary_button[data-progress-text-placement="outside"][data-progress-bar-width="large"]
+  .summary_button_progress_bar_rectangular {
+  height: 1em;
+}
+
+/* MARK: Vertical
+*/
+.summary_button[data-columns="2"][data-progress-axis="vertical"] {
+  grid-template-columns: 4em auto;
+}
+
+.summary_button[data-progress-axis="vertical"] .summary_button_progress {
+  grid-template-rows: unset;
+  grid-template-columns: 4ch auto;
+}
+
+.summary_button[data-columns="1"][data-progress-axis="vertical"] .summary_button_progress {
+  grid-template-columns: 3em 3em;
+  justify-content: center;
+}
+
+.summary_button[data-progress-axis="vertical"] .summary_button_progress_text {
+  display: grid;
+  align-items: center;
+  text-align: right;
+  align-self: stretch;
+}
+
+.summary_button[data-columns="1"][data-progress-axis="vertical"]
+  .summary_button_progress_bar_rectangular {
+  height: 4em;
+  width: 0.5em;
+}
+
+.summary_button[data-columns="2"][data-progress-axis="vertical"]
+  .summary_button_progress_bar_rectangular {
+  height: 5em;
+  width: 0.5em;
+  margin-right: 0.5em;
+}
+
+.summary_button[data-progress-axis="vertical"][data-progress-bar-width="large"]
+  .summary_button_progress_bar_rectangular {
+  width: 1em;
+}
+
+.summary_button[data-progress-axis="vertical"] .summary_button_progress_bar_rectangular_fill {
+  translate: 0 calc(100% - var(--progress));
+  transition: translate 1s 0.25s;
+
+  @starting-style {
+    translate: 0 100%;
+  }
+}
+
+/* MARK: Circular
+*/
+.summary_button[data-progress-axis="circular"] {
+  grid-template-columns: 9em;
+  grid-template-rows: 9em;
+}
+
+.summary_button[data-progress-axis="circular"]
+  > :is(.summary_button_time, .summary_button_progress) {
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+}
+
+.summary_button[data-progress-axis="circular"] > .summary_button_time {
+  justify-self: center;
+  align-self: center;
+}
+
+.summary_button[data-progress-axis="circular"] > .summary_button_progress {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.summary_button[data-progress-axis="circular"]
+  :is(.summary_button_progress_text, .summary_button_progress_bar_circular) {
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+}
+
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text {
+  align-self: center;
+}
+
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text {
+  padding-inline: 0.5em;
+  text-align: right;
+  --angle-outer: 0deg;
+  --angle-inner: 0deg;
+  rotate: var(--angle-outer);
+  transition: rotate 1s 0.25s;
+
+  @starting-style {
+    rotate: -90deg;
+  }
+}
+
+.summary_button[data-progress-axis="circular"] .summary_button_progress_text > span {
+  display: inline-block;
+  rotate: var(--angle-inner);
+  transition: rotate 1s 0.25s;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  width: 4ch;
+  /* transform-origin: 50% calc((mod(calc(var(--progress) - 1%), 50%) + 1) * 2); */
+  position: relative;
+
+  @starting-style {
+    rotate: 450deg;
+  }
+}
+
+/* .summary_button_progress_text > span::before {
+  content: "";
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  background-color: red;
+  translate: -50% -50%;
+  left: 50%;
+  top: calc((mod(calc(var(--progress) - 1%), 49%) + 1%) * 2);
+} */
+
+.summary_button[data-progress-axis="circular"] .summary_button_time {
+  display: grid;
+  grid-template-columns: 3.5em;
+}
+
+.summary_button[data-progress-axis="circular"][data-progress-bar-width="large"]
+  .summary_button_progress_bar_circular_svg_circle {
+  stroke-width: 0.4em;
+}
+
+.summary_button[data-progress-axis="circular"][data-progress-bar-width="large"]
+  .summary_button_progress_bar_circular_svg_circle_shadow {
+  r: 84px;
+}

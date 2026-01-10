@@ -100,9 +100,9 @@
 
   --popup-footer-background-color: hsl(from var(--primary-color) h 19% 65%);
 
-  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 39% 52%);
+  --popup-progress-bar-background-color: hsl(from var(--primary-color) h 42% 60%);
   --popup-progress-bar-box-shadow: hsl(from var(--primary-color) h 41% 46%);
-  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 79% 15%);
+  --popup-progress-bar-fill-background-color: hsl(from var(--primary-color) h 90% 11%);
 
   /* * summary.css */
   /* - tutorial */
@@ -179,6 +179,9 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 92% 35%
   );
+  --options-data-feedbacks-step-warning-message-color: hsl(
+    from var(--complement-color) calc(h + 10) 100% 23%
+  );
   --options-data-feedbacks-step-file-name-background-color: hsl(
     from var(--primary-color) h 47% 93%
   );
@@ -188,6 +191,16 @@
   );
   --options-data-feedbacks-step-no-undo-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 86% 35%
+  );
+
+  /* - popup */
+  --options-popup-presets-button-text-color: hsla(from var(--text-color) h s l / 0.25);
+  --options-popup-presets-button-box-shadow: hsla(from var(--primary-color) h 30% 30% / 0.2);
+  --options-popup-presets-button-selected-background-color: hsl(
+    from var(--primary-color) h 58% 93%
+  );
+  --options-popup-presets-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 80% 60%
   );
 }
 
@@ -343,6 +356,9 @@
   --options-data-feedbacks-step-error-message-color: hsl(
     from var(--secondary-2-color) calc(h + 10) 54% 68%
   );
+  --options-data-feedbacks-step-warning-message-color: hsl(
+    from var(--complement-color) calc(h + 10) 60% 60%
+  );
   --options-data-feedbacks-step-file-name-background-color: hsl(
     from var(--primary-color) h 68% 16%
   );
@@ -352,6 +368,16 @@
   );
   --options-data-feedbacks-step-no-undo-color: hsl(
     from var(--secondary-2-color) calc(h + 8) 100% 70%
+  );
+
+  /* - popup */
+  --options-popup-presets-button-text-color: hsla(from var(--text-color) h s l / 0.25);
+  --options-popup-presets-button-box-shadow: hsl(from var(--primary-color) h 30% 20%);
+  --options-popup-presets-button-selected-background-color: hsl(
+    from var(--primary-color) h 30% 20%
+  );
+  --options-popup-presets-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 60% 40%
   );
 }
 
@@ -368,9 +394,9 @@
 }
 
 :focus-visible {
-  outline: 0.125em dashed var(--focus-outline);
-  outline-offset: 0.125em;
-  box-shadow: 0 0 0 0.375em var(--focus-box-shadow);
+  outline: max(0.125em, 0.125rem) dashed var(--focus-outline) !important;
+  outline-offset: max(0.125em, 0.125rem) !important;
+  box-shadow: 0 0 0 max(0.375em, 0.375rem) var(--focus-box-shadow) !important;
 }
 
 [disabled="true"] {
@@ -411,4 +437,21 @@
     translate: 0 0;
     opacity: 1;
   }
+}
+
+/* MARK: Return messages
+* Feedback messages classes
+*/
+.error_message,
+.error_message::before {
+  color: var(--options-data-feedbacks-step-error-message-color);
+}
+
+.warn_message,
+.warn_message::before {
+  color: var(--options-data-feedbacks-step-warning-message-color);
+}
+
+:is(.error_message, .warn_message) * {
+  color: inherit;
 }

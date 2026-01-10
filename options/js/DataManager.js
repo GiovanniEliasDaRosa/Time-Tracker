@@ -99,9 +99,7 @@ class DataManager {
     this.tabs.import.importFile.oninput = () => {
       let files = this.tabs.import.importFile.files;
 
-      this.tabs.import.stepsElements[0]
-        .querySelector(".data_feedbacks_step_error_message")
-        .disable();
+      this.tabs.import.stepsElements[0].querySelector(".error_message").disable();
 
       // Has no file selected
       if (files.length == 0) return;
@@ -326,7 +324,7 @@ class DataManager {
 
       let time_checkbox = current_step_element.querySelector("#data_time_checkbox");
       let config_checkbox = current_step_element.querySelector("#data_config_checkbox");
-      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+      let error_message = current_step_element.querySelector(".error_message");
 
       // It returned a step, because something is missing, or need to check at least one option
       if (this.currentSession.error.active) {
@@ -421,7 +419,7 @@ class DataManager {
 
       this.currentSession.active = true;
 
-      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+      let error_message = current_step_element.querySelector(".error_message");
 
       if (this.currentSession.error.active) {
         error_message.innerText = this.currentSession.error.message;
@@ -457,7 +455,7 @@ class DataManager {
       let config_checkbox = current_step_element.querySelector("#data_import_config_checkbox");
       let config_checkbox_parent = config_checkbox.parentElement;
 
-      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+      let error_message = current_step_element.querySelector(".error_message");
 
       // It returned a step, because it needs to check at least one option
       if (this.currentSession.error.active) {
@@ -691,7 +689,7 @@ Check if your system clock is correct.`;
 
       let time_checkbox = current_step_element.querySelector("#data_delete_time_checkbox");
       let config_checkbox = current_step_element.querySelector("#data_delete_config_checkbox");
-      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+      let error_message = current_step_element.querySelector(".error_message");
 
       // It returned a step, because something  need to check at least one option
       if (this.currentSession.error.active) {
@@ -736,7 +734,7 @@ Check if your system clock is correct.`;
       }
 
       let confirm_input = current_step_element.querySelector("#data_delete_confirm_input");
-      let error_message = current_step_element.querySelector(".data_feedbacks_step_error_message");
+      let error_message = current_step_element.querySelector(".error_message");
 
       // It returned a step the confirm value didn't match
       if (this.currentSession.error.active && this.currentSession.previousStep == 2) {

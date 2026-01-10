@@ -130,3 +130,7 @@ input[type="checkbox"]::before,
 .icons.triangle_exclamation::before {
   content: "\f071";
 }
+
+.icons.wrench::before {
+  content: "\f0ad";
+}
