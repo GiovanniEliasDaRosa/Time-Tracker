@@ -438,3 +438,20 @@
     opacity: 1;
   }
 }
+
+/* MARK: Return messages
+* Feedback messages classes
+*/
+.error_message,
+.error_message::before {
+  color: var(--options-data-feedbacks-step-error-message-color);
+}
+
+.warn_message,
+.warn_message::before {
+  color: var(--options-data-feedbacks-step-warning-message-color);
+}
+
+:is(.error_message, .warn_message) * {
+  color: inherit;
+}

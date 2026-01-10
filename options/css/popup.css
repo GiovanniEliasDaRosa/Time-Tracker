@@ -139,7 +139,7 @@
   text-align: right;
 }
 
-.section_options.popup .data_feedbacks_step_warn_message {
+.section_options.popup .warn_message {
   grid-column: 1 / -1;
 }
 

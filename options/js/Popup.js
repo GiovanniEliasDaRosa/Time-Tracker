@@ -29,14 +29,14 @@ class Popup {
         label: custom_label_progress_text_placement,
         input: custom_label_progress_text_placement.querySelector("input"),
         warning: customize_section.querySelector(
-          "label[for='popup_progress_text_placement'] + .data_feedbacks_step_warn_message"
+          "label[for='popup_progress_text_placement'] + .warn_message"
         ),
       },
       progressAxis: {
         label: custom_label_progress_axis,
         input: custom_label_progress_axis.querySelector("input"),
         warning: customize_section.querySelector(
-          "label[for='popup_progress_axis'] + .data_feedbacks_step_warn_message"
+          "label[for='popup_progress_axis'] + .warn_message"
         ),
       },
       progressBarWidth: customize_section.querySelector("#popup_progress_width"),
