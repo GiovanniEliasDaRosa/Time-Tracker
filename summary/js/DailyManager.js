@@ -166,12 +166,7 @@ class DailyManager extends TimerManager {
     let other_domains = domains;
 
     // Create row of the total sum
-    let total = this.newItem({
-      url: "Total",
-      time: this.totalTime,
-    });
-    total.classList.add("timer_item_total");
-    this.body.appendChild(total);
+    this.newTotal();
 
     this.addTimerData(this.body, top_domains);
     this.addTimerData(this.bodyMore, other_domains);
@@ -183,6 +178,12 @@ class DailyManager extends TimerManager {
     }
 
     return this;
+  }
+
+  addTimerData(parent, domains) {
+    domains.forEach((domain) => {
+      parent.appendChild(this.newDomain(domain));
+    });
   }
 
   updateShowMore(show_more_override = true) {

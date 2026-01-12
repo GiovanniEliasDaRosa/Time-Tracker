@@ -43,12 +43,6 @@ class TimerManager {
     return true;
   }
 
-  addTimerData(parent, domains) {
-    domains.forEach((domain) => {
-      parent.appendChild(this.newItem(domain));
-    });
-  }
-
   newInformation(type, message = "") {
     let new_item = null;
 
@@ -103,12 +97,34 @@ class TimerManager {
     this.body.appendChild(new_item);
   }
 
-  newItem(domain) {
-    let new_item = template_timer_item_date.cloneElement(".timer_item_data");
-    let percent = domain.time / this.totalTime;
-    let formatted_time = formatTime(domain.time);
+  newTotal() {
+    // Create row of the total sum
+    let total = this.newItem({
+      name: "Total",
+      time: this.totalTime,
+    });
+    total.classList.add("timer_item_total");
+    this.body.appendChild(total);
+  }
 
-    new_item.querySelector(".timer_item_data_name").textContent = domain.url;
+  newDomain(domain) {
+    return this.newItem({
+      name: domain.url,
+      time: domain.time,
+    });
+  }
+
+  newItem(options_passed) {
+    let options = {
+      name: options_passed.name ?? null,
+      time: options_passed.time ?? 0,
+    };
+
+    let new_item = template_timer_item_date.cloneElement(".timer_item_data");
+    let percent = options.time / this.totalTime || 0;
+    let formatted_time = formatTime(options.time);
+
+    new_item.querySelector(".timer_item_data_name").textContent = options.name;
     new_item.querySelector(".timer_item_data_time").textContent = formatted_time.timeString;
 
     let timer_progress = new_item.querySelector(".timer_item_data_progress");

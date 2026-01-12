@@ -59,6 +59,33 @@ function formatTime(time_in_seconds, options = {}) {
   };
 }
 
+function daysOfIsoWeek(year, week_number) {
+  // As from ISO year (January 4th is always in ISO week 1)
+  const january_4 = new Date(Date.UTC(year, 0, 4));
+
+  // Now converto to ISO weekday 1..7 (1 = Monday, 7 = Sunday)
+  // as getUTCDay() return 0..6 (0 = Sunday), make 0 transform into 7
+  const january_4_iso_weekday = january_4.getUTCDay() || 7;
+
+  // Get the date from ISO week 1
+  const monday_week_1 = new Date(january_4);
+  monday_week_1.setUTCDate(january_4.getUTCDate() - (january_4_iso_weekday - 1));
+
+  const target_week_monday = new Date(monday_week_1);
+  // Get the monday of the ISO week selected
+  target_week_monday.setUTCDate(monday_week_1.getUTCDate() + (week_number - 1) * 7);
+
+  const results = [];
+  // Go thought the days in the specified week
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(target_week_monday);
+    date.setUTCDate(target_week_monday.getUTCDate() + i);
+    results.push(date.toISOString().slice(0, 10));
+  }
+
+  return results;
+}
+
 const ms_per_day = 24 * 60 * 60 * 1000;
 function compareDates(first, second, check_days_passed = false) {
   const first_date = new Date(first.isoDate).normalize().getTime();

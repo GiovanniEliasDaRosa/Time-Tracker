@@ -10,7 +10,7 @@ let template_timer_no_data = document.querySelector("#template_timer_no_data");
 
 const timers = {
   day: new DailyManager(document.querySelector(".timer[data-type='day']")),
-  // week: new TimerManager(document.querySelector(".timer[data-type='week']")),
+  week: new WeeklyManager(document.querySelector(".timer[data-type='week']")),
   // month: new TimerManager(document.querySelector(".timer[data-type='month']")),
 };
 
