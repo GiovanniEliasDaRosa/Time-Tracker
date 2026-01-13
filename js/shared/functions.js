@@ -62,12 +62,10 @@ function formatTime(time_in_seconds, options = {}) {
 function daysOfIsoWeek(iso_date) {
   let year = iso_date.year;
   let week_number = iso_date.weekNumber;
-  let day = iso_date.day;
+  let month = iso_date.month;
 
-  if (week_number == 1 && day > 7) {
+  if (week_number == 1 && month == 12) {
     year++;
-  } else if (week_number >= 52 && day < 7) {
-    year--;
   }
 
   // As from ISO year (January 4th is always in ISO week 1)
