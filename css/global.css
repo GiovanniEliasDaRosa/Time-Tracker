@@ -36,6 +36,7 @@
   /* * global.css */
   --background-color: var(--light);
   --text-color: var(--dark);
+  --text-color-faded: hsl(from var(--text-color) h calc(s - 40) calc(l + 20));
 
   --focus-outline: hsl(from var(--primary-color) h 90% 20%);
   --focus-box-shadow: hsl(from var(--primary-color) h 10% 90%);
@@ -213,6 +214,7 @@
   /* * global.css */
   --background-color: var(--dark);
   --text-color: var(--light);
+  --text-color-faded: hsl(from var(--text-color) h calc(s + 5) calc(l - 20));
 
   --focus-outline: hsl(from var(--primary-color) h 50% 95%);
   --focus-box-shadow: hsl(from var(--primary-color) h 10% 20%);

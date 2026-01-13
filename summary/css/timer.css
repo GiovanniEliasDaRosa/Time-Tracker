@@ -23,6 +23,15 @@
   gap: 0.5em;
 }
 
+.timer_header_head {
+  display: grid;
+  gap: 0.25em;
+}
+
+.timer_header_head p {
+  color: var(--text-color-faded);
+}
+
 .timer_header_date {
   grid-area: time;
   display: grid;

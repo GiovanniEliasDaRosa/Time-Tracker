@@ -59,7 +59,17 @@ function formatTime(time_in_seconds, options = {}) {
   };
 }
 
-function daysOfIsoWeek(year, week_number) {
+function daysOfIsoWeek(iso_date) {
+  let year = iso_date.year;
+  let week_number = iso_date.weekNumber;
+  let day = iso_date.day;
+
+  if (week_number == 1 && day > 7) {
+    year++;
+  } else if (week_number >= 52 && day < 7) {
+    year--;
+  }
+
   // As from ISO year (January 4th is always in ISO week 1)
   const january_4 = new Date(Date.UTC(year, 0, 4));
 

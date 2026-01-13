@@ -34,7 +34,7 @@ class WeeklyManager extends TimerManager {
   }
 
   update() {
-    let days_of_week = daysOfIsoWeek(this.date.year, this.date.weekNumber);
+    let days_of_week = daysOfIsoWeek(this.date);
     let first_day = getDateInfo(days_of_week[0]);
     let last_day = getDateInfo(days_of_week[6]);
 
@@ -45,6 +45,7 @@ class WeeklyManager extends TimerManager {
 
     let passed_today = false;
 
+    // Go thourght the 7 days if that week
     days_of_week.forEach((day) => {
       let tracked_day = tracked_time_history_local.trackedDates[day];
       let result = {
@@ -52,46 +53,67 @@ class WeeklyManager extends TimerManager {
         futureDate: passed_today,
       };
 
+      // See if it exists in tracked_time_history_local
       if (tracked_day) {
+        // Check to see if its finished
         if (tracked_day.trackingFinished) {
+          // As it is finished just get the data from there directly
           result = tracked_day;
         } else {
+          // As the tracking is unfinished, get the data from the tracking_time
           result = tracking_time_local;
           passed_today = true;
         }
       }
 
+      // Put the data got in the data.days
       this.data.days[day] = result;
+      // Sum the time of the totaltime spent on the week by the day's total time
       this.data.totalTime += result.totalTime;
     });
 
-    let result = compareDates(first_day, today);
-
-    let ordinal_week_collocation = "th";
+    // Ordinal ending week 'st', 'nd', 'th'
+    let ordinal_week_end = "th";
+    // Get the last digit of the number passed
     let last_digit = this.date.weekNumber.toString().slice(-1);
 
+    // Check if it matches the ordinal endings
     switch (last_digit) {
       case "1":
-        ordinal_week_collocation = "st";
+        ordinal_week_end = "st";
         break;
       case "2":
-        ordinal_week_collocation = "nd";
+        ordinal_week_end = "nd";
         break;
       case "3":
-        ordinal_week_collocation = "rd";
+        ordinal_week_end = "rd";
         break;
     }
 
-    let result_date = this.date.weekNumber + ordinal_week_collocation;
+    // Set up result_date with values be shown in the header
+    let result_date = {
+      monthLong: first_day.monthLong,
+      year: first_day.year,
+      currentWeek: `${this.date.weekNumber + ordinal_week_end} week`,
+    };
 
-    if (result.difference == 0) {
-      result_date = `Current week, ${result_date}`;
-    } else if (result.difference == -7) {
-      result_date = `Last week, ${result_date}`;
+    let compare_days = compareDates(first_day, today);
+
+    // If the day is greater than -7, it means its the current week
+    if (compare_days.difference > -7) {
+      result_date.currentWeek = `Current week, ${result_date.currentWeek}`;
+    } else if (compare_days.difference > -14) {
+      // If the day is greater than -14, it means its the last week
+      result_date.currentWeek = `Last week, ${result_date.currentWeek}`;
+    }
+
+    if (this.date.weekNumber == 1) {
+      result_date.monthLong = last_day.monthLong;
+      result_date.year = last_day.year;
     }
 
     // Current week, 2° week, January, 2026
-    this.h2.textContent = `${result_date} week (from ${first_day.date} to ${last_day.date}), ${this.date.monthLong}, ${this.date.year}`;
+    this.h2.textContent = `${result_date.currentWeek}, ${result_date.monthLong}, ${result_date.year}`;
 
     this.totalTime = this.data.totalTime;
 
@@ -110,6 +132,8 @@ class WeeklyManager extends TimerManager {
         time: day_data.totalTime,
       };
       let row = this.newItem(result);
+
+      // If the date is in the future, make a disabled look
       if (day_data.futureDate) {
         row.disable({ hide: false });
       }

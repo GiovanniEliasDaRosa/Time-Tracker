@@ -15,7 +15,7 @@ class TimerManager {
       return;
     }
 
-    this.h2 = element.querySelector(".timer_header_h2");
+    this.h2 = element.querySelector(".timer_header_title");
     this.dateInput = element.querySelector(".timer_header_date_input");
     this.body = element.querySelector(".timer_body");
 
