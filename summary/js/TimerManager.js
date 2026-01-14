@@ -1,19 +1,7 @@
 class TimerManager {
   constructor(element) {
-    console.warn("new (TimerManager)");
     this.element = element;
     this.type = element.dataset.type;
-
-    if (this.type == "day") {
-      console.warn("day");
-    } else if (this.type == "week") {
-      console.warn("week");
-    } else if (this.type == "month") {
-      console.warn("month");
-    } else {
-      console.error("Error, no type found for ", type);
-      return;
-    }
 
     this.h2 = element.querySelector(".timer_header_title");
     this.dateInput = element.querySelector(".timer_header_date_input");
@@ -26,6 +14,12 @@ class TimerManager {
     return this;
   }
 
+  startup() {
+    this.validOptions = {
+      endDate: today,
+    };
+  }
+
   valid() {
     // No date selected
     if (this.dateInput.value == "") {
@@ -36,11 +30,48 @@ class TimerManager {
     this.date = getDateInfo(this.dateInput.value);
 
     // Date selected in the future
-    if (compareDates(this.date, today).difference > 0) {
+    if (compareDates(this.date, this.validOptions.endDate).difference > 0) {
       this.newInformation("error", `Select a *valid* date to see it's summary`);
       return false;
     }
     return true;
+  }
+
+  calculateDataOfWeek(days_of_week) {
+    let passed_today = false;
+    let total_result = {
+      days: {},
+      totalTime: 0,
+    };
+
+    // Go thourght the 7 days if that week
+    days_of_week.forEach((day) => {
+      let tracked_day = tracked_time_history_local.trackedDates[day];
+      let day_result = {
+        totalTime: 0,
+        futureDate: passed_today,
+      };
+
+      // See if it exists in tracked_time_history_local
+      if (tracked_day) {
+        // Check to see if its finished
+        if (tracked_day.trackingFinished) {
+          // As it is finished just get the data from there directly
+          day_result = tracked_day;
+        } else {
+          // As the tracking is unfinished, get the data from the tracking_time
+          day_result = tracking_time_local;
+          passed_today = true;
+        }
+      }
+
+      // Put the data got in the data.days
+      total_result.days[day] = day_result;
+      // Sum the time of the totaltime spent on the week by the day's total time
+      total_result.totalTime += day_result.totalTime;
+    });
+
+    return total_result;
   }
 
   newInformation(type, message = "") {

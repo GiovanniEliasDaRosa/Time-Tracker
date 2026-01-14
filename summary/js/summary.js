@@ -11,7 +11,7 @@ let template_timer_no_data = document.querySelector("#template_timer_no_data");
 const timers = {
   day: new DailyManager(document.querySelector(".timer[data-type='day']")),
   week: new WeeklyManager(document.querySelector(".timer[data-type='week']")),
-  // month: new TimerManager(document.querySelector(".timer[data-type='month']")),
+  month: new MonthlyManager(document.querySelector(".timer[data-type='month']")),
 };
 
 let hash = window.location.hash.slice(1);
@@ -35,6 +35,7 @@ async function main() {
     if (!Object.hasOwn(timers, key)) continue;
 
     let timer = timers[key];
+    timer.startup();
     timer.dateInput.value = today.isoDate;
     timer.valid();
   }

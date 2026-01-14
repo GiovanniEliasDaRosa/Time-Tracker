@@ -38,39 +38,11 @@ class WeeklyManager extends TimerManager {
     let first_day = getDateInfo(days_of_week[0]);
     let last_day = getDateInfo(days_of_week[6]);
 
-    this.data = {
-      days: {},
-      totalTime: 0,
+    this.validOptions = {
+      endDate: last_day,
     };
 
-    let passed_today = false;
-
-    // Go thourght the 7 days if that week
-    days_of_week.forEach((day) => {
-      let tracked_day = tracked_time_history_local.trackedDates[day];
-      let result = {
-        totalTime: 0,
-        futureDate: passed_today,
-      };
-
-      // See if it exists in tracked_time_history_local
-      if (tracked_day) {
-        // Check to see if its finished
-        if (tracked_day.trackingFinished) {
-          // As it is finished just get the data from there directly
-          result = tracked_day;
-        } else {
-          // As the tracking is unfinished, get the data from the tracking_time
-          result = tracking_time_local;
-          passed_today = true;
-        }
-      }
-
-      // Put the data got in the data.days
-      this.data.days[day] = result;
-      // Sum the time of the totaltime spent on the week by the day's total time
-      this.data.totalTime += result.totalTime;
-    });
+    this.data = this.calculateDataOfWeek(days_of_week);
 
     // Ordinal ending week 'st', 'nd', 'th'
     let ordinal_week_end = "th";
