@@ -7,11 +7,18 @@ let tracked_time_history_local = null;
 let template_timer_item_date = document.querySelector("#template_timer_item_date");
 let template_timer_invalid = document.querySelector("#template_timer_invalid");
 let template_timer_no_data = document.querySelector("#template_timer_no_data");
+let template_timer_filter = document.querySelector("#template_timer_filter");
 
 const timers = {
   day: new DailyManager(document.querySelector(".timer[data-type='day']")),
   week: new WeeklyManager(document.querySelector(".timer[data-type='week']")),
   month: new MonthlyManager(document.querySelector(".timer[data-type='month']")),
+};
+
+window.onresize = () => {
+  timers.day.updateFilterPosition();
+  timers.week.updateFilterPosition();
+  timers.month.updateFilterPosition();
 };
 
 let hash = window.location.hash.slice(1);

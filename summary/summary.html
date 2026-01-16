@@ -35,7 +35,13 @@
               <h2 class="timer_header_title">No date selected</h2>
               <p>Daily Summary</p>
             </div>
-            <input class="timer_header_date_input" type="date" />
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button
+                class="timer_item_button_filter square icons nomargin filter"
+                data-open="true"
+              ></button>
+            </div>
           </div>
           <div class="timer_content">
             <div class="timer_body">
@@ -62,19 +68,35 @@
         <div class="timer" data-type="week">
           <div class="timer_header">
             <div class="timer_header_head">
-              <h2 class="timer_header_title">Current week, 2° week, January, 2026</h2>
+              <h2 class="timer_header_title">No date selected</h2>
               <p>Weekly Summary</p>
             </div>
-            <input class="timer_header_date_input" type="date" />
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button
+                class="timer_item_button_filter square icons nomargin filter"
+                data-open="false"
+              ></button>
+            </div>
           </div>
           <div class="timer_body">
             <!-- Added via js -->
           </div>
         </div>
-              <h2 class="timer_header_title">Current month, January 2026</h2>
+
+        <div class="timer" data-type="month">
+          <div class="timer_header">
+            <div class="timer_header_head">
+              <h2 class="timer_header_title">No date selected</h2>
               <p>Monthly Summary</p>
             </div>
-            <input class="timer_header_date_input" type="date" />
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button
+                class="timer_item_button_filter square icons nomargin filter"
+                data-open="false"
+              ></button>
+            </div>
           </div>
           <div class="timer_body">
             <!-- Added via js -->
@@ -143,6 +165,26 @@
 
       <template id="template_timer_no_data">
         <p class="timer_item_informate timer_item_no_data icons exclamation">Inform</p>
+      </template>
+
+      <template id="template_timer_filter">
+        <div class="timer_item_filter" style="display: none" disabled="true" aria-disabled="true">
+          <div class="timer_item_filter_section" data-type="order">
+            <h3 class="icons list">Order</h3>
+            <button class="icons sort" id="domains">Domains</button>
+            <button class="icons sort" id="days">Days</button>
+            <button class="icons sort" id="weeks">Weeks</button>
+            <button class="icons sort arrow_bar_ascending" id="time" data-selected="true">
+              Time
+            </button>
+          </div>
+
+          <div class="timer_item_filter_section" data-type="filter">
+            <h3 class="icons filter">Filter</h3>
+            <p>Filter out domains with less than time:</p>
+            <input id="time_filter" name="time_filter" type="text" placeholder="0" value="0" />
+          </div>
+        </div>
       </template>
     </div>
   </body>

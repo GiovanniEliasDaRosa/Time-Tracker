@@ -134,3 +134,39 @@ input[type="checkbox"]::before,
 .icons.wrench::before {
   content: "\f0ad";
 }
+
+.icons.list::before {
+  content: "\f03a";
+}
+
+.icons.filter::before {
+  content: "\f0b0";
+}
+
+.icons.sort::before {
+  content: "\f0dc";
+}
+
+.icons.arrow_bar_ascending::before {
+  content: "\f160";
+}
+
+.icons.arrow_bar_descending::before {
+  content: "\f885";
+}
+
+.icons.arrow_number_ascending::before {
+  content: "\f162";
+}
+
+.icons.arrow_number_descending::before {
+  content: "\f163";
+}
+
+.icons.arrow_alphabet_ascending::before {
+  content: "\f15d";
+}
+
+.icons.arrow_alphabet_descending::before {
+  content: "\f15e";
+}

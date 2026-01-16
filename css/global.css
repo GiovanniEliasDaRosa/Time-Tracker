@@ -145,6 +145,15 @@
   /* - - show more */
   --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 58% 55%);
 
+  /* - - filter */
+  --summary-filter-background-color: hsl(from var(--primary-color) calc(h - 8) 63% 86%);
+  --summary-filter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --options-filter-button-circle-background-color: hsl(from var(--complement-color) h 100% 35%);
+  --options-filter-button-selected-background-color: hsl(from var(--primary-color) h 58% 93%);
+  --options-filter-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 80% 60%
+  );
+
   /* * options.css */
   --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 53% 77%);
   --options-options-more-border-color: hsl(from var(--primary-color) h 5% 70%);
@@ -322,6 +331,15 @@
 
   /* - - show more */
   --summary-timer-body-more-background-color: hsl(from var(--primary-color) h 33% 45%);
+
+  /* - - filter */
+  --summary-filter-background-color: hsl(from var(--primary-color) calc(h - 8) 42% 10%);
+  --summary-filter-box-shadow: hsla(from var(--theme-inverse) h s l / 0.5);
+  --options-filter-button-circle-background-color: hsl(from var(--complement-color) h 100% 70%);
+  --options-filter-button-selected-background-color: hsl(from var(--primary-color) h 30% 20%);
+  --options-filter-button-selected-border-outline-color: hsl(
+    from var(--complement-color) h 65% 45%
+  );
 
   /* * options.css */
   --options-header-border-bottom-color: hsl(from var(--primary-color) calc(h - 8) 28% 20%);

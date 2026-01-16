@@ -3,6 +3,7 @@ class TimerManager {
     this.element = element;
     this.type = element.dataset.type;
 
+    this.header = element.querySelector(".timer_header");
     this.h2 = element.querySelector(".timer_header_title");
     this.dateInput = element.querySelector(".timer_header_date_input");
     this.body = element.querySelector(".timer_body");
@@ -11,6 +12,12 @@ class TimerManager {
     this.data = null;
     this.totalTime = null;
 
+    this.filterElement = null;
+    this.filter = {
+      type: "time",
+      direction: "ascending",
+    };
+
     return this;
   }
 
@@ -18,6 +25,62 @@ class TimerManager {
     this.validOptions = {
       endDate: today,
     };
+
+    let filter_element = template_timer_filter.cloneElement(".timer_item_filter");
+    this.header.appendChild(filter_element);
+
+    let order = filter_element.querySelector("[data-type='order']");
+    let filter = filter_element.querySelector("[data-type='filter']");
+
+    this.filterElement = {
+      element: filter_element,
+      button: this.element.querySelector(".timer_item_button_filter"),
+      order: {
+        element: order,
+        domains: order.querySelector("#domains"),
+        days: order.querySelector("#days"),
+        weeks: order.querySelector("#weeks"),
+        time: order.querySelector("#time"),
+      },
+      filter: {
+        element: filter,
+        timeFilter: order.querySelector("#time_filter"),
+      },
+      open: false,
+    };
+
+    this.filterElement.order.domains.disable();
+    this.filterElement.order.days.disable();
+    this.filterElement.order.weeks.disable();
+
+    this.filterElement.button.onclick = () => {
+      this.handleFilter();
+    };
+  }
+
+  handleFilter() {
+    if (this.filterElement.open) {
+      this.filterElement.element.disable();
+      this.filterElement.open = false;
+    } else {
+      this.filterElement.element.enable();
+      this.filterElement.open = true;
+      this.updateFilterPosition();
+    }
+  }
+
+  updateFilterPosition() {
+    // If filter is not open don't waste time
+    if (!this.filterElement.open) return;
+
+    let bound_button = this.filterElement.button.getBoundingClientRect();
+    let bound_filter = this.filterElement.element.getBoundingClientRect();
+    this.filterElement.element.style.left = `${
+      bound_button.left + bound_button.width - bound_filter.width
+    }px`;
+    this.filterElement.element.style.top = `${
+      bound_button.top + bound_button.height + window.scrollY
+    }px`;
   }
 
   valid() {

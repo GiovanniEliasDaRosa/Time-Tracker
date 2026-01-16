@@ -11,6 +11,8 @@ class DailyManager extends TimerManager {
      * - this.date
      * - this.data
      * - this.totalTime
+     * - this.filter
+     * - this.filterElement
      */
 
     this.isToday = false;
@@ -92,6 +94,12 @@ class DailyManager extends TimerManager {
     };
 
     return this;
+  }
+
+  startup() {
+    super.startup();
+
+    this.filterElement.order.domains.enable();
   }
 
   valid() {
