@@ -14,8 +14,11 @@ A lightweight Firefox extension that records how much time you spend on websites
 
 ## Features
 
-- **Popup:** a quick view of today's tracked time.
-- **Summary page:** a dashboard with time spent by domain by date.
+- **Popup:** a quick view of today's tracked time, customizable via Options page
+- **Summary page:** a dashboard to explore tracked time
+  - **Daily Summary:** time spend by domain for a selected day
+  - **Weekly Summary:** time spend per day in a week
+  - **Monthly Summary:** time spend per week in a month
 - **Options page:** customize your experience [See options available](#options-available)
 
 ## Usage
