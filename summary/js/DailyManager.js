@@ -99,7 +99,17 @@ class DailyManager extends TimerManager {
   startup() {
     super.startup();
 
-    this.filterElement.order.domains.enable();
+    this.filter = {
+      order: {
+        type: "time",
+        direction: "ascending",
+      },
+      byTime: 0,
+    };
+
+    this.updateFilterButtons(this.filter.order.type);
+
+    this.filterElement.order.buttons.domains.enable();
   }
 
   valid() {
@@ -127,45 +137,101 @@ class DailyManager extends TimerManager {
     this.update();
   }
 
-  update() {
-    if (this.isToday) {
-      this.data = tracking_time_local;
-    } else {
-      let search = tracked_time_history_local.trackedDates[this.date.isoDate];
+  update(options_passed = {}) {
+    let options = {
+      fromFilter: options_passed.fromFilter ?? false,
+    };
 
-      // If didn't find data have
-      if (search == null) {
-        this.data = {
-          domains: [],
-        };
+    // If from filter just skip to it, the data is calculated
+    if (!options.fromFilter) {
+      if (this.isToday) {
+        this.data = tracking_time_local;
       } else {
-        this.data = search;
+        let search = tracked_time_history_local.trackedDates[this.date.isoDate];
+
+        // If didn't find data have
+        if (search == null) {
+          this.data = {
+            domains: [],
+          };
+        } else {
+          this.data = search;
+        }
+      }
+
+      let result = compareDates(this.date, today, true);
+      let result_date = "";
+
+      if (result.dayDifference == "") {
+        result_date = this.date.weekday;
+      } else {
+        result_date = result.dayDifference;
+      }
+
+      this.h2.textContent = `${result_date}, ${this.date.monthLong} ${this.date.day}, ${this.date.year}`;
+
+      // If the date has no data
+      if (this.data.domains.length == 0) {
+        this.newInformation("no_data", `No data was found`);
+        return;
+      }
+
+      this.updateShowMore(false);
+    } else {
+      // From filter, reset the HTML to put the content again
+      this.body.innerHTML = "";
+      this.bodyMore.innerHTML = "";
+
+      // Call base class to do input validation
+      let valid = super.valid();
+
+      // If invalid date return
+      if (!valid) return;
+    }
+
+    // Filter by time
+    if (this.filter.order.type == "time") {
+      // If increasing
+      if (this.filter.order.direction == "ascending") {
+        // Sort from biggest to smallest time spent
+        this.data.domains.sort(function (a, b) {
+          return b.time > a.time;
+        });
+      } else {
+        // If decreasing
+        // Sort from smallest to biggest time spent
+        this.data.domains.sort(function (a, b) {
+          return b.time < a.time;
+        });
       }
     }
 
-    let result = compareDates(this.date, today, true);
-    let result_date = "";
-
-    if (result.dayDifference == "") {
-      result_date = this.date.weekday;
-    } else {
-      result_date = result.dayDifference;
+    // Filter by domain
+    if (this.filter.order.type == "domains") {
+      // If increasing
+      if (this.filter.order.direction == "ascending") {
+        // Sort in alphabetical order
+        this.data.domains.sort(function (a, b) {
+          if (a.url < b.url) {
+            return -1;
+          } else if (a.url > b.url) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        // If decreasing
+        // Sort in reverse alphabetical order
+        this.data.domains.sort(function (a, b) {
+          if (a.url < b.url) {
+            return 1;
+          } else if (a.url > b.url) {
+            return -1;
+          }
+          return 0;
+        });
+      }
     }
-
-    this.h2.textContent = `${result_date}, ${this.date.monthLong} ${this.date.day}, ${this.date.year}`;
-
-    // If the date has no data
-    if (this.data.domains.length == 0) {
-      this.newInformation("no_data", `No data was found`);
-      return;
-    }
-
-    this.updateShowMore(false);
-
-    // Sort from biggest to smallest time spent
-    this.data.domains.sort(function (a, b) {
-      return b.time > a.time;
-    });
 
     this.totalTime = this.data.totalTime;
 

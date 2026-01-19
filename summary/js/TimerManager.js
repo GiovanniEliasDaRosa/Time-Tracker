@@ -9,13 +9,18 @@ class TimerManager {
     this.body = element.querySelector(".timer_body");
 
     this.date = null;
-    this.data = null;
+    this.data = {
+      domains: [],
+    };
     this.totalTime = null;
 
     this.filterElement = null;
     this.filter = {
-      type: "time",
-      direction: "ascending",
+      order: {
+        type: null,
+        direction: "none",
+      },
+      byTime: 0,
     };
 
     return this;
@@ -37,10 +42,10 @@ class TimerManager {
       button: this.element.querySelector(".timer_item_button_filter"),
       order: {
         element: order,
-        domains: order.querySelector("#domains"),
-        days: order.querySelector("#days"),
-        weeks: order.querySelector("#weeks"),
-        time: order.querySelector("#time"),
+        buttons: {
+          domains: order.querySelector("#domains"),
+          time: order.querySelector("#time"),
+        },
       },
       filter: {
         element: filter,
@@ -49,9 +54,18 @@ class TimerManager {
       open: false,
     };
 
-    this.filterElement.order.domains.disable();
-    this.filterElement.order.days.disable();
-    this.filterElement.order.weeks.disable();
+    // Set up filter buttons
+    this.filterElement.order.buttons.domains.disable();
+
+    for (const key in this.filterElement.order.buttons) {
+      if (!Object.hasOwn(this.filterElement.order.buttons, key)) continue;
+
+      const button = this.filterElement.order.buttons[key];
+
+      button.onclick = () => {
+        this.handleFilterChange(key);
+      };
+    }
 
     this.filterElement.button.onclick = () => {
       this.handleFilter();
@@ -81,6 +95,61 @@ class TimerManager {
     this.filterElement.element.style.top = `${
       bound_button.top + bound_button.height + window.scrollY
     }px`;
+  }
+
+  updateFilterButtons(from_key) {
+    for (const key in this.filterElement.order.buttons) {
+      if (!Object.hasOwn(this.filterElement.order.buttons, key)) continue;
+
+      let button = this.filterElement.order.buttons[key];
+      button.removeAttribute("data-selected");
+
+      button.classList.remove(`arrow_bar_ascending`);
+      button.classList.remove(`arrow_bar_descending`);
+      button.classList.remove(`arrow_alphabet_ascending`);
+      button.classList.remove(`arrow_alphabet_descending`);
+      button.classList.add(`sort`);
+    }
+
+    // If don't want to sort return here for arrow no sort effect
+    if (this.filter.order.type == null) return;
+
+    let selected_button = this.filterElement.order.buttons[from_key];
+    selected_button.setAttribute("data-selected", "true");
+    selected_button.classList.remove("sort");
+
+    if (from_key == "time") {
+      selected_button.classList.add(`arrow_bar_${this.filter.order.direction}`);
+    } else {
+      selected_button.classList.add(`arrow_alphabet_${this.filter.order.direction}`);
+    }
+  }
+
+  handleFilterChange(from_key) {
+    let direction = "ascending";
+    let sorting = true;
+
+    // Same filter as the current selected
+    if (this.filter.order.type == from_key) {
+      if (this.filter.order.direction == "ascending") {
+        direction = "descending";
+      } else {
+        sorting = false;
+      }
+    }
+
+    // If want to sort
+    if (sorting) {
+      this.filter.order.type = from_key;
+      this.filter.order.direction = direction;
+      this.update({ fromFilter: true });
+    } else {
+      this.filter.order.type = null;
+      this.filter.order.direction = "none";
+      this.valid();
+    }
+
+    this.updateFilterButtons(from_key);
   }
 
   valid() {
@@ -236,7 +305,7 @@ class TimerManager {
     timer_progress.appendChild(progress_fill);
 
     new_item.querySelector(".timer_item_data_percentage").textContent = `${Math.round(
-      percent * 100
+      percent * 100,
     )}%`;
 
     return new_item;
