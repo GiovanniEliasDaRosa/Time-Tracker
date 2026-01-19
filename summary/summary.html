@@ -12,6 +12,7 @@
 
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/MessageManager.js" defer="true"></script>
+    <script src="../js/shared/Validator.js" defer="true"></script>
     <script src="js/TimerManager.js" defer="true"></script>
     <script src="js/DailyManager.js" defer="true"></script>
     <script src="js/WeeklyManager.js" defer="true"></script>
@@ -177,8 +178,8 @@
 
           <div class="timer_item_filter_section" data-type="filter">
             <h3 class="icons filter">Filter</h3>
-            <p>Filter out domains with less than time:</p>
-            <input id="time_filter" name="time_filter" type="text" placeholder="0" value="0" />
+            <p>Include only domains above time(in seconds):</p>
+            <input id="time_filter" name="time_filter" type="number" placeholder="0" value="0" />
           </div>
         </div>
       </template>

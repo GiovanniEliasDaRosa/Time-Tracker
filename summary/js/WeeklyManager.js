@@ -24,9 +24,18 @@ class WeeklyManager extends TimerManager {
     super.startup();
   }
 
-  valid() {
+  valid(options_passed = {}) {
+    let options = {
+      fromFilter: options_passed.fromFilter ?? false,
+    };
+
     this.body.innerHTML = "";
-    this.h2.textContent = "";
+
+    // If its not from from filter, do normal reset
+    if (!options.fromFilter) {
+      this.totalTime = 0;
+      this.h2.textContent = "";
+    }
 
     // Call base class to do input validation
     let valid = super.valid();
@@ -36,7 +45,7 @@ class WeeklyManager extends TimerManager {
 
     this.date = getDateInfo(this.dateInput.value);
 
-    this.update();
+    this.update(options);
   }
 
   update(options_passed = {}) {
@@ -48,8 +57,8 @@ class WeeklyManager extends TimerManager {
     let first_day = getDateInfo(days_of_week[0]);
     let last_day = getDateInfo(days_of_week[6]);
 
-    // If from filter just skip to it, the data is calculated
-    if (!options.fromFilter) {
+    // If it's not from filter, calculate data
+    if (!options.fromFilter || this.totalTime == 0) {
       this.validOptions = {
         endDate: last_day,
       };
@@ -99,14 +108,11 @@ class WeeklyManager extends TimerManager {
       // Current week, 2° week, January, 2026
       this.h2.textContent = `${result_date.currentWeek}, ${result_date.monthLong}, ${result_date.year}`;
     } else {
-      // From filter, reset the HTML to put the content again
-      this.body.innerHTML = "";
-
-      // Call base class to do input validation
-      let valid = super.valid();
-
-      // If invalid date return
-      if (!valid) return;
+      // It's from filter
+      // Check to see if a filter for min time is active
+      if (this.filter.minTime > 0) {
+        this.data = this.calculateDataOfWeek(days_of_week);
+      }
     }
 
     this.totalTime = this.data.totalTime;

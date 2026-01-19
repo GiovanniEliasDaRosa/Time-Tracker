@@ -24,9 +24,18 @@ class MonthlyManager extends TimerManager {
     super.startup();
   }
 
-  valid() {
+  valid(options_passed = {}) {
+    let options = {
+      fromFilter: options_passed.fromFilter ?? false,
+    };
+
     this.body.innerHTML = "";
-    this.h2.textContent = "";
+
+    // If its not from from filter, do normal reset
+    if (!options.fromFilter) {
+      this.totalTime = 0;
+      this.h2.textContent = "";
+    }
 
     // Call base class to do input validation
     let valid = super.valid();
@@ -36,7 +45,7 @@ class MonthlyManager extends TimerManager {
 
     this.date = getDateInfo(this.dateInput.value);
 
-    this.update();
+    this.update(options);
   }
 
   update(options_passed = {}) {
@@ -44,8 +53,8 @@ class MonthlyManager extends TimerManager {
       fromFilter: options_passed.fromFilter ?? false,
     };
 
-    // If from filter just skip to it, the data is calculated
-    if (!options.fromFilter) {
+    // If it's not from filter, calculate data
+    if (!options.fromFilter || this.filter.minTime > 0 || this.totalTime == 0) {
       this.data = {
         rows: [],
         totalTime: 0,
@@ -156,15 +165,6 @@ class MonthlyManager extends TimerManager {
       this.h2.textContent = `${result_date.currentMonth}, ${result_date.year}`;
 
       this.totalTime = this.data.totalTime;
-    } else {
-      // From filter, reset the HTML to put the content again
-      this.body.innerHTML = "";
-
-      // Call base class to do input validation
-      let valid = super.valid();
-
-      // If invalid date return
-      if (!valid) return;
     }
 
     // Create row of the total sum

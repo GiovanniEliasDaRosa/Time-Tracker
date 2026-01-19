@@ -112,13 +112,21 @@ class DailyManager extends TimerManager {
     this.filterElement.order.buttons.domains.enable();
   }
 
-  valid() {
+  valid(options_passed = {}) {
+    let options = {
+      fromFilter: options_passed.fromFilter ?? false,
+    };
+
     this.body.innerHTML = "";
     this.bodyMore.innerHTML = "";
-    this.h2.textContent = "";
 
-    this.bodyMore.disable();
-    this.showMore.button.disable();
+    // If its not from from filter, do normal reset
+    if (!options.fromFilter) {
+      this.totalTime = 0;
+      this.h2.textContent = "";
+      this.bodyMore.disable();
+      this.showMore.button.disable();
+    }
 
     // Call base class to do input validation
     let valid = super.valid();
@@ -134,7 +142,7 @@ class DailyManager extends TimerManager {
       this.date = getDateInfo(this.dateInput.value);
     }
 
-    this.update();
+    this.update(options);
   }
 
   update(options_passed = {}) {
@@ -142,8 +150,8 @@ class DailyManager extends TimerManager {
       fromFilter: options_passed.fromFilter ?? false,
     };
 
-    // If from filter just skip to it, the data is calculated
-    if (!options.fromFilter) {
+    // If it's not from filter, calculate data
+    if (!options.fromFilter || this.totalTime == 0) {
       if (this.isToday) {
         this.data = tracking_time_local;
       } else {
@@ -177,16 +185,6 @@ class DailyManager extends TimerManager {
       }
 
       this.updateShowMore(false);
-    } else {
-      // From filter, reset the HTML to put the content again
-      this.body.innerHTML = "";
-      this.bodyMore.innerHTML = "";
-
-      // Call base class to do input validation
-      let valid = super.valid();
-
-      // If invalid date return
-      if (!valid) return;
     }
 
     // Filter by time
@@ -231,6 +229,16 @@ class DailyManager extends TimerManager {
           return 0;
         });
       }
+    }
+
+    if (this.filter.minTime > 0) {
+      this.data.domains = this.data.domains.filter((item) => item.time > this.filter.minTime);
+
+      this.data.totalTime = 0;
+
+      this.data.domains.forEach((domain) => {
+        this.data.totalTime += domain.time;
+      });
     }
 
     this.totalTime = this.data.totalTime;

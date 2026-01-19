@@ -20,7 +20,7 @@ class TimerManager {
         type: null,
         direction: "none",
       },
-      byTime: 0,
+      minTime: 0,
     };
 
     return this;
@@ -49,12 +49,12 @@ class TimerManager {
       },
       filter: {
         element: filter,
-        timeFilter: order.querySelector("#time_filter"),
+        timeFilter: filter.querySelector("#time_filter"),
       },
       open: false,
     };
 
-    // Set up filter buttons
+    // Set up order buttons
     this.filterElement.order.buttons.domains.disable();
 
     for (const key in this.filterElement.order.buttons) {
@@ -63,10 +63,23 @@ class TimerManager {
       const button = this.filterElement.order.buttons[key];
 
       button.onclick = () => {
-        this.handleFilterChange(key);
+        this.handleOrderChange(key);
       };
     }
 
+    // Set up filter input
+    this.filterElement.filter.timeFilter.onbeforeinput = (e) => {
+      Validator.number(this.filterElement.filter.timeFilter, e, {
+        min: 0,
+        max: Infinity,
+      });
+    };
+
+    this.filterElement.filter.timeFilter.oninput = (e) => {
+      this.handleFilterChange(e);
+    };
+
+    // On click filter button to open/close popup
     this.filterElement.button.onclick = () => {
       this.handleFilter();
     };
@@ -125,7 +138,7 @@ class TimerManager {
     }
   }
 
-  handleFilterChange(from_key) {
+  handleOrderChange(from_key) {
     let direction = "ascending";
     let sorting = true;
 
@@ -142,7 +155,7 @@ class TimerManager {
     if (sorting) {
       this.filter.order.type = from_key;
       this.filter.order.direction = direction;
-      this.update({ fromFilter: true });
+      this.valid({ fromFilter: true });
     } else {
       this.filter.order.type = null;
       this.filter.order.direction = "none";
@@ -150,6 +163,23 @@ class TimerManager {
     }
 
     this.updateFilterButtons(from_key);
+  }
+
+  handleFilterChange(e) {
+    let valid_value = Validator.number(this.filterElement.filter.timeFilter, e, {
+      min: 0,
+      max: Infinity,
+    });
+
+    // If the value is valid
+    if (valid_value) {
+      this.filter.minTime = Number(this.filterElement.filter.timeFilter.value);
+      this.valid({ fromFilter: true });
+    } else {
+      // The value is not valid, so make a 0 filter
+      this.filter.minTime = 0;
+      this.valid();
+    }
   }
 
   valid() {
@@ -181,6 +211,7 @@ class TimerManager {
       let tracked_day = tracked_time_history_local.trackedDates[day];
       let day_result = {
         totalTime: 0,
+        domains: [],
         futureDate: passed_today,
       };
 
@@ -195,6 +226,17 @@ class TimerManager {
           day_result = tracking_time_local;
           passed_today = true;
         }
+      }
+
+      // If filtering with min time and has domains
+      if (this.filter.minTime > 0 && day_result.domains.length > 0) {
+        day_result.domains = day_result.domains.filter((item) => item.time > this.filter.minTime);
+
+        day_result.totalTime = 0;
+
+        day_result.domains.forEach((domain) => {
+          day_result.totalTime += domain.time;
+        });
       }
 
       // Put the data got in the data.days
