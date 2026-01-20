@@ -58,7 +58,7 @@ class WeeklyManager extends TimerManager {
     let last_day = getDateInfo(days_of_week[6]);
 
     // If it's not from filter, calculate data
-    if (!options.fromFilter || this.totalTime == 0) {
+    if (!options.fromFilter && this.totalTime == 0) {
       this.validOptions = {
         endDate: last_day,
       };
@@ -107,12 +107,11 @@ class WeeklyManager extends TimerManager {
 
       // Current week, 2° week, January, 2026
       this.h2.textContent = `${result_date.currentWeek}, ${result_date.monthLong}, ${result_date.year}`;
+
+      this.dataGot = structuredClone(this.data);
     } else {
       // It's from filter
-      // Check to see if a filter for min time is active
-      if (this.filter.minTime > 0) {
-        this.data = this.calculateDataOfWeek(days_of_week);
-      }
+      this.data = structuredClone(this.dataGot);
     }
 
     this.totalTime = this.data.totalTime;

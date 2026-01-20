@@ -38,10 +38,7 @@
             </div>
             <div class="timer_header_fields">
               <input class="timer_header_date_input" type="date" />
-              <button
-                class="timer_item_button_filter square icons nomargin filter"
-                data-open="true"
-              ></button>
+              <button class="timer_item_button_filter square icons nomargin filter"></button>
             </div>
           </div>
           <div class="timer_content">
@@ -179,7 +176,14 @@
           <div class="timer_item_filter_section" data-type="filter">
             <h3 class="icons filter">Filter</h3>
             <p>Include only domains above time(in seconds):</p>
-            <input id="time_filter" name="time_filter" type="number" placeholder="0" value="0" />
+            <input
+              id="time_filter"
+              name="time_filter"
+              type="number"
+              placeholder="0"
+              value="0"
+              min="0"
+            />
           </div>
         </div>
       </template>

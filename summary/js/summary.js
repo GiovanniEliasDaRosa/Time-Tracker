@@ -4,6 +4,9 @@ let today = null;
 let tracking_time_local = null;
 let tracked_time_history_local = null;
 
+let update_filters_timeout = null;
+let filter_open = null;
+
 let template_timer_item_date = document.querySelector("#template_timer_item_date");
 let template_timer_invalid = document.querySelector("#template_timer_invalid");
 let template_timer_no_data = document.querySelector("#template_timer_no_data");
@@ -16,9 +19,40 @@ const timers = {
 };
 
 window.onresize = () => {
+  clearTimeout(update_filters_timeout);
+  updateFiltersPositions();
+
+  update_filters_timeout = setTimeout(() => {
+    updateFiltersPositions();
+  }, 100);
+};
+
+function updateFiltersPositions() {
   timers.day.updateFilterPosition();
   timers.week.updateFilterPosition();
   timers.month.updateFilterPosition();
+}
+
+window.onclick = (e) => {
+  let target = e.target;
+
+  console.log(filter_open, target?.closest(".timer")?.dataset?.type);
+  // Clicked outside the filter
+  if (
+    target.closest(".timer_item_filter") != null ||
+    target.closest(".timer_item_button_filter") != null
+  ) {
+    if (filter_open != null && filter_open != target.closest(".timer").dataset.type) {
+      timers[filter_open].closeFilter();
+    }
+
+    filter_open = target.closest(".timer").dataset.type;
+  } else {
+    console.log(filter_open);
+    if (filter_open == null) return;
+
+    timers[filter_open].closeFilter();
+  }
 };
 
 let hash = window.location.hash.slice(1);

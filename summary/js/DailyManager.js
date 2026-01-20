@@ -99,13 +99,14 @@ class DailyManager extends TimerManager {
   startup() {
     super.startup();
 
-    this.filter = {
+    this.defaultFilter = {
       order: {
         type: "time",
         direction: "ascending",
       },
       byTime: 0,
     };
+    this.filter = structuredClone(this.defaultFilter);
 
     this.updateFilterButtons(this.filter.order.type);
 
@@ -151,7 +152,7 @@ class DailyManager extends TimerManager {
     };
 
     // If it's not from filter, calculate data
-    if (!options.fromFilter || this.totalTime == 0) {
+    if (!options.fromFilter && this.totalTime == 0) {
       if (this.isToday) {
         this.data = tracking_time_local;
       } else {
@@ -185,6 +186,16 @@ class DailyManager extends TimerManager {
       }
 
       this.updateShowMore(false);
+      this.dataGot = structuredClone(this.data);
+    } else {
+      // It's from filter
+      this.data = structuredClone(this.dataGot);
+
+      // If the date has no data
+      if (this.totalTime == 0) {
+        this.newInformation("no_data", `No data was found`);
+        return;
+      }
     }
 
     // Filter by time

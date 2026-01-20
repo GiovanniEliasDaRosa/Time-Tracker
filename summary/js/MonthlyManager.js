@@ -54,7 +54,7 @@ class MonthlyManager extends TimerManager {
     };
 
     // If it's not from filter, calculate data
-    if (!options.fromFilter || this.filter.minTime > 0 || this.totalTime == 0) {
+    if (!options.fromFilter && this.totalTime == 0) {
       this.data = {
         rows: [],
         totalTime: 0,
@@ -165,6 +165,11 @@ class MonthlyManager extends TimerManager {
       this.h2.textContent = `${result_date.currentMonth}, ${result_date.year}`;
 
       this.totalTime = this.data.totalTime;
+
+      this.dataGot = structuredClone(this.data);
+    } else {
+      // It's from filter
+      this.data = structuredClone(this.dataGot);
     }
 
     // Create row of the total sum

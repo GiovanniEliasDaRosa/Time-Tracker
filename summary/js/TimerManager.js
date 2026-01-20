@@ -15,13 +15,14 @@ class TimerManager {
     this.totalTime = null;
 
     this.filterElement = null;
-    this.filter = {
+    this.defaultFilter = {
       order: {
         type: null,
         direction: "none",
       },
       minTime: 0,
     };
+    this.filter = structuredClone(this.defaultFilter);
 
     return this;
   }
@@ -87,13 +88,21 @@ class TimerManager {
 
   handleFilter() {
     if (this.filterElement.open) {
-      this.filterElement.element.disable();
-      this.filterElement.open = false;
+      this.closeFilter();
     } else {
-      this.filterElement.element.enable();
-      this.filterElement.open = true;
-      this.updateFilterPosition();
+      this.openFilter();
     }
+  }
+
+  openFilter() {
+    this.filterElement.element.enable();
+    this.filterElement.open = true;
+    this.updateFilterPosition();
+  }
+
+  closeFilter() {
+    this.filterElement.element.disable();
+    this.filterElement.open = false;
   }
 
   updateFilterPosition() {
@@ -155,14 +164,14 @@ class TimerManager {
     if (sorting) {
       this.filter.order.type = from_key;
       this.filter.order.direction = direction;
-      this.valid({ fromFilter: true });
     } else {
       this.filter.order.type = null;
       this.filter.order.direction = "none";
-      this.valid();
     }
 
+    this.valid({ fromFilter: true });
     this.updateFilterButtons(from_key);
+    this.updateFilterActiveButton();
   }
 
   handleFilterChange(e) {
@@ -174,11 +183,27 @@ class TimerManager {
     // If the value is valid
     if (valid_value) {
       this.filter.minTime = Number(this.filterElement.filter.timeFilter.value);
-      this.valid({ fromFilter: true });
     } else {
       // The value is not valid, so make a 0 filter
       this.filter.minTime = 0;
-      this.valid();
+    }
+
+    this.valid({ fromFilter: true });
+    this.updateFilterActiveButton();
+  }
+
+  updateFilterActiveButton() {
+    // If has a filter by min value
+    // Or a order selected, and the order is different from the defaults (by type or by direction)
+    if (
+      Number(this.filterElement.filter.timeFilter.value > 0) ||
+      (this.filter.order.type != null &&
+        (this.filter.order.type != this.defaultFilter.order.type ||
+          this.filter.order.direction != this.defaultFilter.order.direction))
+    ) {
+      this.filterElement.button.setAttribute("data-filter-active", "true");
+    } else {
+      this.filterElement.button.removeAttribute("data-filter-active");
     }
   }
 
