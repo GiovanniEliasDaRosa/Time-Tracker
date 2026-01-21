@@ -116,6 +116,7 @@ class DailyManager extends TimerManager {
   valid(options_passed = {}) {
     let options = {
       fromFilter: options_passed.fromFilter ?? false,
+      fromLink: options_passed.fromLink ?? false,
     };
 
     this.body.innerHTML = "";
@@ -127,6 +128,13 @@ class DailyManager extends TimerManager {
       this.h2.textContent = "";
       this.bodyMore.disable();
       this.showMore.button.disable();
+
+      if (!options.fromLink) {
+        link_dates.handleUpdateDates({
+          type: this.type,
+          date: this.dateInput.value,
+        });
+      }
     }
 
     // Call base class to do input validation

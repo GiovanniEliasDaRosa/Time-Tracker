@@ -13,6 +13,8 @@
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/MessageManager.js" defer="true"></script>
     <script src="../js/shared/Validator.js" defer="true"></script>
+    <script src="../js/shared/Storage.js" defer="true"></script>
+    <script src="js/LinkDates.js" defer="true"></script>
     <script src="js/TimerManager.js" defer="true"></script>
     <script src="js/DailyManager.js" defer="true"></script>
     <script src="js/WeeklyManager.js" defer="true"></script>
@@ -24,9 +26,33 @@
     <main>
       <header>
         <h1>Summary Page</h1>
-        <button class="icons gear" id="configurations_button" title="Go to configurations page">
-          Configurations
-        </button>
+
+        <div class="header_buttons">
+          <div class="header_buttons_link_dates">
+            <button
+              class="icons link_slash"
+              id="link_dates_button"
+              aria-pressed="false"
+              aria-describedby="link_dates_info_popup"
+              data-enabled="false"
+            >
+              Link dates
+            </button>
+
+            <div
+              id="link_dates_info_popup"
+              style="display: none"
+              disabled="true"
+              aria-disabled="true"
+            >
+              When linked is active, changing a date in any summary updates all summaries' dates
+            </div>
+          </div>
+
+          <button class="icons gear" id="configurations_button" title="Go to configurations page">
+            Configurations
+          </button>
+        </div>
       </header>
 
       <div id="main_content">

@@ -27,6 +27,7 @@ class WeeklyManager extends TimerManager {
   valid(options_passed = {}) {
     let options = {
       fromFilter: options_passed.fromFilter ?? false,
+      fromLink: options_passed.fromLink ?? false,
     };
 
     this.body.innerHTML = "";
@@ -35,6 +36,13 @@ class WeeklyManager extends TimerManager {
     if (!options.fromFilter) {
       this.totalTime = 0;
       this.h2.textContent = "";
+
+      if (!options.fromLink) {
+        link_dates.handleUpdateDates({
+          type: this.type,
+          date: this.dateInput.value,
+        });
+      }
     }
 
     // Call base class to do input validation
