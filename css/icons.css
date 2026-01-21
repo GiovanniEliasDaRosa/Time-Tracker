@@ -170,3 +170,15 @@ input[type="checkbox"]::before,
 .icons.arrow_alphabet_descending::before {
   content: "\f15e";
 }
+
+.icons.link::before {
+  content: "\f0c1";
+
+  content: "\f023";
+}
+
+.icons.link_slash::before {
+  content: "\f127";
+
+  content: "\f3c1";
+}
