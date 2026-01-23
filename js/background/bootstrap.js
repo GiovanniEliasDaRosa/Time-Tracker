@@ -43,6 +43,10 @@ const configurations_default = {
     },
     selected: "preset",
   },
+  idle: {
+    active: false,
+    interval: 60,
+  },
 };
 
 let tracked_time_history = structuredClone(tracked_time_history_default);

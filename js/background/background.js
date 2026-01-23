@@ -61,7 +61,7 @@ async function checkNewDay(options_passed = {}) {
 
   let new_day_tomorrow = new Date(`${getDateInfo(temporary_date).isoDate} ${turn_hour}:00`);
   new_day_tomorrow_actual = new Date(
-    `${getDateInfo(new_day_tomorrow_actual).isoDate} ${turn_hour}:00`
+    `${getDateInfo(new_day_tomorrow_actual).isoDate} ${turn_hour}:00`,
   );
 
   if (options.returnHour) {
@@ -275,7 +275,7 @@ async function handleMessageReceived(request, sender) {
                 const current_more_domain = more_domains[more_domain];
 
                 const search_index = less_domains.findIndex(
-                  (current_less_domain) => current_less_domain.url == current_more_domain.url
+                  (current_less_domain) => current_less_domain.url == current_more_domain.url,
                 );
 
                 // No url found in the smaller one matching the larger one
@@ -387,6 +387,21 @@ async function handleMessageReceived(request, sender) {
       configurations.popup.selected = changed.selected;
 
       return { isOk: true };
+    } else if (option == "configurations_idle") {
+      let changed = data.idle;
+      configurations.idle.active = changed.active;
+      configurations.idle.interval = changed.interval;
+
+      // Remove old listener
+      browser.idle.onStateChanged.removeListener(handleIdleChange);
+
+      // Set up idle functionality
+      if (configurations.idle.active) {
+        browser.idle.onStateChanged.addListener(handleIdleChange);
+        browser.idle.setDetectionInterval(configurations.idle.interval);
+      }
+
+      return { isOk: true };
     }
 
     return {
@@ -466,3 +481,11 @@ function handleInstalled(details) {
 }
 
 browser.runtime.onInstalled.addListener(handleInstalled);
+
+function handleIdleChange(state) {
+  if (state == "idle") {
+    tabManager.stopTraker();
+  } else {
+    tabManager.startTraker();
+  }
+}

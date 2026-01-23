@@ -123,10 +123,6 @@
   margin-right: 0.5em;
 }
 
-.popup_options_enable_title {
-  font-weight: 700;
-}
-
 .popup_options_enable_item {
   display: grid;
   grid-template-columns: 11ch auto 11ch;

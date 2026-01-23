@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/new-day.css" />
     <link rel="stylesheet" href="css/data.css" />
     <link rel="stylesheet" href="css/popup.css" />
+    <link rel="stylesheet" href="css/idle.css" />
 
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/Storage.js" defer="true"></script>
@@ -27,6 +28,7 @@
     <script src="js/Themes.js" defer="true"></script>
     <script src="js/DataManager.js" defer="true"></script>
     <script src="js/Popup.js" defer="true"></script>
+    <script src="js/Idle.js" defer="true"></script>
     <script src="js/options.js" defer="true"></script>
   </head>
   <body>
@@ -59,7 +61,7 @@
           <div class="section_options_more notifications_more_options">
             <div class="section_options_more_config notifications_frequency">
               <label for="notifications_content_frequency">
-                <span class="notifications_config_span_title">Frequency (in minutes)</span>
+                <span class="section_options_more_config_span_title">Frequency (in minutes)</span>
                 How often to send the notification
               </label>
               <input
@@ -74,7 +76,9 @@
 
             <div class="section_options_more_config notifications_content">
               <label for="notifications_content_checkbox" class="notifications_content_label">
-                <span class="notifications_config_span_title">Show top 3 spent time URLs</span>
+                <span class="section_options_more_config_span_title"
+                  >Show top 3 spent time URLs</span
+                >
                 Include the top three domains/URLs by time in the notification
               </label>
               <input
@@ -357,7 +361,7 @@
             </div>
 
             <div class="section_options_enable section_options_all">
-              <p class="popup_options_enable_title">Display:</p>
+              <p class="section_options_more_config_span_title">Display:</p>
 
               <label
                 class="popup_options_enable_item popup_options_margin_right"
@@ -377,7 +381,7 @@
                 <div
                   class="section_options_enable section_options_more_config popup_options_enable"
                 >
-                  <p class="popup_options_enable_title">Columns:</p>
+                  <p class="section_options_more_config_span_title">Columns:</p>
                   <label class="popup_options_enable_item" for="popup_columns">
                     <span>1</span>
                     <input
@@ -393,7 +397,7 @@
                 <div
                   class="section_options_enable section_options_more_config popup_options_enable"
                 >
-                  <p class="popup_options_enable_title">Progress text placement:</p>
+                  <p class="section_options_more_config_span_title">Progress text placement:</p>
 
                   <label class="popup_options_enable_item" for="popup_progress_text_placement">
                     <span>outside</span>
@@ -415,7 +419,7 @@
                 <div
                   class="section_options_enable section_options_more_config popup_options_enable"
                 >
-                  <p class="popup_options_enable_title">Progress type:</p>
+                  <p class="section_options_more_config_span_title">Progress type:</p>
 
                   <label class="popup_options_enable_item" for="popup_progress_axis">
                     <span>horizontal</span>
@@ -440,7 +444,7 @@
               <div
                 class="section_options_enable popup_options_section popup_options_enable popup_options_section_progress_width"
               >
-                <p class="popup_options_enable_title">Progress width:</p>
+                <p class="section_options_more_config_span_title">Progress width:</p>
 
                 <label
                   class="popup_options_enable_item popup_options_margin_right"
@@ -518,6 +522,45 @@
                 </div>
               </div>
             </button>
+          </div>
+        </section>
+
+        <!-- Idle -->
+        <section class="section_options idle">
+          <div class="section_options_header">
+            <h2>Idle</h2>
+            <p>
+              Manage idle behavior. Idle is when no keyboard, mouse, or touch input occurs for the
+              selected time
+            </p>
+          </div>
+
+          <div class="section_options_enable idle_enable">
+            <input
+              type="checkbox"
+              data-type="toggle"
+              name="idle_enable_checkbox"
+              id="idle_enable_checkbox"
+            />
+            <label for="idle_enable_checkbox">Enable idle</label>
+          </div>
+
+          <div class="section_options_more idle_more_options">
+            <div class="section_options_more_config idle_interval">
+              <label for="idle_content_detection_interval">
+                <span class="section_options_more_config_span_title"
+                  >Idle detection interval (in seconds)</span
+                >
+                Minimum required is 15s
+              </label>
+              <input
+                type="number"
+                min="15"
+                value="60"
+                name="idle_content_detection_interval"
+                id="idle_content_detection_interval"
+              />
+            </div>
           </div>
         </section>
 
