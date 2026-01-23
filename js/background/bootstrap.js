@@ -73,6 +73,12 @@ async function bootstrap() {
   // Check for "configurations" in storage, if has get that, else set to the defaults
   configurations = await Storage.getOrAdd("configurations", configurations);
 
+  // Set up idle functionality
+  if (configurations.idle.active) {
+    browser.idle.onStateChanged.addListener(handleIdleChange);
+    browser.idle.setDetectionInterval(configurations.idle.interval);
+  }
+
   today = getDateInfo(await checkNewDay({ returnHour: true }));
   tracked_time_history.lastTrack = today.isoDate;
   tracking_time.isoDate = today.isoDate;
