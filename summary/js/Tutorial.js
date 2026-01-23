@@ -83,20 +83,47 @@ class Tutorial {
       },
       {
         title: `This is the Summary Page`,
-        text: `It's a dashboard for the time spent by site.`,
+        text: `It's a dashboard for your time spent.`,
         highlight: null,
         img: null,
       },
       {
-        title: `Daily section`,
+        title: `Daily Summary`,
         text: `Shows your time spent by domain for the selected day.
 |Tip: The top 10 domains are shown by default, and if you visited more than 10 sites that day, a "Show more" button appears.|`,
-        highlight: document.querySelector(".timer"),
+        highlight: document.querySelector(".timer[data-type='day']"),
+        img: null,
+      },
+      {
+        title: `Weekly Summary`,
+        text: `Shows your time spent by day for the selected week.`,
+        highlight: document.querySelector(".timer[data-type='week']"),
+        img: null,
+      },
+      {
+        title: `Monthly Summary`,
+        text: `Shows your time spent by week for the selected month.`,
+        highlight: document.querySelector(".timer[data-type='month']"),
+        img: null,
+      },
+      {
+        title: `Filter each summary separately`,
+        text: `Each summary has it's own sort buttons to reorder results and a minimum time filter to hide entries below a chosen duration.`,
+        highlight: document.querySelector(".timer_item_button_filter"),
+        img: null,
+      },
+      {
+        title: `Link dates`,
+        text: `Toggle this button to link/unlink dates across summaries.
+|Tip: By default the dates are not linked.|`,
+        highlight: document.querySelector("#link_dates_button"),
         img: null,
       },
       {
         title: `Options page`,
-        text: `This is where you can customize your experience while using the extension.
+        text: `This is where you can customize your experience while using the extension, consider taking a peek in it after the tutorial ends.
+In there you can customize: Notifications, New Day Start (day boundary hour), Theme (Light/Dark), Data (export/import/delete), Idle behavior and Popup (change visual and layout).
+
 You can restart the tutorial anytime by going to:
 |Options page > Tutorial > Start tutorial|`,
         highlight: document.querySelector("#configurations_button"),
@@ -207,7 +234,7 @@ You can restart the tutorial anytime by going to:
     this.updateText(
       `Skip tutorial?`,
       `You can restart the tutorial anytime by going to:
-|Options page > Tutorial > Start tutorial|`
+|Options page > Tutorial > Start tutorial|`,
     );
     this.popup.currentStep.innerText = `${this.steps.length}/${this.steps.length}`;
 

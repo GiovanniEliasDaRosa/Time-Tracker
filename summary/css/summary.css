@@ -50,14 +50,18 @@
 .tutorial_popup {
   position: fixed;
   bottom: 1em;
-  width: min(100ch, calc(100vw - 2em));
   left: 1em;
   right: 1em;
+
+  width: min(100ch, calc(100vw - 2em));
+  max-height: calc(100vh - 2em);
+
   z-index: 200;
 
   padding: 1em;
   margin-inline: auto;
   display: grid;
+  grid-template-rows: 1fr auto;
   gap: 1em;
 
   background-color: var(--summary-tutorial-popup-background-color);
@@ -103,6 +107,10 @@
   display: grid;
   gap: 0.75em;
   font-weight: 600;
+
+  padding-right: 0.25em;
+  scrollbar-width: thin;
+  overflow: auto;
 }
 
 .tutorial_popup_text_header {
