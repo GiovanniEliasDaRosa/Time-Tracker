@@ -15,12 +15,26 @@
   counter-reset: timer_rows;
 }
 
-.timer_header {
+.timer_header,
+.timer_header_fields {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5em;
+}
+
+.timer_header_fields {
+  margin-left: auto;
+}
+
+.timer_header_head {
+  display: grid;
+  gap: 0.25em;
+}
+
+.timer_header_head p {
+  color: var(--text-color-faded);
 }
 
 .timer_header_date {
@@ -141,6 +155,69 @@
   border-bottom: 0.125em solid var(--summary-timer-item-progress-border-color);
 }
 
+/* MARK: Filter
+ */
+.timer_item_filter {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+
+  display: grid;
+  gap: 1em;
+
+  box-shadow: 0 0.25em 0.5em var(--summary-filter-box-shadow);
+  background-color: var(--summary-filter-background-color);
+  border-radius: 0.5em;
+  min-width: calc(14ch + 2em);
+  max-width: 30ch;
+  padding: 1em;
+}
+
+.timer_item_filter_section {
+  display: grid;
+  gap: 0.5em;
+}
+
+.timer_item_filter_section > button {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  text-align: left;
+}
+
+.timer_item_button_filter[data-filter-active="true"] {
+  position: relative;
+}
+
+.timer_item_button_filter[data-filter-active="true"]::after {
+  content: "";
+  position: absolute;
+  right: 0.25em;
+  top: 0.25em;
+  width: 0.75em;
+  height: 0.75em;
+  display: block;
+  border-radius: 50%;
+  background-color: var(--options-filter-button-circle-background-color);
+  pointer-events: none;
+}
+
+.timer_item_filter button:not([data-selected="true"])::before {
+  color: var(--text-color-faded);
+}
+
+.timer_item_filter button[data-selected="true"] {
+  background-color: var(--options-filter-button-selected-background-color);
+  border-color: var(--options-filter-button-selected-border-outline-color);
+  outline: 0.125rem solid var(--options-filter-button-selected-border-outline-color);
+  outline-offset: 0;
+  font-weight: 900;
+}
+
+.timer_item_filter button[data-selected="true"]::before {
+  font-size: 1em;
+}
+
 /* MARK: Show more
 */
 .button_show_more {
@@ -167,7 +244,9 @@
 .button_show_more_span_more,
 .button_show_more_span_less {
   perspective-origin: 50% 50%;
-  transition: 1s all cubic-bezier(0.5, -0.5, 0.5, 1.5), opacity 0.4s ease-out 0.4s;
+  transition:
+    1s all cubic-bezier(0.5, -0.5, 0.5, 1.5),
+    opacity 0.4s ease-out 0.4s;
 }
 
 .button_show_more_span_more {

@@ -2,205 +2,275 @@ class TimerManager {
   constructor(element) {
     this.element = element;
     this.type = element.dataset.type;
-    this.isToday = false;
 
-    if (this.type == "day") {
-      console.warn("day");
-    } else if (this.type == "week") {
-      console.warn("week");
-    } else if (this.type == "month") {
-      console.warn("month");
-    } else {
-      console.error("Error, no type found for ", type);
-    }
-
-    this.h2 = element.querySelector(".timer_header_h2");
+    this.header = element.querySelector(".timer_header");
+    this.h2 = element.querySelector(".timer_header_title");
     this.dateInput = element.querySelector(".timer_header_date_input");
     this.body = element.querySelector(".timer_body");
-    this.bodyMore = element.querySelector(".timer_body_more");
-    this.showMore = {
-      button: element.querySelector(".button_show_more"),
-      span_more: element.querySelector(".button_show_more_span_more"),
-      span_less: element.querySelector(".button_show_more_span_less"),
-      open: false,
-      timeout: null,
-    };
-    this.bodyMore.disable();
 
     this.date = null;
-    this.data = null;
+    this.data = {
+      domains: [],
+    };
     this.totalTime = null;
 
-    this.showMore.button.onclick = this.updateShowMore.bind(this);
-    this.dateInput.oninput = this.validate.bind(this);
-
-    this.isShowingMore = false;
-
-    // Handle resizes on the page while animation to show more is running
-    window.onresize = () => {
-      if (!this.isShowingMore) return;
-
-      clearTimeout(this.showMore.timeout);
-
-      this.showMore.timeout = setTimeout(() => {
-        // Get the current height
-        let current_height = this.bodyMore.getBoundingClientRect().height;
-
-        // Get the target height
-        this.bodyMore.style.height = "auto";
-        let target_height = this.bodyMore.getBoundingClientRect().height;
-
-        // Go back to the current height
-        this.bodyMore.style.height = current_height + "px";
-
-        this.bodyMore.style.animationPlayState = "paused";
-
-        this.showMore.timeout = setTimeout(() => {
-          // Get back
-          if (this.bodyMore.classList.contains("will_animate_in")) {
-            // Wait to the height be 1em and the pre-loader finish
-            this.showMore.timeout = setTimeout(() => {
-              // Remove unecessary classes, that is of no use anymore
-              this.bodyMore.classList.remove("animate_height");
-              this.bodyMore.classList.remove("will_animate_in");
-
-              // Add the real animation from 1em to the height of the content
-              this.bodyMore.classList.add("animate_in");
-              this.bodyMore.style.height = target_height + "px";
-              this.bodyMore.style.animationPlayState = "running";
-
-              // On finishing transisioning the height
-              this.showMore.timeout = setTimeout(() => {
-                // Remove unecessary class, to prevent any bugs of possibly happen
-                this.bodyMore.classList.remove("animate_in");
-                this.bodyMore.style.height = "";
-                this.isShowingMore = false;
-              }, 1000);
-            }, 500);
-          } else {
-            this.showMore.timeout = setTimeout(() => {
-              // Add the real animation from 1em to the height of the content
-              this.bodyMore.classList.add("animate_in");
-              this.bodyMore.style.height = target_height + "px";
-              this.bodyMore.style.animationPlayState = "running";
-
-              // On finishing transisioning the height
-              this.showMore.timeout = setTimeout(() => {
-                // Remove unecessary class, to prevent any bugs of possibly happen
-                this.bodyMore.classList.remove("animate_in");
-                this.bodyMore.style.height = "";
-                this.isShowingMore = false;
-              }, 1000);
-            }, 250);
-          }
-        }, 10);
-      }, 10);
+    this.filterElement = null;
+    this.defaultFilter = {
+      order: {
+        type: null,
+        direction: "none",
+      },
+      minTime: 0,
     };
+    this.filter = structuredClone(this.defaultFilter);
 
     return this;
   }
 
-  validate() {
-    this.body.innerHTML = "";
-    this.bodyMore.innerHTML = "";
-    this.h2.textContent = "";
+  startup() {
+    this.validOptions = {
+      endDate: today,
+    };
 
-    this.bodyMore.disable();
-    this.showMore.button.disable();
+    let filter_element = template_timer_filter.cloneElement(".timer_item_filter");
+    this.header.appendChild(filter_element);
 
-    // No date selected
-    if (this.dateInput.value == "") {
-      this.newInformation("error", `Select a *date* to see it's summary`);
-      return;
+    let order = filter_element.querySelector("[data-type='order']");
+    let filter = filter_element.querySelector("[data-type='filter']");
+
+    this.filterElement = {
+      element: filter_element,
+      button: this.element.querySelector(".timer_item_button_filter"),
+      order: {
+        element: order,
+        buttons: {
+          domains: order.querySelector("#domains"),
+          time: order.querySelector("#time"),
+        },
+      },
+      filter: {
+        element: filter,
+        timeFilter: filter.querySelector("#time_filter"),
+      },
+      open: false,
+    };
+
+    // Set up order buttons
+    this.filterElement.order.buttons.domains.disable();
+
+    for (const key in this.filterElement.order.buttons) {
+      if (!Object.hasOwn(this.filterElement.order.buttons, key)) continue;
+
+      const button = this.filterElement.order.buttons[key];
+
+      button.onclick = () => {
+        this.handleOrderChange(key);
+      };
     }
 
-    this.isToday = this.dateInput.value == today.isoDate;
+    // Set up filter input
+    this.filterElement.filter.timeFilter.onbeforeinput = (e) => {
+      Validator.number(this.filterElement.filter.timeFilter, e, {
+        min: 0,
+        max: Infinity,
+      });
+    };
 
-    if (this.isToday) {
-      this.date = today;
-    } else {
-      this.date = getDateInfo(this.dateInput.value);
-    }
+    this.filterElement.filter.timeFilter.oninput = (e) => {
+      this.handleFilterChange(e);
+    };
 
-    // Date selected in the future
-    if (compareDates(this.date, today).difference > 0) {
-      this.newInformation("error", `Select a *valid* date to see it's summary`);
-      return;
-    }
-
-    this.update();
+    // On click filter button to open/close popup
+    this.filterElement.button.onclick = () => {
+      this.handleFilter();
+    };
   }
 
-  update() {
-    if (this.isToday) {
-      this.data = tracking_time_local;
+  handleFilter() {
+    if (this.filterElement.open) {
+      this.closeFilter();
     } else {
-      let search = tracked_time_history_local.trackedDates[this.date.isoDate];
+      this.openFilter();
+    }
+  }
 
-      // If didn't find data have
-      if (search == null) {
-        this.data = {
-          domains: [],
-        };
+  openFilter() {
+    this.filterElement.element.enable();
+    this.filterElement.open = true;
+    this.updateFilterPosition();
+  }
+
+  closeFilter() {
+    this.filterElement.element.disable();
+    this.filterElement.open = false;
+  }
+
+  updateFilterPosition() {
+    // If filter is not open don't waste time
+    if (!this.filterElement.open) return;
+
+    let bound_button = this.filterElement.button.getBoundingClientRect();
+    let bound_filter = this.filterElement.element.getBoundingClientRect();
+    this.filterElement.element.style.left = `${
+      bound_button.left + bound_button.width - bound_filter.width
+    }px`;
+    this.filterElement.element.style.top = `${
+      bound_button.top + bound_button.height + window.scrollY
+    }px`;
+  }
+
+  updateFilterButtons(from_key) {
+    for (const key in this.filterElement.order.buttons) {
+      if (!Object.hasOwn(this.filterElement.order.buttons, key)) continue;
+
+      let button = this.filterElement.order.buttons[key];
+      button.removeAttribute("data-selected");
+
+      button.classList.remove(`arrow_bar_ascending`);
+      button.classList.remove(`arrow_bar_descending`);
+      button.classList.remove(`arrow_alphabet_ascending`);
+      button.classList.remove(`arrow_alphabet_descending`);
+      button.classList.add(`sort`);
+    }
+
+    // If don't want to sort return here for arrow no sort effect
+    if (this.filter.order.type == null) return;
+
+    let selected_button = this.filterElement.order.buttons[from_key];
+    selected_button.setAttribute("data-selected", "true");
+    selected_button.classList.remove("sort");
+
+    if (from_key == "time") {
+      selected_button.classList.add(`arrow_bar_${this.filter.order.direction}`);
+    } else {
+      selected_button.classList.add(`arrow_alphabet_${this.filter.order.direction}`);
+    }
+  }
+
+  handleOrderChange(from_key) {
+    let direction = "ascending";
+    let sorting = true;
+
+    // Same filter as the current selected
+    if (this.filter.order.type == from_key) {
+      if (this.filter.order.direction == "ascending") {
+        direction = "descending";
       } else {
-        this.data = search;
+        sorting = false;
       }
     }
 
-    let result = compareDates(this.date, today, true);
-    let result_date = "";
-
-    if (result.dayDifference == "") {
-      result_date = this.date.weekday;
+    // If want to sort
+    if (sorting) {
+      this.filter.order.type = from_key;
+      this.filter.order.direction = direction;
     } else {
-      result_date = result.dayDifference;
+      this.filter.order.type = null;
+      this.filter.order.direction = "none";
     }
 
-    this.h2.textContent = `${result_date}, ${this.date.monthLong} ${this.date.day}, ${this.date.year}`;
-
-    // If the date has no data
-    if (this.data.domains.length == 0) {
-      this.newInformation("no_data", `No data was found`);
-      return;
-    }
-
-    this.updateShowMore(false);
-
-    // Sort from biggest to smallest time spent
-    this.data.domains.sort(function (a, b) {
-      return b.time > a.time;
-    });
-
-    this.totalTime = this.data.totalTime;
-
-    let domains = Array.from(this.data.domains);
-    let top_domains = domains.splice(0, 10);
-    let other_domains = domains;
-
-    // Create the total
-    let total = this.newItem({
-      url: "Total",
-      time: this.totalTime,
-    });
-    total.classList.add("timer_item_total");
-    this.body.appendChild(total);
-
-    this.addTimerData(this.body, top_domains);
-    this.addTimerData(this.bodyMore, other_domains);
-
-    this.bodyMore.disable();
-
-    if (other_domains.length > 0) {
-      this.showMore.button.enable();
-    }
-
-    return this;
+    this.valid({ fromFilter: true });
+    this.updateFilterButtons(from_key);
+    this.updateFilterActiveButton();
   }
 
-  addTimerData(parent, domains) {
-    domains.forEach((domain) => {
-      parent.appendChild(this.newItem(domain));
+  handleFilterChange(e) {
+    let valid_value = Validator.number(this.filterElement.filter.timeFilter, e, {
+      min: 0,
+      max: Infinity,
     });
+
+    // If the value is valid
+    if (valid_value) {
+      this.filter.minTime = Number(this.filterElement.filter.timeFilter.value);
+    } else {
+      // The value is not valid, so make a 0 filter
+      this.filter.minTime = 0;
+    }
+
+    this.valid({ fromFilter: true });
+    this.updateFilterActiveButton();
+  }
+
+  updateFilterActiveButton() {
+    // If has a filter by min value
+    // Or a order selected, and the order is different from the defaults (by type or by direction)
+    if (
+      Number(this.filterElement.filter.timeFilter.value > 0) ||
+      (this.filter.order.type != null &&
+        (this.filter.order.type != this.defaultFilter.order.type ||
+          this.filter.order.direction != this.defaultFilter.order.direction))
+    ) {
+      this.filterElement.button.setAttribute("data-filter-active", "true");
+    } else {
+      this.filterElement.button.removeAttribute("data-filter-active");
+    }
+  }
+
+  valid() {
+    // No date selected
+    if (this.dateInput.value == "") {
+      this.newInformation("error", `Select a *date* to see it's summary`);
+      return false;
+    }
+
+    this.date = getDateInfo(this.dateInput.value);
+
+    // Date selected in the future
+    if (compareDates(this.date, this.validOptions.endDate).difference > 0) {
+      this.newInformation("error", `Select a *valid* date to see it's summary`);
+      return false;
+    }
+    return true;
+  }
+
+  calculateDataOfWeek(days_of_week) {
+    let passed_today = false;
+    let total_result = {
+      days: {},
+      totalTime: 0,
+    };
+
+    // Go thourght the 7 days if that week
+    days_of_week.forEach((day) => {
+      let tracked_day = tracked_time_history_local.trackedDates[day];
+      let day_result = {
+        totalTime: 0,
+        domains: [],
+        futureDate: passed_today,
+      };
+
+      // See if it exists in tracked_time_history_local
+      if (tracked_day) {
+        // Check to see if its finished
+        if (tracked_day.trackingFinished) {
+          // As it is finished just get the data from there directly
+          day_result = tracked_day;
+        } else {
+          // As the tracking is unfinished, get the data from the tracking_time
+          day_result = tracking_time_local;
+          passed_today = true;
+        }
+      }
+
+      // If filtering with min time and has domains
+      if (this.filter.minTime > 0 && day_result.domains.length > 0) {
+        day_result.domains = day_result.domains.filter((item) => item.time > this.filter.minTime);
+
+        day_result.totalTime = 0;
+
+        day_result.domains.forEach((domain) => {
+          day_result.totalTime += domain.time;
+        });
+      }
+
+      // Put the data got in the data.days
+      total_result.days[day] = day_result;
+      // Sum the time of the totaltime spent on the week by the day's total time
+      total_result.totalTime += day_result.totalTime;
+    });
+
+    return total_result;
   }
 
   newInformation(type, message = "") {
@@ -257,12 +327,34 @@ class TimerManager {
     this.body.appendChild(new_item);
   }
 
-  newItem(domain) {
-    let new_item = template_timer_item_date.cloneElement(".timer_item_data");
-    let percent = domain.time / this.totalTime;
-    let formatted_time = formatTime(domain.time);
+  newTotal() {
+    // Create row of the total sum
+    let total = this.newItem({
+      name: "Total",
+      time: this.totalTime,
+    });
+    total.classList.add("timer_item_total");
+    this.body.appendChild(total);
+  }
 
-    new_item.querySelector(".timer_item_data_name").textContent = domain.url;
+  newDomain(domain) {
+    return this.newItem({
+      name: domain.url,
+      time: domain.time,
+    });
+  }
+
+  newItem(options_passed) {
+    let options = {
+      name: options_passed.name ?? null,
+      time: options_passed.time ?? 0,
+    };
+
+    let new_item = template_timer_item_date.cloneElement(".timer_item_data");
+    let percent = options.time / this.totalTime || 0;
+    let formatted_time = formatTime(options.time);
+
+    new_item.querySelector(".timer_item_data_name").textContent = options.name;
     new_item.querySelector(".timer_item_data_time").textContent = formatted_time.timeString;
 
     let timer_progress = new_item.querySelector(".timer_item_data_progress");
@@ -280,121 +372,9 @@ class TimerManager {
     timer_progress.appendChild(progress_fill);
 
     new_item.querySelector(".timer_item_data_percentage").textContent = `${Math.round(
-      percent * 100
+      percent * 100,
     )}%`;
 
     return new_item;
-  }
-
-  updateShowMore(show_more_override = true) {
-    this.bodyMore.classList.remove("animate_height");
-    this.bodyMore.classList.remove("will_animate_in");
-    this.bodyMore.classList.remove("will_animate_out");
-    this.bodyMore.classList.remove("animate_in");
-    this.bodyMore.classList.remove("animate_out");
-
-    this.showMore.span_more.disable({ hide: false });
-    this.showMore.span_less.disable({ hide: false });
-
-    clearTimeout(this.showMore.timeout);
-    this.isShowingMore = false;
-
-    if (this.showMore.open || !show_more_override) {
-      this.showMore.span_more.enable();
-      this.showMore.open = false;
-      this.showMore.button.classList.remove("show_less");
-      this.showMore.button.classList.remove("rotate_arrow_up");
-
-      // Start the pre-loader animation
-      this.bodyMore.classList.add("will_animate_out");
-
-      // Add the real animation from 1em to the height of the content
-      // On finishing transisioning the height
-
-      // Reset height to get the bounding box size
-      this.bodyMore.style.height = "";
-      let height = this.bodyMore.getBoundingClientRect().height;
-      this.bodyMore.style.height = height + "px";
-
-      // Waits the pre-loader to finish
-      this.showMore.timeout = setTimeout(() => {
-        // Set the height to 1em and transition to it
-        this.bodyMore.style.height = "1em";
-        this.bodyMore.classList.add("animate_out");
-
-        // Wait the transition to finish
-        this.showMore.timeout = setTimeout(() => {
-          // This transitions the height, and show the pre background of the pre-laoder, this is to make the text under don't appear
-          // In this case, this serves as the second option
-          this.bodyMore.classList.add("animate_height");
-
-          // Remove unecessary class, to prevent any bugs of possibly happen
-          this.bodyMore.classList.remove("will_animate_out");
-
-          // Wait the pre-loader to dissapear
-          this.showMore.timeout = setTimeout(() => {
-            // Set height from 1em to 0
-            this.bodyMore.style.height = "0";
-
-            // Wait the height to animate
-            this.showMore.timeout = setTimeout(() => {
-              // Remove unecessarys classs, to prevent any bugs of possibly happen
-              this.bodyMore.classList.remove("animate_out");
-              this.bodyMore.classList.remove("animate_height");
-
-              this.bodyMore.disable();
-            }, 750);
-          }, 250);
-        }, 1000);
-      }, 500);
-    } else {
-      this.showMore.span_less.enable();
-      this.showMore.open = true;
-      this.showMore.button.classList.add("show_less");
-      this.showMore.button.classList.add("rotate_arrow_up");
-
-      this.bodyMore.enable();
-
-      // Reset height to get the bounding box size
-      this.bodyMore.style.height = "";
-      let height = this.bodyMore.getBoundingClientRect().height;
-      this.bodyMore.style.height = "0";
-
-      // This transitions the height, and show the pre background of the pre-laoder, this is to make the text under don't appear
-      this.bodyMore.classList.add("animate_height");
-
-      // Waits 0 ms, to make the transition happen
-      this.showMore.timeout = setTimeout(() => {
-        // Set height and transition to it
-        this.bodyMore.style.height = "1em";
-
-        this.showMore.timeout = setTimeout(() => {
-          this.bodyMore.classList.add("will_animate_in");
-
-          this.isShowingMore = true;
-
-          this.showMore.timeout = setTimeout(() => {
-            // Wait to the height be 1em and the pre-loader finish
-            this.showMore.timeout = setTimeout(() => {
-              // Remove unecessary classes, that is of no use anymore
-              this.bodyMore.classList.remove("animate_height");
-              this.bodyMore.classList.remove("will_animate_in");
-
-              // Add the real animation from 1em to the height of the content
-              this.bodyMore.classList.add("animate_in");
-              this.bodyMore.style.height = height + "px";
-
-              // On finishing transisioning the height
-              this.showMore.timeout = setTimeout(() => {
-                // Remove unecessary class, to prevent any bugs of possibly happen
-                this.bodyMore.classList.remove("animate_in");
-                this.bodyMore.style.height = "";
-                this.isShowingMore = false;
-              }, 1000);
-            }, 250);
-          }, 250);
-        }, 250);
-      }, 0);
-    }
   }
 }

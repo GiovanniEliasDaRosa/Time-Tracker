@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +12,13 @@
 
     <script src="../js/shared/functions.js" defer="true"></script>
     <script src="../js/shared/MessageManager.js" defer="true"></script>
+    <script src="../js/shared/Validator.js" defer="true"></script>
+    <script src="../js/shared/Storage.js" defer="true"></script>
+    <script src="js/LinkDates.js" defer="true"></script>
     <script src="js/TimerManager.js" defer="true"></script>
+    <script src="js/DailyManager.js" defer="true"></script>
+    <script src="js/WeeklyManager.js" defer="true"></script>
+    <script src="js/MonthlyManager.js" defer="true"></script>
     <script src="js/Tutorial.js" defer="true"></script>
     <script src="js/summary.js" defer="true"></script>
   </head>
@@ -20,16 +26,46 @@
     <main>
       <header>
         <h1>Summary Page</h1>
-        <button class="icons gear" id="configurations_button" title="Go to configurations page">
-          Configurations
-        </button>
+
+        <div class="header_buttons">
+          <div class="header_buttons_link_dates">
+            <button
+              class="icons link_slash"
+              id="link_dates_button"
+              aria-pressed="false"
+              aria-describedby="link_dates_info_popup"
+              data-enabled="false"
+            >
+              Link dates
+            </button>
+
+            <div
+              id="link_dates_info_popup"
+              style="display: none"
+              disabled="true"
+              aria-disabled="true"
+            >
+              When linked is active, changing a date in any summary updates all summaries' dates
+            </div>
+          </div>
+
+          <button class="icons gear" id="configurations_button" title="Go to configurations page">
+            Configurations
+          </button>
+        </div>
       </header>
 
       <div id="main_content">
         <div class="timer" data-type="day">
           <div class="timer_header">
-            <h2 class="timer_header_h2">No date selected</h2>
-            <input class="timer_header_date_input" type="date" />
+            <div class="timer_header_head">
+              <h2 class="timer_header_title">No date selected</h2>
+              <p>Daily Summary</p>
+            </div>
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button class="timer_item_button_filter square icons nomargin filter"></button>
+            </div>
           </div>
           <div class="timer_content">
             <div class="timer_body">
@@ -51,6 +87,44 @@
               ><span class="button_show_more_span_less">less</span></span
             >
           </button>
+        </div>
+
+        <div class="timer" data-type="week">
+          <div class="timer_header">
+            <div class="timer_header_head">
+              <h2 class="timer_header_title">No date selected</h2>
+              <p>Weekly Summary</p>
+            </div>
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button
+                class="timer_item_button_filter square icons nomargin filter"
+                data-open="false"
+              ></button>
+            </div>
+          </div>
+          <div class="timer_body">
+            <!-- Added via js -->
+          </div>
+        </div>
+
+        <div class="timer" data-type="month">
+          <div class="timer_header">
+            <div class="timer_header_head">
+              <h2 class="timer_header_title">No date selected</h2>
+              <p>Monthly Summary</p>
+            </div>
+            <div class="timer_header_fields">
+              <input class="timer_header_date_input" type="date" />
+              <button
+                class="timer_item_button_filter square icons nomargin filter"
+                data-open="false"
+              ></button>
+            </div>
+          </div>
+          <div class="timer_body">
+            <!-- Added via js -->
+          </div>
         </div>
       </div>
 
@@ -115,6 +189,29 @@
 
       <template id="template_timer_no_data">
         <p class="timer_item_informate timer_item_no_data icons exclamation">Inform</p>
+      </template>
+
+      <template id="template_timer_filter">
+        <div class="timer_item_filter" style="display: none" disabled="true" aria-disabled="true">
+          <div class="timer_item_filter_section" data-type="order">
+            <h3 class="icons list">Order</h3>
+            <button class="icons sort" id="domains">Domains</button>
+            <button class="icons sort" id="time">Time</button>
+          </div>
+
+          <div class="timer_item_filter_section" data-type="filter">
+            <h3 class="icons filter">Filter</h3>
+            <p>Include only domains above time(in seconds):</p>
+            <input
+              id="time_filter"
+              name="time_filter"
+              type="number"
+              placeholder="0"
+              value="0"
+              min="0"
+            />
+          </div>
+        </div>
       </template>
     </div>
   </body>
