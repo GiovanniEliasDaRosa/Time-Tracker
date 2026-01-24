@@ -24,6 +24,8 @@ input[type="checkbox"]::before,
   -webkit-font-smoothing: antialiased;
   margin-right: 0.5rem;
   font-size: 1em;
+  width: 1.25em;
+  line-height: 1.25em;
 }
 
 .icons.icons_after::after {
