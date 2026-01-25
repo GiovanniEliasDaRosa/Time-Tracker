@@ -47,6 +47,8 @@ See what options are available
       - **Progress width:** thin or large
     - **Display:** Circular
       - **Progress width:** thin or large
+- **Idle:** manage idle behavior
+  - **Detection interval:** time in seconds before it's considered idle.
 - **Data:** export, import, or delete all data
   - Every option can select Time or Configurations, or both.
   - **Export:** generates a JSON file
