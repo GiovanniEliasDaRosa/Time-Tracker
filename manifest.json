@@ -14,6 +14,7 @@
       "js/shared/Storage.js",
       "js/shared/MessageManager.js",
       "js/background/TabManager.js",
+      "js/background/MessageInterface.js",
       "js/background/Background.js",
       "js/background/bootstrap.js"
     ],

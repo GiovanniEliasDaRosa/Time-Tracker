@@ -173,37 +173,6 @@ async function handleExtensionTab(path, event = null, close_current_tab = true) 
   }
 }
 
-// MARK: Notifications
-function showNotification() {
-  let message = "";
-
-  let tracking_domains = Array.from(tracking_time.domains);
-
-  tracking_domains.sort((a, b) => {
-    return a.time < b.time;
-  });
-
-  if (configurations.notifications.showTopThree) {
-    for (let i = 0; i < 3; i++) {
-      const domain = tracking_domains[i];
-      if (domain == null) continue;
-      message += `${formatTime(domain.time).timeString} ${domain.url}\n`;
-    }
-  }
-
-  browser.notifications.create({
-    type: "basic",
-    iconUrl: browser.runtime.getURL("assets/icons/icon.png"),
-    title: `Time Tracker ${formatTime(tracking_time.totalTime).timeString}`,
-    message: message,
-  });
-}
-
-// On notification clicked
-browser.notifications.onClicked.addListener(() => {
-  handleExtensionTab("summary/summary.html", null, false);
-});
-
 async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

@@ -1,3 +1,4 @@
+const background = new Background();
 const tabManager = new TabManager();
 
 let new_day_last_update = null;
@@ -75,11 +76,11 @@ async function bootstrap() {
 
   // Set up idle functionality
   if (configurations.idle.active) {
-    browser.idle.onStateChanged.addListener(handleIdleChange);
+    browser.idle.onStateChanged.addListener(background.handleIdleChange);
     browser.idle.setDetectionInterval(configurations.idle.interval);
   }
 
-  today = getDateInfo(await checkNewDay({ returnHour: true }));
+  today = getDateInfo(await background.checkNewDay({ returnHour: true }));
   tracked_time_history.lastTrack = today.isoDate;
   tracking_time.isoDate = today.isoDate;
 
@@ -96,9 +97,12 @@ async function bootstrap() {
   let next_minute = new Date().getSeconds();
 
   // Start tracking time
-  timer_timeout = setTimeout(() => {
-    saveTrackedTime({ firstRun: true });
-  }, (60 - next_minute) * 1000);
+  timer_timeout = setTimeout(
+    () => {
+      background.saveTrackedTime({ firstRun: true });
+    },
+    (60 - next_minute) * 1000,
+  );
 
   if (first_install) {
     // User prefers dark mode
