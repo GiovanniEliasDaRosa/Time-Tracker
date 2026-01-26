@@ -14,7 +14,7 @@
       "js/shared/Storage.js",
       "js/shared/MessageManager.js",
       "js/background/TabManager.js",
-      "js/background/background.js",
+      "js/background/Background.js",
       "js/background/bootstrap.js"
     ],
     "persistent": true
