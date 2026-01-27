@@ -91,7 +91,7 @@ async function bootstrap() {
   // Check for "today's date" in storage, if has get that, else set to the defaults
   tracking_time = await Storage.getOrAdd(today.isoDate, tracking_time);
 
-  await handleNewDayStart();
+  await background.handleNewDayStart();
 
   // Calculate seconds until the next minute
   let next_minute = new Date().getSeconds();
@@ -117,84 +117,6 @@ async function bootstrap() {
 
     // Open tutorial
     handleExtensionTab(`summary/summary.html#show_tutorial=true`, null, false);
-  }
-}
-
-async function handleNewDayStart(from_timer = false) {
-  // The date doesn't exist in the tracked dates, which mean a new day
-  // Or the day changed while extension was running
-  if (tracked_time_history.trackedDates[tracking_time.isoDate] == null || from_timer) {
-    // Push a new domain on the today's data
-    tabManager.handeDomainChange();
-
-    let last_day = getDateInfo(tracked_time_history.lastTrack);
-
-    // Last tracked day isn't today
-    if (last_day.isoDate != today.isoDate) {
-      let last_day_data = await Storage.get(last_day.isoDate);
-      last_day_data.trackingFinished = true;
-
-      // Get the days betwwen the last tracked and today
-      const ms_per_day = 24 * 60 * 60 * 1000;
-      const first_date = new Date(today.isoDate).normalize().getTime();
-      const second_date = new Date(last_day.isoDate).normalize().getTime();
-      let difference = Math.round((first_date - second_date) / ms_per_day);
-
-      // Add the days betwwen the last tracked and today with zero data
-      for (let day = 0; day < difference; day++) {
-        let day_testing = getDateInfo(new Date(first_date - ms_per_day * day));
-        tracked_time_history.trackedDates[day_testing.isoDate] = {
-          isoDate: day_testing.isoDate,
-          domains: [],
-          totalTime: 0,
-          trackingFinished: true,
-        };
-      }
-
-      // Put the data in the tracked day correct position
-      tracked_time_history.trackedDates[last_day.isoDate] = last_day_data;
-
-      await Storage.delete(last_day.isoDate);
-    }
-
-    // Updathe the Tracked Time History, so that it knows a new day has begun
-    tracked_time_history.trackedDates[today.isoDate] = {
-      isoDate: today.isoDate,
-      domains: [],
-      totalTime: 0,
-      trackingFinished: false,
-    };
-    tracked_time_history.lastTrack = today.isoDate;
-    tracked_time_history.totalDays += 1;
-    tracked_time_history = await Storage.set("tracked_time_history", tracked_time_history);
-
-    // Reset current tracked time
-    tracking_time = {
-      isoDate: today.isoDate,
-      domains: [],
-      totalTime: 0,
-    };
-
-    // Stop tabManager tracking, and reset tabManager domains
-    tabManager.stopTraker();
-    tabManager.sessionDomains = [];
-
-    // Restore tabManager tracking
-    tabManager.startTraker();
-
-    tracking_time = await Storage.set("tracking_time", tracking_time);
-  } else {
-    // Access on the same day
-    let goto_sessions_domains = [];
-    tracking_time.domains.forEach((tracked_domain) => {
-      goto_sessions_domains.push({
-        url: tracked_domain.url,
-        startTime: null,
-        ellapsedTime: 0,
-      });
-    });
-
-    tabManager.sessionDomains = goto_sessions_domains;
   }
 }
 
