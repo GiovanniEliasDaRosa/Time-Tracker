@@ -63,6 +63,9 @@ async function bootstrap() {
   // Check for "configurations" in storage, if has get that, else set to the defaults
   configurations = await Storage.getOrAdd("configurations", configurations);
 
+  // Sync stored configurations with defaults (add/remove keys necessary) and save automatically
+  configurations = await background.updateConfigurations(configurations, configurations_default);
+
   // Set up idle functionality
   if (configurations.idle.active) {
     browser.idle.onStateChanged.addListener(background.handleIdleChange);

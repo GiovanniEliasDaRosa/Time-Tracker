@@ -5,6 +5,7 @@ class Background extends MessageInterface {
     this.notificationTimer = { minutesPassed: 0 };
     this.firstInstall = false;
     this.minuteRollTimeoutId = null;
+    this.configSyncModified = false;
 
     // On window loses or gains focus
     browser.windows.onFocusChanged.addListener(this.onFocusChanged);
@@ -319,5 +320,85 @@ class Background extends MessageInterface {
 
       tabManager.sessionDomains = goto_sessions_domains;
     }
+  }
+
+  // MARK: Sync stored configurations with defaults
+  async updateConfigurations() {
+    this.configSyncModified = false;
+    let result = configurations;
+
+    // Add necessary keys
+    let keys__update_add = this.checkKeysToAdd(configurations, configurations_default);
+    // Remove obsolete keys
+    let keys__update_remove = this.checkKeysToRemove(keys__update_add, configurations_default);
+
+    // Configuration has updated
+    if (this.configSyncModified) {
+      // Save on storage
+      result = await Storage.set("configurations", keys__update_remove);
+      this.configSyncModified = false;
+    }
+
+    return result;
+  }
+
+  checkKeysToAdd(value, default_value) {
+    let result = value;
+
+    for (const key in default_value) {
+      if (!Object.hasOwn(default_value, key)) continue;
+
+      const current_key = value[key];
+      const default_key = default_value[key];
+
+      // The configuration exist
+      if (current_key != null) {
+        // Is an array, ignore it
+        if (Array.isArray(current_key)) continue;
+
+        if (typeof current_key == "object") {
+          result[key] = this.checkKeysToAdd(current_key, default_key);
+          continue;
+        }
+
+        continue;
+      }
+
+      // The configuration doesn't exist, add it
+      result[key] = default_value[key];
+      this.configSyncModified = true;
+    }
+
+    return result;
+  }
+
+  checkKeysToRemove(value, default_value) {
+    let result = value;
+
+    for (const key in value) {
+      if (!Object.hasOwn(value, key)) continue;
+
+      const current_key = value[key];
+      const compare_key = default_value[key];
+
+      // The configuration exist
+      if (compare_key != null) {
+        // Is an array, ignore it
+        if (Array.isArray(current_key)) continue;
+
+        if (typeof current_key == "object") {
+          result[key] = this.checkKeysToRemove(current_key, compare_key);
+          continue;
+        }
+
+        continue;
+      }
+
+      // The configuration doesn't exist, delete it
+      delete result[key];
+      this.configSyncModified = true;
+    }
+
+    return result;
   }
 }
