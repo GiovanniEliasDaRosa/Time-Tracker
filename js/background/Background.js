@@ -2,6 +2,10 @@ class Background extends MessageInterface {
   constructor() {
     super();
 
+    this.notificationTimer = { minutesPassed: 0 };
+    this.firstInstall = false;
+    this.minuteRollTimeoutId = null;
+
     // On window loses or gains focus
     browser.windows.onFocusChanged.addListener(this.onFocusChanged);
 
@@ -9,7 +13,7 @@ class Background extends MessageInterface {
     browser.windows.onRemoved.addListener(this.onRemoved);
 
     // On update or first install of the extension
-    browser.runtime.onInstalled.addListener(this.handleInstalled);
+    browser.runtime.onInstalled.addListener(this.handleInstalled.bind(this));
 
     // On notification clicked
     browser.notifications.onClicked.addListener(this.handleNotificationClick);
@@ -43,9 +47,9 @@ class Background extends MessageInterface {
     if (!options.firstRun) {
       // If notifications are enabled
       if (configurations.notifications.enabled) {
-        notification_timer.minutesPassed++;
-        if (notification_timer.minutesPassed >= configurations.notifications.timeBetween) {
-          notification_timer.minutesPassed = 0;
+        this.notificationTimer.minutesPassed++;
+        if (this.notificationTimer.minutesPassed >= configurations.notifications.timeBetween) {
+          this.notificationTimer.minutesPassed = 0;
           this.showNotification();
         }
       }
@@ -55,7 +59,10 @@ class Background extends MessageInterface {
       // Calculate seconds until the next minute
       let next_minute = new Date().getSeconds();
 
-      timer_timeout = setTimeout(this.saveTrackedTime.bind(this), (60 - next_minute) * 1000);
+      this.minuteRollTimeoutId = setTimeout(
+        this.saveTrackedTime.bind(this),
+        (60 - next_minute) * 1000,
+      );
     }
   }
 
@@ -181,7 +188,7 @@ class Background extends MessageInterface {
   // On close window
   onRemoved() {
     // Remove the timer, to prevent running multiple times function that saves the tracked time
-    clearTimeout(timer_timeout);
+    clearTimeout(this.minuteRollTimeoutId);
     // Save the data
     this.saveTrackedTime({ newTimeout: false });
   }
@@ -190,7 +197,7 @@ class Background extends MessageInterface {
   handleInstalled(details) {
     // Fist install on this browser
     if (details.reason == "install") {
-      first_install = true;
+      this.firstInstall = true;
     }
   }
 

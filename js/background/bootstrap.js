@@ -2,7 +2,6 @@ const background = new Background();
 const tabManager = new TabManager();
 
 let new_day_last_update = null;
-
 let today = null;
 
 const tracked_time_history_default = {
@@ -51,18 +50,8 @@ const configurations_default = {
 };
 
 let tracked_time_history = structuredClone(tracked_time_history_default);
-
 let tracking_time = structuredClone(tracking_time_default);
-
 let configurations = structuredClone(configurations_default);
-
-let notification_timer = {
-  minutesPassed: 0,
-};
-
-let timer_timeout = null;
-
-let first_install = false;
 
 // start everything
 async function bootstrap() {
@@ -97,14 +86,14 @@ async function bootstrap() {
   let next_minute = new Date().getSeconds();
 
   // Start tracking time
-  timer_timeout = setTimeout(
+  background.minuteRollTimeoutId = setTimeout(
     () => {
       background.saveTrackedTime({ firstRun: true });
     },
     (60 - next_minute) * 1000,
   );
 
-  if (first_install) {
+  if (background.firstInstall) {
     // User prefers dark mode
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
       configurations.darkTheme = true;

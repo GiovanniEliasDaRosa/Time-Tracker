@@ -87,7 +87,7 @@ class MessageInterface {
         // Fully reset tabManager sessions
         tabManager.sessionDomains = [];
         // Stop save timeout each minute
-        clearTimeout(timer_timeout);
+        clearTimeout(background.minuteRollTimeoutId);
 
         // * Time type resolve
         // The options page has already checked for conflicts
@@ -322,7 +322,7 @@ class MessageInterface {
       // Fully reset tabManager sessions
       tabManager.sessionDomains = [];
       // Stop save timeout each minute
-      clearTimeout(timer_timeout);
+      clearTimeout(background.minuteRollTimeoutId);
 
       await Storage.delete("tracked_time_history");
       await Storage.delete(today.isoDate);
@@ -331,7 +331,7 @@ class MessageInterface {
       tracking_time = structuredClone(tracking_time_default);
 
       // * Simulate a restart of the extension
-      first_install = false;
+      background.firstInstall = false;
       bootstrap();
     }
 
