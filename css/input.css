@@ -138,31 +138,28 @@ input[type="checkbox"]:not([data-type="toggle"]):checked::before {
 /* MARK: Checkbox Toggle
 */
 input[type="checkbox"][data-type="toggle"] {
-  width: 2.8em;
-  height: 1.5em;
+  --size-width: calc(2.6em + 0.4em);
+  width: var(--size-width);
+  height: calc(1.3em + 0.4em);
+  padding: 0;
   border-radius: 1em;
-  flex: 0 0 2.8em;
+  flex: 0 0 var(--size-width);
 }
 
 input[type="checkbox"][data-type="toggle"]::before {
   content: "";
-  width: 1.1em;
-  height: 1.1em;
+  width: 1.3em;
+  height: 1.3em;
   position: absolute;
   left: 0.1em;
-  top: 0.1em;
+  top: calc(50% - 0.65em);
 
-  border-radius: 1em;
+  border-radius: 1.3em;
   background-color: var(--input-checkbox-toggle-background-color);
   opacity: 1;
 
-  transform-origin: 0% 50%;
-  transition: 0.2s ease-out;
+  transition: 0.25s ease-out forwards;
   animation: toggle_out 0.5s;
-}
-
-input[type="checkbox"][data-type="toggle"]:checked::before {
-  animation: toggle_in 0.5s;
 }
 
 input[type="checkbox"][data-type="toggle"]:active::before {
@@ -174,26 +171,45 @@ input[type="checkbox"][data-type="toggle"]:checked:active::before {
 }
 
 input[type="checkbox"][data-type="toggle"]:checked::before {
+  animation: toggle_in 0.5s ease-out forwards;
   background-color: var(--input-checkbox-toggle-background-color-checked);
-  translate: 1.3em;
-  transform-origin: 100% 50%;
 }
 
 @keyframes toggle_out {
+  0% {
+    width: 1.3em;
+    translate: 1.3em;
+  }
+  25% {
+    width: 1.6em;
+    translate: 1em;
+  }
   50% {
-    scale: 1.1 0.9;
+    width: 1.6em;
+    translate: 0em;
   }
   100% {
-    scale: 1 1;
+    width: 1.3em;
+    translate: 0em;
   }
 }
 
 @keyframes toggle_in {
+  0% {
+    width: 1.3em;
+    translate: 0em;
+  }
+  25% {
+    width: 1.6em;
+    translate: 0em;
+  }
   50% {
-    scale: 1.1 0.9;
+    width: 1.6em;
+    translate: 1em;
   }
   100% {
-    scale: 1 1;
+    width: 1.3em;
+    translate: 1.3em;
   }
 }
 
