@@ -623,8 +623,8 @@ Check if your system clock is correct.`;
 
       // If want to import configurations
       if (this.currentSession.options.configurations) {
-        result.configurations = this.currentSession.data.file.data.configurations;
-        configurations = result.configurations;
+        result.configurations = structuredClone(this.currentSession.data.file.data.configurations);
+        configurations = structuredClone(result.configurations);
       }
 
       // If want to import time
