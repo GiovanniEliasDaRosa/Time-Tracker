@@ -51,7 +51,7 @@
 */
 .timer_item_data {
   display: grid;
-  grid-template-columns: 4ch 30ch 1fr 5ch 4ch;
+  grid-template-columns: 4ch 30ch 1fr 6ch 4ch;
   grid-template-areas: "postion name progress time percentage";
   align-items: center;
   gap: 0.5em;
@@ -93,7 +93,6 @@
   grid-area: postion;
   counter-increment: timer_rows;
   content: counter(timer_rows) ".";
-  align-self: start;
 }
 
 .timer_item_data::after {
@@ -113,6 +112,10 @@
     grid-template-rows: auto auto;
     grid-template-areas: "postion name time percentage" "postion progress progress progress";
   }
+}
+
+.timer_item_data_time {
+  text-align: center;
 }
 
 /* In the TOTAL row doesn't need a number, so re can reset it */
