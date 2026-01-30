@@ -804,7 +804,9 @@ Check if your system clock is correct.`;
       current_step_element.querySelector(".data_feedbacks_step_selected_options").innerText =
         this.currentSession.options.selected.join(" and ");
 
-      updatedConfigurations({ animate: true });
+      if (this.currentSession.options.configurations) {
+        updatedConfigurations({ animate: true });
+      }
     }
   }
 }
