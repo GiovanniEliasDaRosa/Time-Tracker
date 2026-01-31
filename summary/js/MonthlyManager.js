@@ -75,8 +75,13 @@ class MonthlyManager extends TimerManager {
         new Date(Date.UTC(this.date.year, this.date.month, 0)).toISOString().slice(0, 10),
       );
 
+      let valid_option = last_day_of_month;
+      if (compareDates(last_day_of_month, today).difference < 0) {
+        valid_option = today;
+      }
+
       this.validOptions = {
-        endDate: last_day_of_month,
+        endDate: valid_option,
       };
 
       const weeks = new Array();

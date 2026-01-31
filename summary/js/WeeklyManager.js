@@ -67,8 +67,13 @@ class WeeklyManager extends TimerManager {
 
     // If it's not from filter, calculate data
     if (!options.fromFilter && this.totalTime == 0) {
+      let valid_option = last_day;
+      if (compareDates(last_day, today).difference < 0) {
+        valid_option = today;
+      }
+
       this.validOptions = {
-        endDate: last_day,
+        endDate: valid_option,
       };
 
       this.data = this.calculateDataOfWeek(days_of_week);
