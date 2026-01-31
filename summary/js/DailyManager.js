@@ -195,6 +195,7 @@ class DailyManager extends TimerManager {
 
       this.updateShowMore(false);
       this.dataGot = structuredClone(this.data);
+      this.bodyMore.disable();
     } else {
       // It's from filter
       this.data = structuredClone(this.dataGot);
@@ -272,10 +273,12 @@ class DailyManager extends TimerManager {
     this.addTimerData(this.body, top_domains);
     this.addTimerData(this.bodyMore, other_domains);
 
-    this.bodyMore.disable();
-
     if (other_domains.length > 0) {
       this.showMore.button.enable();
+    } else {
+      this.showMore.button.disable();
+      this.bodyMore.disable();
+      this.updateShowMore(false);
     }
 
     return this;
