@@ -13,6 +13,7 @@ class TimerManager {
       domains: [],
     };
     this.totalTime = null;
+    this.scaleDownBarsValue = 0;
 
     this.filterElement = null;
     this.defaultFilter = {
@@ -356,6 +357,11 @@ class TimerManager {
 
     new_item.querySelector(".timer_item_data_name").textContent = options.name;
     new_item.querySelector(".timer_item_data_time").textContent = formatted_time.timeString;
+
+    // Recalculate time for correct bar sizing if want to scale down
+    if (this.scaleDownBarsValue > 0) {
+      formatted_time = formatTime(options.time / this.scaleDownBarsValue);
+    }
 
     let timer_progress = new_item.querySelector(".timer_item_data_progress");
 

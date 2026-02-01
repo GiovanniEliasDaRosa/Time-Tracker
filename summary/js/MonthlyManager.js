@@ -17,6 +17,8 @@ class MonthlyManager extends TimerManager {
 
     this.dateInput.oninput = this.valid.bind(this);
 
+    this.scaleDownBarsValue = 4;
+
     return this;
   }
 

@@ -90,19 +90,22 @@ class Tutorial {
       {
         title: `Daily Summary`,
         text: `Shows your time spent by domain for the selected day.
+Each bar represents 1 hour
 |Tip: The top 10 domains are shown by default, and if you visited more than 10 sites that day, a "Show more" button appears.|`,
         highlight: document.querySelector(".timer[data-type='day']"),
         img: null,
       },
       {
         title: `Weekly Summary`,
-        text: `Shows your time spent by day for the selected week.`,
+        text: `Shows your time spent by day for the selected week.
+Each bar represents 4 hours`,
         highlight: document.querySelector(".timer[data-type='week']"),
         img: null,
       },
       {
         title: `Monthly Summary`,
-        text: `Shows your time spent by week for the selected month.`,
+        text: `Shows your time spent by week for the selected month.
+Each bar represents 8 hours`,
         highlight: document.querySelector(".timer[data-type='month']"),
         img: null,
       },

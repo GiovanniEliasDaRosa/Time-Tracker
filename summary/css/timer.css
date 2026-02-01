@@ -144,7 +144,7 @@
 .timer_item_data_progress {
   grid-area: progress;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5em, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(4em, 1fr));
   gap: 0.25em 0;
 }
 

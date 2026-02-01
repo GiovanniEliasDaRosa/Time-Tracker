@@ -17,6 +17,8 @@ class WeeklyManager extends TimerManager {
 
     this.dateInput.oninput = this.valid.bind(this);
 
+    this.scaleDownBarsValue = 8;
+
     return this;
   }
 
