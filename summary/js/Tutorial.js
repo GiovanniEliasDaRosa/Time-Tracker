@@ -116,8 +116,10 @@ Each bar represents 8 hours`,
         img: null,
       },
       {
-        title: `Link dates`,
+        title: `Use same date`,
         text: `Toggle this button to link/unlink dates across summaries.
+When linked, changing the date in any summary will update the date for all summaries.
+When unlinked, each summary updates its own date only.
 |Tip: By default the dates are not linked.|`,
         highlight: document.querySelector("#link_dates_button"),
         img: null,
