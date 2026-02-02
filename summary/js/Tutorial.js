@@ -111,7 +111,8 @@ Each bar represents 8 hours`,
       },
       {
         title: `Filter each summary separately`,
-        text: `Each summary has it's own sort buttons to reorder results and a minimum time filter to hide entries below a chosen duration.`,
+        text: `Each summary has it's own sort buttons to reorder results and a minimum time filter to hide entries below a chosen duration.
+|Tip: Click on sort button to cycle between it's ordering (ascending, descending and off).|`,
         highlight: document.querySelector(".timer_item_button_filter"),
         img: null,
       },
