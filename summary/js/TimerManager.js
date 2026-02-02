@@ -250,8 +250,12 @@ class TimerManager {
         } else {
           // As the tracking is unfinished, get the data from the tracking_time
           day_result = tracking_time_local;
-          passed_today = true;
         }
+      }
+
+      // If the date is in the future, make a disabled look
+      if (compareDates(getDateInfo(day), today, true).difference >= 0) {
+        passed_today = true;
       }
 
       // If filtering with min time and has domains
