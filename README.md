@@ -1,6 +1,6 @@
 # Time-Tracker
 
-![License](https://img.shields.io/github/license/GiovanniEliasDaRosa/Time-Tracker?style=for-the-badge)
+![License](https://img.shields.io/github/license/giovannieliasdarosa/Time-Tracker?style=for-the-badge)
 ![Firefox Add-ons](https://img.shields.io/badge/firefox-add%20on-darkorange?logo=firefoxbrowser&style=for-the-badge)
 
 A lightweight Firefox extension that records how much time you spend on websites with a quick popup, an options page for settings and data management, and a dashboard for time by site. Available on the Firefox Add-ons store.
