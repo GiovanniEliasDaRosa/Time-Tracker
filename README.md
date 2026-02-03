@@ -5,6 +5,8 @@
 
 A lightweight Firefox extension that records how much time you spend on websites with a quick popup, an options page for settings and data management, and a dashboard for time by site. Available on the Firefox Add-ons store.
 
+Available on Firefox Add-ons: https://addons.mozilla.org/en-US/firefox/addon/time-tracker-app
+
 ## Contents
 
 - [Screenshots](#screenshots)
