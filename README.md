@@ -7,10 +7,37 @@ A lightweight Firefox extension that records how much time you spend on websites
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Usage](#usage)
 - [Options available](#options-available)
 - [Contributing](#contributing)
+
+## Screenshots
+
+### Popup
+
+<img src="assets/img/docs/popup.png" alt="Options page print image 1" height="260">
+
+### Options page
+
+<div style="display: flex; flex-wrap: nowrap; overflow: auto; gap: 1em">
+  <img src="assets/img/docs/options-page1.png" alt="Options page print image 1" width="720">
+  <img src="assets/img/docs/options-page2.png" alt="Options page print image 2" width="720">
+  <img src="assets/img/docs/options-page3.png" alt="Options page print image 3" width="720">
+  <img src="assets/img/docs/options-page4.png" alt="Options page print image 4" width="720">
+  <img src="assets/img/docs/options-page5.png" alt="Options page print image 5" width="720">
+</div>
+
+### Summary page
+
+<div style="display: flex; flex-wrap: nowrap; overflow: auto; gap: 1em">
+  <img src="assets/img/docs/summary-page1.png" alt="Summary page print image 1" width="720">
+  <img src="assets/img/docs/summary-page2.png" alt="Summary page print image 2" width="720">
+  <img src="assets/img/docs/summary-page3.png" alt="Summary page print image 3" width="720">
+  <img src="assets/img/docs/summary-page4.png" alt="Summary page print image 4" width="720">
+  <img src="assets/img/docs/summary-page5.png" alt="Summary page print image 5" width="720">
+</div>
 
 ## Features
 
